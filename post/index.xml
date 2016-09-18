@@ -17,12 +17,14 @@
       <guid>https://blog.yuyat.jp/post/brand-new-blog/</guid>
       <description>&lt;p&gt;長年 Wordpress を使ってきたけどいい加減辛くなってきたので &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt; に移行しました。&lt;/p&gt;
 
-&lt;p&gt;過去ブログのデータ移行については過去に何度も挫折していて、結局リバースプロキシを使っていい感じに振り分けることにしました。
-以前の記事 URL は基本的に全て生きているはずです。
+&lt;p&gt;過去ブログのデータ移行については過去に何度も挫折していて、結局リバースプロキシを使っていい感じに振り分けることにしました。&lt;br /&gt;
+以前の記事 URL は基本的に全て生きているはずです。&lt;br /&gt;
 コメントとかはできませんが。&lt;/p&gt;
 
-&lt;p&gt;新ブログは GitHub Pages からリバースプロキシを介して配信しています。
+&lt;p&gt;新ブログは GitHub Pages からリバースプロキシを介して配信しています。&lt;br /&gt;
 Let&amp;rsquo;s Encrypt で SSL 化し、ついでに Nginx も HTTP2 化したので、その辺のネタはそのうちに書いていければと思ってます。&lt;/p&gt;
+
+&lt;p&gt;あと、テーマは &lt;a href=&#34;https://github.com/chibicode/hugo-theme-shiori&#34;&gt;@chibicode&lt;/a&gt; さんの &lt;a href=&#34;https://github.com/chibicode/hugo-theme-shiori&#34;&gt;hugo-theme-shiori&lt;/a&gt; をカスタマイズして使っています。&lt;/p&gt;
 
 &lt;p&gt;今後ともよろしくお願いします。&lt;/p&gt;
 </description>
