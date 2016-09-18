@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Born Too Late</title>
+    <link>https://blog.yuyat.jp/</link>
+    <description>Recent content on Born Too Late</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Mon, 19 Sep 2016 02:39:31 +0900</lastBuildDate>
+    <atom:link href="https://blog.yuyat.jp/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>ブログを Hugo でリニューアルした</title>
+      <link>https://blog.yuyat.jp/post/brand-new-blog/</link>
+      <pubDate>Mon, 19 Sep 2016 02:39:31 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/brand-new-blog/</guid>
+      <description>&lt;p&gt;長年 Wordpress を使ってきたけどいい加減辛くなってきたので &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt; に移行しました。&lt;/p&gt;
+
+&lt;p&gt;過去ブログのデータ移行については過去に何度も挫折していて、結局リバースプロキシを使っていい感じに振り分けることにしました。
+以前の記事 URL は基本的に全て生きているはずです。
+コメントとかはできませんが。&lt;/p&gt;
+
+&lt;p&gt;新ブログは GitHub Pages からリバースプロキシを介して配信しています。
+Let&amp;rsquo;s Encrypt で SSL 化し、ついでに Nginx も HTTP2 化したので、その辺のネタはそのうちに書いていければと思ってます。&lt;/p&gt;
+
+&lt;p&gt;今後ともよろしくお願いします。&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
