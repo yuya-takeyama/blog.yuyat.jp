@@ -24,7 +24,7 @@
 &lt;p&gt;新ブログは GitHub Pages からリバースプロキシを介して配信しています。&lt;br /&gt;
 Let&amp;rsquo;s Encrypt で SSL 化し、ついでに Nginx も HTTP2 化したので、その辺のネタはそのうちに書いていければと思ってます。&lt;/p&gt;
 
-&lt;p&gt;あと、テーマは &lt;a href=&#34;https://github.com/chibicode/hugo-theme-shiori&#34;&gt;@chibicode&lt;/a&gt; さんの &lt;a href=&#34;https://github.com/chibicode/hugo-theme-shiori&#34;&gt;hugo-theme-shiori&lt;/a&gt; をカスタマイズして使っています。&lt;/p&gt;
+&lt;p&gt;あと、テーマは &lt;a href=&#34;https://github.com/chibicode&#34;&gt;@chibicode&lt;/a&gt; さんの &lt;a href=&#34;https://github.com/chibicode/hugo-theme-shiori&#34;&gt;hugo-theme-shiori&lt;/a&gt; をカスタマイズして使っています。&lt;/p&gt;
 
 &lt;p&gt;今後ともよろしくお願いします。&lt;/p&gt;
 </description>
