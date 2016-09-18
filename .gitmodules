@@ -1,0 +1,3 @@
+[submodule "themes/hugo-theme-shiori"]
+	path = themes/hugo-theme-shiori
+	url = https://github.com/yuya-takeyama/hugo-theme-shiori.git

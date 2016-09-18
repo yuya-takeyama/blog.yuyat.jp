@@ -1,0 +1,9 @@
+baseurl = "https://blog.yuyat.jp"
+languageCode = "ja-jp"
+title = "Born Too Late"
+
+[params]
+    author_name = "Yuya Takeyama"
+    twitter_username = "yuya_takeyama"
+    gravatar_id = "33685a20ded68e6861bec3c1bd7f0870"
+		google_analytics_tracking_id = "UA-12392004-1"
