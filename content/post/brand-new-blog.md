@@ -13,6 +13,6 @@ title = "ブログを Hugo でリニューアルした"
 新ブログは GitHub Pages からリバースプロキシを介して配信しています。  
 Let's Encrypt で SSL 化し、ついでに Nginx も HTTP2 化したので、その辺のネタはそのうちに書いていければと思ってます。
 
-あと、テーマは [@chibicode](https://github.com/chibicode/hugo-theme-shiori) さんの [hugo-theme-shiori](https://github.com/chibicode/hugo-theme-shiori) をカスタマイズして使っています。
+あと、テーマは [@chibicode](https://github.com/chibicode) さんの [hugo-theme-shiori](https://github.com/chibicode/hugo-theme-shiori) をカスタマイズして使っています。
 
 今後ともよろしくお願いします。
