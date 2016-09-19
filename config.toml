@@ -1,6 +1,7 @@
 baseurl = "https://blog.yuyat.jp"
 languageCode = "ja-jp"
 title = "Born Too Late"
+theme = "hugo-theme-shiori"
 
 [params]
     author_name = "Yuya Takeyama"
