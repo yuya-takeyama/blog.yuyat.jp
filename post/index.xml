@@ -17,7 +17,7 @@
       <guid>https://blog.yuyat.jp/post/auto-deploy-hugo-to-github-pages-with-circleci/</guid>
       <description>
 
-&lt;p&gt;Hugo は Jekyll と違って、GitHub Pages に push すれば勝手にページ生成はされません。&lt;br /&gt;
+&lt;p&gt;Hugo は Jekyll と違って、GitHub Pages に push しても勝手にページ生成はされません。&lt;br /&gt;
 どうにかして自分で Hugo を実行し、それで生成されたファイルを push する必要があります。&lt;br /&gt;
 このブログを構築するにあたって、CircleCI でビルドして自動デプロイする手順がまとまったので公開します。&lt;/p&gt;
 
