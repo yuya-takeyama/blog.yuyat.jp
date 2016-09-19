@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://blog.yuyat.jp/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
+    <link rel="canonical" href="https://blog.yuyat.jp/post/auto-deploy-hugo-to-github-pages-with-circleci/">
+    <title>Hugo で作ったサイトを CircleCI で GitHub Pages に自動デプロイ | Born Too Late</title>
+    
+
+    <meta property="og:title" content="Hugo で作ったサイトを CircleCI で GitHub Pages に自動デプロイ" />
+<meta property="og:description" content="Hugo は Jekyll と違って、GitHub Pages に push すれば勝手にページ生成はされません。 どうにかして自分で Hugo を実行し、それで生成されたファイルを push する必要があります。 このブログを構築するにあたって、CircleCI でビルドして自動デプロイする手順がまとまったので公開します。 なお、このブログはカスタムドメインを使用していますが、それについての説明はこの記事ではしません。 前提とする環境 Hugo Ver. 0.16 概要 以下のような環境・手順で自動デプロイが行われるようにします。 記事のソースは master ブランチに push する GitHub Pages 用のブランチには gh-pages を使う master ブランチが更新された時に gh-pages が自動的に更新される セットアップ手順 対象ブランチの設定 当然ですがリポジトリを準備します。 そしてリポジトリの Settings から GitHub Pages の Source として gh-pages を選択します。 ただし、gh-pages ブランチがない状態だと選択できないと思うので、その場合は手動でブランチだけ作るか、CircleCI によるデプロイが行われた後で行うと良いでしょう。 デプロイキーの用意 CircleCI は CI 対象のリポジトリを登録する時に、自動的に対象リポジトリの SSH キーを生成します。 が、これは read-only なので、今回の様に CircleCI から GitHub に push したい場合は使えません。 なので手動で生成し、登録する必要があります。 鍵の生成については GitHub のドキュメント等を参照してください。 Generating a new SSH key 生成したら GitHub リポジトリの Settings -&gt; Deploy keys -&gt; Add deploy key と進み、Key には生成した公開鍵ファイルの中身を貼り付け、Allow write access にチェックを入れてください。 また、CircleCI 側には秘密鍵を登録します。 Project Settings -&gt; SSH Permissions -&gt; Add SSH Key と進み、hostname には github.com、Private Key には秘密鍵の中身を貼り付けてください。 これで github.com へのデプロイ時にはこの鍵ファイルが使われるようになります。 デプロイスクリプトの用意 circle.yml は以下のようなものを準備します。 master ブランチが更新された時はデプロイ用のスクリプトを実行するようになっています。 dependencies: pre: - wget https://github.com/spf13/hugo/releases/download/v0.16/hugo_0.16-1_amd64.deb - sudo dpkg -i hugo_0.16-1_amd64.deb test: override: - &quot;true&quot; deployment: production: branch: master commands: - ./scripts/deploy_production.sh デプロイスクリプトは以下のようにします。 これを scripts/deploy_production.sh という名前で保存して、忘れずに chmod &#43;x しておきましょう。 設定部分は環境変数でセットするようにしてあるので、コピペそのままで使えると思います。 #!/bin/bash -eux if [ -z &quot;${GIT_USER_NAME}&quot; ]; then echo &quot;Please set an env var GIT_USER_NAME&quot; exit 1 fi if [ -z &quot;${GIT_USER_EMAIL}&quot; ]; then echo &quot;Please set an env var GIT_USER_EMAIL&quot; exit 1 fi GIT_REPO=&quot;git@github.com:${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git&quot; git submodule init git submodule update remote=`git ls-remote --heads 2&gt; /dev/null | grep gh-pages || true` if [ -n &quot;$remote&quot; ]; then git clone -b gh-pages &quot;${GIT_REPO}&quot; public rm -rf public/* else git init public cd public git checkout -b gh-pages git remote add origin &quot;${GIT_REPO}&quot; cd .." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.yuyat.jp/post/auto-deploy-hugo-to-github-pages-with-circleci/" />
+
+  
+	  <meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg" />
+  
+
+
+  <meta property="og:updated_time" content="2016-09-19T10:30:35&#43;09:00"/>
+
+
+
+
+    
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="https://blog.yuyat.jp" class="navbar-brand">Born Too Late</a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="https://blog.yuyat.jp/post/">Archive</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">Hugo で作ったサイトを CircleCI で GitHub Pages に自動デプロイ</h1>
+      <p class="text-muted">Sep 19, 2016</p>
+
+<div>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fauto-deploy-hugo-to-github-pages-with-circleci%2f&amp;text=Hugo%20%e3%81%a7%e4%bd%9c%e3%81%a3%e3%81%9f%e3%82%b5%e3%82%a4%e3%83%88%e3%82%92%20CircleCI%20%e3%81%a7%20GitHub%20Pages%20%e3%81%ab%e8%87%aa%e5%8b%95%e3%83%87%e3%83%97%e3%83%ad%e3%82%a4&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fauto-deploy-hugo-to-github-pages-with-circleci%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fauto-deploy-hugo-to-github-pages-with-circleci%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
+</div>
+
+    </div>
+    <div class="post-content">
+      
+
+<p>Hugo は Jekyll と違って、GitHub Pages に push すれば勝手にページ生成はされません。<br />
+どうにかして自分で Hugo を実行し、それで生成されたファイルを push する必要があります。<br />
+このブログを構築するにあたって、CircleCI でビルドして自動デプロイする手順がまとまったので公開します。</p>
+
+<p>なお、このブログはカスタムドメインを使用していますが、それについての説明はこの記事ではしません。</p>
+
+<h2 id="前提とする環境">前提とする環境</h2>
+
+<ul>
+<li>Hugo Ver. 0.16</li>
+</ul>
+
+<h2 id="概要">概要</h2>
+
+<p>以下のような環境・手順で自動デプロイが行われるようにします。</p>
+
+<ul>
+<li>記事のソースは <code>master</code> ブランチに push する</li>
+<li>GitHub Pages 用のブランチには <code>gh-pages</code> を使う</li>
+<li><code>master</code> ブランチが更新された時に <code>gh-pages</code> が自動的に更新される</li>
+</ul>
+
+<h2 id="セットアップ手順">セットアップ手順</h2>
+
+<h3 id="対象ブランチの設定">対象ブランチの設定</h3>
+
+<p>当然ですがリポジトリを準備します。</p>
+
+<p>そしてリポジトリの Settings から GitHub Pages の Source として <code>gh-pages</code> を選択します。</p>
+
+<p>ただし、<code>gh-pages</code> ブランチがない状態だと選択できないと思うので、その場合は手動でブランチだけ作るか、CircleCI によるデプロイが行われた後で行うと良いでしょう。</p>
+
+<p><img src="/images/auto-deploy-hugo-to-github-pagesmd-with-circleci/github-setting.png" width="248" height="222"></p>
+
+<h3 id="デプロイキーの用意">デプロイキーの用意</h3>
+
+<p>CircleCI は CI 対象のリポジトリを登録する時に、自動的に対象リポジトリの SSH キーを生成します。<br />
+が、これは read-only なので、今回の様に CircleCI から GitHub に push したい場合は使えません。<br />
+なので手動で生成し、登録する必要があります。</p>
+
+<p>鍵の生成については GitHub のドキュメント等を参照してください。<br />
+<a href="https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#generating-a-new-ssh-key">Generating a new SSH key</a></p>
+
+<p>生成したら GitHub リポジトリの Settings -&gt; Deploy keys -&gt; Add deploy key と進み、Key には生成した公開鍵ファイルの中身を貼り付け、Allow write access にチェックを入れてください。</p>
+
+<p><img src="/images/auto-deploy-hugo-to-github-pagesmd-with-circleci/add-a-deploy-key.png" width="311" height="502"></p>
+
+<p>また、CircleCI 側には秘密鍵を登録します。<br />
+Project Settings -&gt; SSH Permissions -&gt; Add SSH Key と進み、hostname には github.com、Private Key には秘密鍵の中身を貼り付けてください。<br />
+これで github.com へのデプロイ時にはこの鍵ファイルが使われるようになります。</p>
+
+<p><img src="/images/auto-deploy-hugo-to-github-pagesmd-with-circleci/add-an-ssh-key.png" width="429" height="289"></p>
+
+<h3 id="デプロイスクリプトの用意">デプロイスクリプトの用意</h3>
+
+<p>circle.yml は以下のようなものを準備します。<br />
+<code>master</code> ブランチが更新された時はデプロイ用のスクリプトを実行するようになっています。</p>
+
+<pre><code class="language-yml">dependencies:
+  pre:
+  - wget https://github.com/spf13/hugo/releases/download/v0.16/hugo_0.16-1_amd64.deb
+  - sudo dpkg -i hugo_0.16-1_amd64.deb
+
+test:
+  override:
+    - &quot;true&quot;
+
+deployment:
+  production:
+    branch: master
+    commands:
+    - ./scripts/deploy_production.sh
+</code></pre>
+
+<p>デプロイスクリプトは以下のようにします。<br />
+これを <code>scripts/deploy_production.sh</code> という名前で保存して、忘れずに <code>chmod +x</code> しておきましょう。<br />
+設定部分は環境変数でセットするようにしてあるので、コピペそのままで使えると思います。</p>
+
+<pre><code class="language-bash">#!/bin/bash -eux
+
+if [ -z &quot;${GIT_USER_NAME}&quot; ]; then
+  echo &quot;Please set an env var GIT_USER_NAME&quot;
+  exit 1
+fi
+
+if [ -z &quot;${GIT_USER_EMAIL}&quot; ]; then
+  echo &quot;Please set an env var GIT_USER_EMAIL&quot;
+  exit 1
+fi
+
+GIT_REPO=&quot;git@github.com:${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git&quot;
+
+git submodule init
+git submodule update
+
+remote=`git ls-remote --heads 2&gt; /dev/null | grep gh-pages || true`
+
+if [ -n &quot;$remote&quot; ]; then
+  git clone -b gh-pages &quot;${GIT_REPO}&quot; public
+  rm -rf public/*
+else
+  git init public
+  cd public
+  git checkout -b gh-pages
+  git remote add origin &quot;${GIT_REPO}&quot;
+  cd ..
+fi
+
+hugo
+cd public
+git config --global user.name &quot;${GIT_USER_NAME}&quot;
+git config --global user.email &quot;${GIT_USER_EMAIL}&quot;
+git add --all
+git commit -m 'Update [ci skip]'
+git push -f origin gh-pages
+</code></pre>
+
+<p>環境変数は CircleCI の Project Settings から Environment Variables へと進んで、以下を登録します。</p>
+
+<ul>
+<li><code>GIT_USER_NAME</code>: git commit 時の名前</li>
+<li><code>GIT_USER_EMAIL</code>: git commit 時のメールアドレス</li>
+</ul>
+
+<p>いずれも普段使いの Git と同じ設定にするのが良いでしょう。</p>
+
+<h3 id="hugo-をセットアップして-git-push">Hugo をセットアップして git push</h3>
+
+<p>あとは Hugo のファイルを <code>git push</code> すれば勝手にデプロイされます。<br />
+このとき以下の点に注意してください。</p>
+
+<ul>
+<li><code>public</code> ディレクトリは <code>.gitignore</code> に入れておき、生成されたファイルはコミットしないようにする</li>
+<li><code>config.toml</code> に <code>theme</code> を設定する
+
+<ul>
+<li>本来コマンドラインオプションで渡すこともできるが、デプロイスクリプト中では指定していないので</li>
+</ul></li>
+</ul>
+
+<h2 id="まとめ">まとめ</h2>
+
+<p>こうして出来上がったのがこのブログです。<br />
+リポジトリは公開してあるので、気になる点があればチェックしてみてください。</p>
+
+<p><a href="https://github.com/yuya-takeyama/blog.yuyat.jp">https://github.com/yuya-takeyama/blog.yuyat.jp</a></p>
+
+<p>Enjoy blogging!</p>
+
+    </div>
+    <div class="post-footer">
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 2 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4">
+    
+
+<h3>
+  Author
+</h3>
+
+<p>
+  <div class="media">
+    
+    <img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class="pull-left">
+    
+    
+    <div class="media-body">
+      <h4 class="media-heading">Yuya Takeyama</h4>
+    </div>
+    
+  </div>
+</p>
+
+
+
+<p><a href="https://twitter.com/yuya_takeyama" class="twitter-follow-button" data-show-screen-name="false" data-show-count="true" data-dnt="true" data-size="large">Follow @yuya_takeyama</a></p>
+
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          <footer>
+
+&copy; 2015.
+Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+<a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
+
+</footer>
+
+        </div>
+      </div>
+    </div>
+    <script src="https://blog.yuyat.jp/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12392004-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+</html>
+

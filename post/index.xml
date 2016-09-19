@@ -6,8 +6,167 @@
     <description>Recent content in Posts on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 19 Sep 2016 02:39:31 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 19 Sep 2016 10:30:35 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Hugo で作ったサイトを CircleCI で GitHub Pages に自動デプロイ</title>
+      <link>https://blog.yuyat.jp/post/auto-deploy-hugo-to-github-pages-with-circleci/</link>
+      <pubDate>Mon, 19 Sep 2016 10:30:35 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/auto-deploy-hugo-to-github-pages-with-circleci/</guid>
+      <description>
+
+&lt;p&gt;Hugo は Jekyll と違って、GitHub Pages に push すれば勝手にページ生成はされません。&lt;br /&gt;
+どうにかして自分で Hugo を実行し、それで生成されたファイルを push する必要があります。&lt;br /&gt;
+このブログを構築するにあたって、CircleCI でビルドして自動デプロイする手順がまとまったので公開します。&lt;/p&gt;
+
+&lt;p&gt;なお、このブログはカスタムドメインを使用していますが、それについての説明はこの記事ではしません。&lt;/p&gt;
+
+&lt;h2 id=&#34;前提とする環境&#34;&gt;前提とする環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Hugo Ver. 0.16&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+
+&lt;p&gt;以下のような環境・手順で自動デプロイが行われるようにします。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;記事のソースは &lt;code&gt;master&lt;/code&gt; ブランチに push する&lt;/li&gt;
+&lt;li&gt;GitHub Pages 用のブランチには &lt;code&gt;gh-pages&lt;/code&gt; を使う&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;master&lt;/code&gt; ブランチが更新された時に &lt;code&gt;gh-pages&lt;/code&gt; が自動的に更新される&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;セットアップ手順&#34;&gt;セットアップ手順&lt;/h2&gt;
+
+&lt;h3 id=&#34;対象ブランチの設定&#34;&gt;対象ブランチの設定&lt;/h3&gt;
+
+&lt;p&gt;当然ですがリポジトリを準備します。&lt;/p&gt;
+
+&lt;p&gt;そしてリポジトリの Settings から GitHub Pages の Source として &lt;code&gt;gh-pages&lt;/code&gt; を選択します。&lt;/p&gt;
+
+&lt;p&gt;ただし、&lt;code&gt;gh-pages&lt;/code&gt; ブランチがない状態だと選択できないと思うので、その場合は手動でブランチだけ作るか、CircleCI によるデプロイが行われた後で行うと良いでしょう。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/auto-deploy-hugo-to-github-pagesmd-with-circleci/github-setting.png&#34; width=&#34;248&#34; height=&#34;222&#34;&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;デプロイキーの用意&#34;&gt;デプロイキーの用意&lt;/h3&gt;
+
+&lt;p&gt;CircleCI は CI 対象のリポジトリを登録する時に、自動的に対象リポジトリの SSH キーを生成します。&lt;br /&gt;
+が、これは read-only なので、今回の様に CircleCI から GitHub に push したい場合は使えません。&lt;br /&gt;
+なので手動で生成し、登録する必要があります。&lt;/p&gt;
+
+&lt;p&gt;鍵の生成については GitHub のドキュメント等を参照してください。&lt;br /&gt;
+&lt;a href=&#34;https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#generating-a-new-ssh-key&#34;&gt;Generating a new SSH key&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;生成したら GitHub リポジトリの Settings -&amp;gt; Deploy keys -&amp;gt; Add deploy key と進み、Key には生成した公開鍵ファイルの中身を貼り付け、Allow write access にチェックを入れてください。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/auto-deploy-hugo-to-github-pagesmd-with-circleci/add-a-deploy-key.png&#34; width=&#34;311&#34; height=&#34;502&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;また、CircleCI 側には秘密鍵を登録します。&lt;br /&gt;
+Project Settings -&amp;gt; SSH Permissions -&amp;gt; Add SSH Key と進み、hostname には github.com、Private Key には秘密鍵の中身を貼り付けてください。&lt;br /&gt;
+これで github.com へのデプロイ時にはこの鍵ファイルが使われるようになります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/auto-deploy-hugo-to-github-pagesmd-with-circleci/add-an-ssh-key.png&#34; width=&#34;429&#34; height=&#34;289&#34;&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;デプロイスクリプトの用意&#34;&gt;デプロイスクリプトの用意&lt;/h3&gt;
+
+&lt;p&gt;circle.yml は以下のようなものを準備します。&lt;br /&gt;
+&lt;code&gt;master&lt;/code&gt; ブランチが更新された時はデプロイ用のスクリプトを実行するようになっています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;dependencies:
+  pre:
+  - wget https://github.com/spf13/hugo/releases/download/v0.16/hugo_0.16-1_amd64.deb
+  - sudo dpkg -i hugo_0.16-1_amd64.deb
+
+test:
+  override:
+    - &amp;quot;true&amp;quot;
+
+deployment:
+  production:
+    branch: master
+    commands:
+    - ./scripts/deploy_production.sh
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;デプロイスクリプトは以下のようにします。&lt;br /&gt;
+これを &lt;code&gt;scripts/deploy_production.sh&lt;/code&gt; という名前で保存して、忘れずに &lt;code&gt;chmod +x&lt;/code&gt; しておきましょう。&lt;br /&gt;
+設定部分は環境変数でセットするようにしてあるので、コピペそのままで使えると思います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/bin/bash -eux
+
+if [ -z &amp;quot;${GIT_USER_NAME}&amp;quot; ]; then
+  echo &amp;quot;Please set an env var GIT_USER_NAME&amp;quot;
+  exit 1
+fi
+
+if [ -z &amp;quot;${GIT_USER_EMAIL}&amp;quot; ]; then
+  echo &amp;quot;Please set an env var GIT_USER_EMAIL&amp;quot;
+  exit 1
+fi
+
+GIT_REPO=&amp;quot;git@github.com:${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git&amp;quot;
+
+git submodule init
+git submodule update
+
+remote=`git ls-remote --heads 2&amp;gt; /dev/null | grep gh-pages || true`
+
+if [ -n &amp;quot;$remote&amp;quot; ]; then
+  git clone -b gh-pages &amp;quot;${GIT_REPO}&amp;quot; public
+  rm -rf public/*
+else
+  git init public
+  cd public
+  git checkout -b gh-pages
+  git remote add origin &amp;quot;${GIT_REPO}&amp;quot;
+  cd ..
+fi
+
+hugo
+cd public
+git config --global user.name &amp;quot;${GIT_USER_NAME}&amp;quot;
+git config --global user.email &amp;quot;${GIT_USER_EMAIL}&amp;quot;
+git add --all
+git commit -m &#39;Update [ci skip]&#39;
+git push -f origin gh-pages
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;環境変数は CircleCI の Project Settings から Environment Variables へと進んで、以下を登録します。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;GIT_USER_NAME&lt;/code&gt;: git commit 時の名前&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;GIT_USER_EMAIL&lt;/code&gt;: git commit 時のメールアドレス&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;いずれも普段使いの Git と同じ設定にするのが良いでしょう。&lt;/p&gt;
+
+&lt;h3 id=&#34;hugo-をセットアップして-git-push&#34;&gt;Hugo をセットアップして git push&lt;/h3&gt;
+
+&lt;p&gt;あとは Hugo のファイルを &lt;code&gt;git push&lt;/code&gt; すれば勝手にデプロイされます。&lt;br /&gt;
+このとき以下の点に注意してください。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;public&lt;/code&gt; ディレクトリは &lt;code&gt;.gitignore&lt;/code&gt; に入れておき、生成されたファイルはコミットしないようにする&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;config.toml&lt;/code&gt; に &lt;code&gt;theme&lt;/code&gt; を設定する
+
+&lt;ul&gt;
+&lt;li&gt;本来コマンドラインオプションで渡すこともできるが、デプロイスクリプト中では指定していないので&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;こうして出来上がったのがこのブログです。&lt;br /&gt;
+リポジトリは公開してあるので、気になる点があればチェックしてみてください。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/blog.yuyat.jp&#34;&gt;https://github.com/yuya-takeyama/blog.yuyat.jp&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Enjoy blogging!&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>ブログを Hugo でリニューアルした</title>
