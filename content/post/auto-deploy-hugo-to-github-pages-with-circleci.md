@@ -3,7 +3,7 @@ date = "2016-09-19T10:30:35+09:00"
 title = "Hugo で作ったサイトを CircleCI で GitHub Pages に自動デプロイ"
 
 +++
-Hugo は Jekyll と違って、GitHub Pages に push すれば勝手にページ生成はされません。  
+Hugo は Jekyll と違って、GitHub Pages に push しても勝手にページ生成はされません。  
 どうにかして自分で Hugo を実行し、それで生成されたファイルを push する必要があります。  
 このブログを構築するにあたって、CircleCI でビルドして自動デプロイする手順がまとまったので公開します。
 
