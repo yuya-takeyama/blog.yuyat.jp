@@ -106,7 +106,7 @@
 
 <p>ただし、<code>gh-pages</code> ブランチがない状態だと選択できないと思うので、その場合は手動でブランチだけ作るか、CircleCI によるデプロイが行われた後で行うと良いでしょう。</p>
 
-<p><img src="/images/auto-deploy-hugo-to-github-pagesmd-with-circleci/github-setting.png" width="248" height="222"></p>
+<p><img src="/images/auto-deploy-hugo-to-github-pages-with-circleci/github-setting.png" width="248" height="222"></p>
 
 <h3 id="デプロイキーの用意">デプロイキーの用意</h3>
 
@@ -119,13 +119,13 @@
 
 <p>生成したら GitHub リポジトリの Settings -&gt; Deploy keys -&gt; Add deploy key と進み、Key には生成した公開鍵ファイルの中身を貼り付け、Allow write access にチェックを入れてください。</p>
 
-<p><img src="/images/auto-deploy-hugo-to-github-pagesmd-with-circleci/add-a-deploy-key.png" width="311" height="502"></p>
+<p><img src="/images/auto-deploy-hugo-to-github-pages-with-circleci/add-a-deploy-key.png" width="311" height="502"></p>
 
 <p>また、CircleCI 側には秘密鍵を登録します。<br />
 Project Settings -&gt; SSH Permissions -&gt; Add SSH Key と進み、hostname には github.com、Private Key には秘密鍵の中身を貼り付けてください。<br />
 これで github.com へのデプロイ時にはこの鍵ファイルが使われるようになります。</p>
 
-<p><img src="/images/auto-deploy-hugo-to-github-pagesmd-with-circleci/add-an-ssh-key.png" width="429" height="289"></p>
+<p><img src="/images/auto-deploy-hugo-to-github-pages-with-circleci/add-an-ssh-key.png" width="429" height="289"></p>
 
 <h3 id="デプロイスクリプトの用意">デプロイスクリプトの用意</h3>
 
