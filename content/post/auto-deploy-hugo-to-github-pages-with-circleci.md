@@ -31,7 +31,7 @@ Hugo は Jekyll と違って、GitHub Pages に push すれば勝手にページ
 
 ただし、`gh-pages` ブランチがない状態だと選択できないと思うので、その場合は手動でブランチだけ作るか、CircleCI によるデプロイが行われた後で行うと良いでしょう。
 
-<img src="/images/auto-deploy-hugo-to-github-pagesmd-with-circleci/github-setting.png" width="248" height="222">
+<img src="/images/auto-deploy-hugo-to-github-pages-with-circleci/github-setting.png" width="248" height="222">
 
 ### デプロイキーの用意
 
@@ -45,13 +45,13 @@ CircleCI は CI 対象のリポジトリを登録する時に、自動的に対�
 
 生成したら GitHub リポジトリの Settings -> Deploy keys -> Add deploy key と進み、Key には生成した公開鍵ファイルの中身を貼り付け、Allow write access にチェックを入れてください。
 
-<img src="/images/auto-deploy-hugo-to-github-pagesmd-with-circleci/add-a-deploy-key.png" width="311" height="502">
+<img src="/images/auto-deploy-hugo-to-github-pages-with-circleci/add-a-deploy-key.png" width="311" height="502">
 
 また、CircleCI 側には秘密鍵を登録します。  
 Project Settings -> SSH Permissions -> Add SSH Key と進み、hostname には github.com、Private Key には秘密鍵の中身を貼り付けてください。  
 これで github.com へのデプロイ時にはこの鍵ファイルが使われるようになります。
 
-<img src="/images/auto-deploy-hugo-to-github-pagesmd-with-circleci/add-an-ssh-key.png" width="429" height="289">
+<img src="/images/auto-deploy-hugo-to-github-pages-with-circleci/add-an-ssh-key.png" width="429" height="289">
 
 ### デプロイスクリプトの用意
 
