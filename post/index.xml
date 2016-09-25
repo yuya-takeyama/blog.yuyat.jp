@@ -6,8 +6,71 @@
     <description>Recent content in Posts on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 25 Sep 2016 17:57:40 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 26 Sep 2016 01:00:24 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>標準エラー出力に tee するコマンド tee2err を作った</title>
+      <link>https://blog.yuyat.jp/post/tee2err/</link>
+      <pubDate>Mon, 26 Sep 2016 01:00:24 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/tee2err/</guid>
+      <description>
+
+&lt;p&gt;GNU tee でも BSD tee でもできないので作りました。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/tee2err&#34;&gt;yuya-takeyama/tee2err&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;これは何か&#34;&gt;これは何か&lt;/h2&gt;
+
+&lt;p&gt;標準入力を食わせると、標準出力と標準エラー出力に同じものを出力するだけのコマンドです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ echo foo | tee2err
+foo
+foo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;foo と 2 回出力されていますが、一方は標準出力に、もう一方は標準エラー出力に出力されています。&lt;/p&gt;
+
+&lt;h2 id=&#34;どういう時に使うか&#34;&gt;どういう時に使うか&lt;/h2&gt;
+
+&lt;p&gt;標準入力からストリームを食わせるとなんらかの終端操作を行うようなツールと一緒に使います。&lt;/p&gt;
+
+&lt;p&gt;例えば 1 から 10 までの数列の総和を求める場合。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ seq 10 | perl -ane &#39;$i+=$_; END { print &amp;quot;SUM: $i\n&amp;quot;; }&#39;
+SUM: 55
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これはこれで特に問題ないですが、これに &lt;code&gt;tee2err&lt;/code&gt; を組み合わせるとこのようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ seq 10 | tee2err | perl -ane &#39;$i+=$_; END { print &amp;quot;SUM: $i\n&amp;quot;; }&#39;
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+SUM: 55
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;seq 10&lt;/code&gt; の出力を見ながら計算結果を待つことができます。&lt;br /&gt;
+1 ~ 10 の数値は標準エラー出力への出力なので、&lt;code&gt;perl&lt;/code&gt; での計算に影響は及ぼしません。&lt;/p&gt;
+
+&lt;p&gt;この例であればいずれにせよ一瞬で終わるので特に問題にならないですが、以前 Qiita に書いた &lt;a href=&#34;http://qiita.com/yuya_takeyama/items/baf48a3f643e743a46b4&#34;&gt;&lt;code&gt;curl&lt;/code&gt; コマンドでベンチマークを実行するような場合&lt;/a&gt;だとそれなりに待たされるので、ターミナルに何も出力されないまま待ち続けるのは少しストレスだったりするので作りました。&lt;/p&gt;
+
+&lt;h2 id=&#34;インストール&#34;&gt;インストール&lt;/h2&gt;
+
+&lt;pre&gt;&lt;code&gt;$ go get github.com/yuya-takeyama/tee2err
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;または &lt;a href=&#34;https://github.com/yuya-takeyama/tee2err/releases&#34;&gt;releases&lt;/a&gt; にビルド済みバイナリも置いてます。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>GitHub Pages を nginx のリバースプロキシ越しに配信する</title>
