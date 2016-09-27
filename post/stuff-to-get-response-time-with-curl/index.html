@@ -9,21 +9,21 @@
     <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
-    <link rel="canonical" href="https://blog.yuyat.jp/post/brand-new-blog/">
-    <title>ブログを Hugo でリニューアルした | Born Too Late</title>
+    <link rel="canonical" href="https://blog.yuyat.jp/post/stuff-to-get-response-time-with-curl/">
+    <title>curl でレスポンスタイムをシュッと取るヤツ | Born Too Late</title>
     
 
-    <meta property="og:title" content="ブログを Hugo でリニューアルした" />
-<meta property="og:description" content="長年 Wordpress を使ってきたけどいい加減辛くなってきたので Hugo に移行しました。 過去ブログのデータ移行については過去に何度も挫折していて、結局リバースプロキシを使っていい感じに振り分けることにしました。 以前の記事 URL は基本的に全て生きているはずです。 コメントとかはできませんが。 新ブログは GitHub Pages からリバースプロキシを介して配信しています。 Let&rsquo;s Encrypt で SSL 化し、ついでに Nginx も HTTP2 化したので、その辺のネタはそのうちに書いていければと思ってます。 あと、テーマは @chibicode さんの hugo-theme-shiori をカスタマイズして使っています。 今後ともよろしくお願いします。" />
+    <meta property="og:title" content="curl でレスポンスタイムをシュッと取るヤツ" />
+<meta property="og:description" content="以前 Qiita にcurl でサッと HTTP ベンチマークと書いたが、それをもうちょい簡単にやるために以下のようなコマンドを用意してみた。 #!/bin/sh curl -s -o /dev/null -w &#39;%{time_starttransfer}\n&#39; &quot;$@&quot; これを curlb という名前で $PATH の通ったところに置いておくと以下のようにできる。 $ curlb https://blog.yuyat.jp/ 0.067" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.yuyat.jp/post/brand-new-blog/" />
+<meta property="og:url" content="https://blog.yuyat.jp/post/stuff-to-get-response-time-with-curl/" />
 
   
 	  <meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg" />
   
 
 
-  <meta property="og:updated_time" content="2016-09-19T02:39:31&#43;09:00"/>
+  <meta property="og:updated_time" content="2016-09-27T09:10:34&#43;09:00"/>
 
 
 
@@ -65,29 +65,28 @@
 <div class="row">
   <div class="col-sm-8">
     <div class="post-header">
-      <h1 class="post-title-main">ブログを Hugo でリニューアルした</h1>
-      <p class="text-muted">Sep 19, 2016</p>
+      <h1 class="post-title-main">curl でレスポンスタイムをシュッと取るヤツ</h1>
+      <p class="text-muted">Sep 27, 2016</p>
 
 <div>
-  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fbrand-new-blog%2f&amp;text=%e3%83%96%e3%83%ad%e3%82%b0%e3%82%92%20Hugo%20%e3%81%a7%e3%83%aa%e3%83%8b%e3%83%a5%e3%83%bc%e3%82%a2%e3%83%ab%e3%81%97%e3%81%9f&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
-  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fbrand-new-blog%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fbrand-new-blog%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fstuff-to-get-response-time-with-curl%2f&amp;text=curl%20%e3%81%a7%e3%83%ac%e3%82%b9%e3%83%9d%e3%83%b3%e3%82%b9%e3%82%bf%e3%82%a4%e3%83%a0%e3%82%92%e3%82%b7%e3%83%a5%e3%83%83%e3%81%a8%e5%8f%96%e3%82%8b%e3%83%a4%e3%83%84&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fstuff-to-get-response-time-with-curl%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fstuff-to-get-response-time-with-curl%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
 </div>
 
     </div>
     <div class="post-content">
-      <p>長年 Wordpress を使ってきたけどいい加減辛くなってきたので <a href="https://gohugo.io/">Hugo</a> に移行しました。</p>
+      <p>以前 Qiita に<a href="http://qiita.com/yuya_takeyama/items/baf48a3f643e743a46b4">curl でサッと HTTP ベンチマーク</a>と書いたが、それをもうちょい簡単にやるために以下のようなコマンドを用意してみた。</p>
 
-<p>過去ブログのデータ移行については過去に何度も挫折していて、結局リバースプロキシを使っていい感じに振り分けることにしました。<br />
-以前の記事 URL は基本的に全て生きているはずです。<br />
-コメントとかはできませんが。</p>
+<pre><code class="language-sh">#!/bin/sh
+curl -s -o /dev/null -w '%{time_starttransfer}\n' &quot;$@&quot;
+</code></pre>
 
-<p>新ブログは GitHub Pages からリバースプロキシを介して配信しています。<br />
-Let&rsquo;s Encrypt で SSL 化し、ついでに Nginx も HTTP2 化したので、その辺のネタはそのうちに書いていければと思ってます。</p>
+<p>これを <code>curlb</code> という名前で <code>$PATH</code> の通ったところに置いておくと以下のようにできる。</p>
 
-<p>あと、テーマは <a href="https://github.com/chibicode">@chibicode</a> さんの <a href="https://github.com/chibicode/hugo-theme-shiori">hugo-theme-shiori</a> をカスタマイズして使っています。</p>
-
-<p>今後ともよろしくお願いします。</p>
+<pre><code>$ curlb https://blog.yuyat.jp/
+0.067
+</code></pre>
 
     </div>
     <div class="post-footer">
