@@ -6,8 +6,33 @@
     <description>Recent content in Posts on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 27 Sep 2016 09:10:34 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 01 Oct 2016 16:41:07 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>【RMP×Quipper】Food&amp;Drink meetup #3 で発表した</title>
+      <link>https://blog.yuyat.jp/post/rmp-quipper-food-and-drink-meetup/</link>
+      <pubDate>Sat, 01 Oct 2016 16:41:07 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/rmp-quipper-food-and-drink-meetup/</guid>
+      <description>&lt;p&gt;Quipper とその親会社であるところのリクルートマーケティングパートナーズ (RMP) とでの&lt;a href=&#34;http://rmp-quipper.connpass.com/event/39082/&#34;&gt;合同イベント&lt;/a&gt; (平たくいうと採用イベント) があって、LT の発表枠が空いていたので発表してきた。&lt;/p&gt;
+
+&lt;p&gt;スライドは Qiita のスライド機能を初めて使ってみた。&lt;br /&gt;
+スクリーンに写すと文字が結構小さかったので、事前のチェックが大事だと思った。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/yuya_takeyama/items/6b0fe4bc7d501f69e081&#34;&gt;curl でサッとベンチマークをとる (スライド版)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;内容的には以前同じく &lt;a href=&#34;http://qiita.com/yuya_takeyama/items/baf48a3f643e743a46b4&#34;&gt;Qiita に書いた記事&lt;/a&gt; を加筆・再編集した程度のものなので、準備にはあまり時間がかかっていない。&lt;/p&gt;
+
+&lt;p&gt;Google Chrome の Developer Tools からリクエストを curl コマンドとしてコピーする機能について知らない人が意外と多かったので、その点が一番バリュー高かったのかもしれない。&lt;/p&gt;
+
+&lt;p&gt;あとは見つけた時に超クールだと思った &lt;a href=&#34;https://github.com/winebarrel/hyst&#34;&gt;hyst&lt;/a&gt; というツールについても軽く紹介した。&lt;br /&gt;
+hyst を作っている &lt;a href=&#34;https://github.com/winebarrel&#34;&gt;@winebarrel&lt;/a&gt; さんには &lt;a href=&#34;https://github.com/winebarrel/miam&#34;&gt;miam&lt;/a&gt; や &lt;a href=&#34;https://github.com/winebarrel/roadworker&#34;&gt;roadworker&lt;/a&gt; でもお世話になっています。&lt;br /&gt;
+あと &lt;a href=&#34;http://hakobera.hatenablog.com/entry/2016/03/02/084204&#34;&gt;Quipper でも使われているみたい&lt;/a&gt;です。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>curl でレスポンスタイムをシュッと取るヤツ</title>
