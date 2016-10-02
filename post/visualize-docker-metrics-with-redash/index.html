@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://blog.yuyat.jp/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
+    <link rel="canonical" href="https://blog.yuyat.jp/post/visualize-docker-metrics-with-redash/">
+    <title>Docker のメトリクスを Re:dash でビジュアライズ | Born Too Late</title>
+    
+
+    <meta property="og:title" content="Docker のメトリクスを Re:dash でビジュアライズ" />
+<meta property="og:description" content="しばらく前から Dokku という Docker ベースの Heroku ライクな PaaS 基盤を趣味で運用していて、その中で旧ブログの WordPress や 自分用のツールなんかを動かしたりしている。 サーバのメトリクス収集には Mackerel を利用しているが、Docker コンテナ単位での計測は行っていなかった。 Mackerel はホスト数に応じた課金を行っていて、5 ホストまでは無料だが、コンテナまで追加してしまうとすぐにその枠を溢れてしまう。 というわけで簡単な仕組みを自分で用意いてみた。 できたもの どちらもメモリ使用量 (MB) をコンテナ名ごとにグラフ化したもので、どちらもデータは同じものを使っている。 後者はグラフを積み上げることでコンテナ全体で使用しているメモリの使用量もわかるようになっている。 今のところ Docker のリソースに関して困っているのはメモリだけなので、とりあえずはこれだけ。 なお、Dokku ではコンテナ名が アプリ名.プロセス名.プロセス番号 という感じになる (例えば blog.web.1 といった具合) になるので、アプリを再起動してコンテナ ID が変わっても連続的にモニタリングできる。 グラフ中異常値っぽいのが出ているところはまさにアプリを再起動したりしているところ。 概要 以下のような流れでこのグラフを作り出している。 fluent-plugin-docker-metrics で Docker のメトリクスを td-agent に収集 fluent-plugin-bigquery でメトリクスを BigQuery に送信 Re:dash で BigQuery 上のデータをグラフ化 手順 fluent-plugin-docker-metrics のセットアップ td-agent.conf の設定はこんな感じ。 &lt;source&gt; @type docker_metrics stats_interval 1m tag_prefix docker.metrics &lt;/source&gt; tag_prefix はデフォルトだと" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.yuyat.jp/post/visualize-docker-metrics-with-redash/" />
+
+  
+    
+      <meta property="og:image" content="https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/chart.png" />
+    
+      <meta property="og:image" content="https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/stack-chart.png" />
+    
+  
+
+
+  <meta property="og:updated_time" content="2016-10-02T14:56:46&#43;09:00"/>
+
+
+
+
+    <meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@yuya_takeyama">
+<meta name="twitter:creator" content="@yuya_takeyama">
+
+    
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="https://blog.yuyat.jp" class="navbar-brand">Born Too Late</a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="https://blog.yuyat.jp/post/">Archive</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">Docker のメトリクスを Re:dash でビジュアライズ</h1>
+      <p class="text-muted">Oct 2, 2016</p>
+
+<div>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fvisualize-docker-metrics-with-redash%2f&amp;text=Docker%20%e3%81%ae%e3%83%a1%e3%83%88%e3%83%aa%e3%82%af%e3%82%b9%e3%82%92%20Re%3adash%20%e3%81%a7%e3%83%93%e3%82%b8%e3%83%a5%e3%82%a2%e3%83%a9%e3%82%a4%e3%82%ba&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fvisualize-docker-metrics-with-redash%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fvisualize-docker-metrics-with-redash%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
+</div>
+
+    </div>
+    <div class="post-content">
+      
+
+<p>しばらく前から <a href="http://dokku.viewdocs.io/dokku/">Dokku</a> という Docker ベースの Heroku ライクな PaaS 基盤を趣味で運用していて、その中で旧ブログの WordPress や 自分用のツールなんかを動かしたりしている。</p>
+
+<p>サーバのメトリクス収集には <a href="https://mackerel.io/">Mackerel</a> を利用しているが、Docker コンテナ単位での計測は行っていなかった。<br />
+Mackerel はホスト数に応じた課金を行っていて、5 ホストまでは無料だが、コンテナまで追加してしまうとすぐにその枠を溢れてしまう。</p>
+
+<p>というわけで簡単な仕組みを自分で用意いてみた。</p>
+
+<h2 id="できたもの">できたもの</h2>
+
+<p><img src="/images/visualize-docker-metrics-with-redash/chart.png" width="414" height="319"></p>
+
+<p><img src="/images/visualize-docker-metrics-with-redash/stack-chart.png" width="416" height="342"></p>
+
+<p>どちらもメモリ使用量 (MB) をコンテナ名ごとにグラフ化したもので、どちらもデータは同じものを使っている。<br />
+後者はグラフを積み上げることでコンテナ全体で使用しているメモリの使用量もわかるようになっている。</p>
+
+<p>今のところ Docker のリソースに関して困っているのはメモリだけなので、とりあえずはこれだけ。</p>
+
+<p>なお、Dokku ではコンテナ名が <code>アプリ名.プロセス名.プロセス番号</code> という感じになる (例えば <code>blog.web.1</code> といった具合) になるので、アプリを再起動してコンテナ ID が変わっても連続的にモニタリングできる。<br />
+グラフ中異常値っぽいのが出ているところはまさにアプリを再起動したりしているところ。</p>
+
+<h2 id="概要">概要</h2>
+
+<p>以下のような流れでこのグラフを作り出している。</p>
+
+<ol>
+<li><a href="https://github.com/kiyoto/fluent-plugin-docker-metrics">fluent-plugin-docker-metrics</a> で Docker のメトリクスを td-agent に収集</li>
+<li><a href="https://github.com/kaizenplatform/fluent-plugin-bigquery">fluent-plugin-bigquery</a> でメトリクスを BigQuery に送信</li>
+<li><a href="http://redash.io/">Re:dash</a> で BigQuery 上のデータをグラフ化</li>
+</ol>
+
+<h2 id="手順">手順</h2>
+
+<h3 id="fluent-plugin-docker-metrics-のセットアップ">fluent-plugin-docker-metrics のセットアップ</h3>
+
+<p><code>td-agent.conf</code> の設定はこんな感じ。</p>
+
+<pre><code>&lt;source&gt;
+  @type docker_metrics
+  stats_interval 1m
+  tag_prefix docker.metrics
+&lt;/source&gt;
+</code></pre>
+
+<p><code>tag_prefix</code> はデフォルトだと <code>docker</code> だが、別の機会で Docker の何かを収集することもあるかもしれないので <code>docker.metrics</code> としてみた。</p>
+
+<p><code>stats_interval</code> はとりあえず 1 分ごとにしているが、すべてのコンテナの値を収集するとデータ量がそこそこ多くなるので 5 分ごととかに減らしてもいいかもしれない。</p>
+
+<p>これでこんな感じのデータが収集できる。</p>
+
+<pre><code>20161002T062409+0000	docker.metrics.memory.stat	{&quot;key&quot;:&quot;memory_stat_cache&quot;,&quot;value&quot;:9039872,&quot;type&quot;:&quot;gauge&quot;,&quot;hostname&quot;:&quot;HOSTNAME&quot;,&quot;id&quot;:&quot;6008f80ef7f6c6747edf01019846074d27e29a7d217c6e3f3301fcdb435cef73&quot;,&quot;name&quot;:&quot;/blog-legacy.web.1&quot;}
+20161002T062409+0000	docker.metrics.memory.stat	{&quot;key&quot;:&quot;memory_stat_rss&quot;,&quot;value&quot;:14028800,&quot;type&quot;:&quot;gauge&quot;,&quot;hostname&quot;:&quot;HOSTNAME&quot;,&quot;id&quot;:&quot;6008f80ef7f6c6747edf01019846074d27e29a7d217c6e3f3301fcdb435cef73&quot;,&quot;name&quot;:&quot;/blog-legacy.web.1&quot;}
+20161002T062409+0000	docker.metrics.memory.stat	{&quot;key&quot;:&quot;memory_stat_rss_huge&quot;,&quot;value&quot;:0,&quot;type&quot;:&quot;gauge&quot;,&quot;hostname&quot;:&quot;HOSTNAME&quot;,&quot;id&quot;:&quot;6008f80ef7f6c6747edf01019846074d27e29a7d217c6e3f3301fcdb435cef73&quot;,&quot;name&quot;:&quot;/blog-legacy.web.1&quot;}
+</code></pre>
+
+<p>コンテナ ID とコンテナ名の両方が記録されるので、どちらでもグループ化して集計することが可能である。</p>
+
+<h3 id="fluent-plugin-bigquery-のセットアップ">fluent-plugin-bigquery のセットアップ</h3>
+
+<pre><code>&lt;match docker.metrics.**&gt;
+  @type bigquery
+
+  auth_method json_key
+  email ***@PROJECT.iam.gserviceaccount.com
+  json_key /etc/td-agent/bigquery/key.json
+
+  project PROJECT
+  dataset docker
+  table   metrics_%Y%m%d
+  ignore_unknown_values true
+  auto_create_table true
+
+  time_format %s
+  time_field time
+
+  field_timestamp time
+  field_integer   value
+  field_string    key,type,hostname,id,name
+&lt;/match&gt;
+</code></pre>
+
+<p>日別にテーブルに保存されるよう、<code>table</code> は <code>metrics_%Y%m%d</code> としている。</p>
+
+<p>また、テーブルは自動で作られるが、データセットはあらかじめ作っておく必要があるらしい。</p>
+
+<h3 id="re-dash-でグラフ化">Re:dash でグラフ化</h3>
+
+<p>Re:dash 自体のセットアップについては割愛するが、個人的にはこれを Dokku で動かしていて、その手順については以前 Qiita に書いている。</p>
+
+<ul>
+<li><a href="http://qiita.com/yuya_takeyama/items/9915f5ae3953a9c2c14b">Dokku に Re:dash をインストールする</a></li>
+</ul>
+
+<p>クエリはこんな感じ。<br />
+Standard SQL を使っている。</p>
+
+<pre><code class="language-sql">SELECT
+  time,
+  name,
+  value / 1024 / 1024 AS size
+FROM
+  `PROJECT.docker.metrics_*`
+WHERE
+  key = 'memory_stat_rss'
+ORDER BY
+  name,
+  time
+</code></pre>
+
+<p>とりあえず全データを対象にしているが、データ量が増えてきたらテーブル名を日付で絞ったほうが良いかもしれない。</p>
+
+<p>あとは適当に Visualize の設定を行う。</p>
+
+<p><img src="/images/visualize-docker-metrics-with-redash/chart-setting.png" width="531" height="608"></p>
+
+<p><img src="/images/visualize-docker-metrics-with-redash/stack-setting.png" width="526" height="607"></p>
+
+<p>これで先に載せた感じのグラフが出来上がる。</p>
+
+<p><img src="/images/visualize-docker-metrics-with-redash/chart.png" width="414" height="319"></p>
+
+<p><img src="/images/visualize-docker-metrics-with-redash/stack-chart.png" width="416" height="342"></p>
+
+<h2 id="まとめ">まとめ</h2>
+
+<p>グラフ化した結果、メモリを一番使っているのは Re:dash の Worker だということがわかった。</p>
+
+    </div>
+    <div class="post-footer">
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 8 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4">
+    
+
+<h3>
+  Author
+</h3>
+
+<p>
+  <div class="media">
+    
+    <img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class="pull-left">
+    
+    
+    <div class="media-body">
+      <h4 class="media-heading">Yuya Takeyama</h4>
+    </div>
+    
+  </div>
+</p>
+
+
+
+<p><a href="https://twitter.com/yuya_takeyama" class="twitter-follow-button" data-show-screen-name="false" data-show-count="true" data-dnt="true" data-size="large">Follow @yuya_takeyama</a></p>
+
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          <footer>
+
+&copy; 2015.
+Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+<a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
+
+</footer>
+
+        </div>
+      </div>
+    </div>
+    <script src="https://blog.yuyat.jp/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12392004-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+</html>
+

@@ -3,7 +3,12 @@
   
   <url>
     <loc>https://blog.yuyat.jp/</loc>
-    <lastmod>2016-10-01T16:41:07+09:00</lastmod>
+    <lastmod>2016-10-02T14:56:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.yuyat.jp/post/visualize-docker-metrics-with-redash/</loc>
+    <lastmod>2016-10-02T14:56:46+09:00</lastmod>
   </url>
   
   <url>

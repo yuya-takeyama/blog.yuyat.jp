@@ -6,8 +6,145 @@
     <description>Recent content on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 01 Oct 2016 16:41:07 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 02 Oct 2016 14:56:46 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Docker のメトリクスを Re:dash でビジュアライズ</title>
+      <link>https://blog.yuyat.jp/post/visualize-docker-metrics-with-redash/</link>
+      <pubDate>Sun, 02 Oct 2016 14:56:46 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/visualize-docker-metrics-with-redash/</guid>
+      <description>
+
+&lt;p&gt;しばらく前から &lt;a href=&#34;http://dokku.viewdocs.io/dokku/&#34;&gt;Dokku&lt;/a&gt; という Docker ベースの Heroku ライクな PaaS 基盤を趣味で運用していて、その中で旧ブログの WordPress や 自分用のツールなんかを動かしたりしている。&lt;/p&gt;
+
+&lt;p&gt;サーバのメトリクス収集には &lt;a href=&#34;https://mackerel.io/&#34;&gt;Mackerel&lt;/a&gt; を利用しているが、Docker コンテナ単位での計測は行っていなかった。&lt;br /&gt;
+Mackerel はホスト数に応じた課金を行っていて、5 ホストまでは無料だが、コンテナまで追加してしまうとすぐにその枠を溢れてしまう。&lt;/p&gt;
+
+&lt;p&gt;というわけで簡単な仕組みを自分で用意いてみた。&lt;/p&gt;
+
+&lt;h2 id=&#34;できたもの&#34;&gt;できたもの&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/chart.png&#34; width=&#34;414&#34; height=&#34;319&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/stack-chart.png&#34; width=&#34;416&#34; height=&#34;342&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;どちらもメモリ使用量 (MB) をコンテナ名ごとにグラフ化したもので、どちらもデータは同じものを使っている。&lt;br /&gt;
+後者はグラフを積み上げることでコンテナ全体で使用しているメモリの使用量もわかるようになっている。&lt;/p&gt;
+
+&lt;p&gt;今のところ Docker のリソースに関して困っているのはメモリだけなので、とりあえずはこれだけ。&lt;/p&gt;
+
+&lt;p&gt;なお、Dokku ではコンテナ名が &lt;code&gt;アプリ名.プロセス名.プロセス番号&lt;/code&gt; という感じになる (例えば &lt;code&gt;blog.web.1&lt;/code&gt; といった具合) になるので、アプリを再起動してコンテナ ID が変わっても連続的にモニタリングできる。&lt;br /&gt;
+グラフ中異常値っぽいのが出ているところはまさにアプリを再起動したりしているところ。&lt;/p&gt;
+
+&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
+
+&lt;p&gt;以下のような流れでこのグラフを作り出している。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/kiyoto/fluent-plugin-docker-metrics&#34;&gt;fluent-plugin-docker-metrics&lt;/a&gt; で Docker のメトリクスを td-agent に収集&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/kaizenplatform/fluent-plugin-bigquery&#34;&gt;fluent-plugin-bigquery&lt;/a&gt; でメトリクスを BigQuery に送信&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://redash.io/&#34;&gt;Re:dash&lt;/a&gt; で BigQuery 上のデータをグラフ化&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;手順&#34;&gt;手順&lt;/h2&gt;
+
+&lt;h3 id=&#34;fluent-plugin-docker-metrics-のセットアップ&#34;&gt;fluent-plugin-docker-metrics のセットアップ&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;td-agent.conf&lt;/code&gt; の設定はこんな感じ。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;source&amp;gt;
+  @type docker_metrics
+  stats_interval 1m
+  tag_prefix docker.metrics
+&amp;lt;/source&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;tag_prefix&lt;/code&gt; はデフォルトだと &lt;code&gt;docker&lt;/code&gt; だが、別の機会で Docker の何かを収集することもあるかもしれないので &lt;code&gt;docker.metrics&lt;/code&gt; としてみた。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;stats_interval&lt;/code&gt; はとりあえず 1 分ごとにしているが、すべてのコンテナの値を収集するとデータ量がそこそこ多くなるので 5 分ごととかに減らしてもいいかもしれない。&lt;/p&gt;
+
+&lt;p&gt;これでこんな感じのデータが収集できる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;20161002T062409+0000	docker.metrics.memory.stat	{&amp;quot;key&amp;quot;:&amp;quot;memory_stat_cache&amp;quot;,&amp;quot;value&amp;quot;:9039872,&amp;quot;type&amp;quot;:&amp;quot;gauge&amp;quot;,&amp;quot;hostname&amp;quot;:&amp;quot;HOSTNAME&amp;quot;,&amp;quot;id&amp;quot;:&amp;quot;6008f80ef7f6c6747edf01019846074d27e29a7d217c6e3f3301fcdb435cef73&amp;quot;,&amp;quot;name&amp;quot;:&amp;quot;/blog-legacy.web.1&amp;quot;}
+20161002T062409+0000	docker.metrics.memory.stat	{&amp;quot;key&amp;quot;:&amp;quot;memory_stat_rss&amp;quot;,&amp;quot;value&amp;quot;:14028800,&amp;quot;type&amp;quot;:&amp;quot;gauge&amp;quot;,&amp;quot;hostname&amp;quot;:&amp;quot;HOSTNAME&amp;quot;,&amp;quot;id&amp;quot;:&amp;quot;6008f80ef7f6c6747edf01019846074d27e29a7d217c6e3f3301fcdb435cef73&amp;quot;,&amp;quot;name&amp;quot;:&amp;quot;/blog-legacy.web.1&amp;quot;}
+20161002T062409+0000	docker.metrics.memory.stat	{&amp;quot;key&amp;quot;:&amp;quot;memory_stat_rss_huge&amp;quot;,&amp;quot;value&amp;quot;:0,&amp;quot;type&amp;quot;:&amp;quot;gauge&amp;quot;,&amp;quot;hostname&amp;quot;:&amp;quot;HOSTNAME&amp;quot;,&amp;quot;id&amp;quot;:&amp;quot;6008f80ef7f6c6747edf01019846074d27e29a7d217c6e3f3301fcdb435cef73&amp;quot;,&amp;quot;name&amp;quot;:&amp;quot;/blog-legacy.web.1&amp;quot;}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コンテナ ID とコンテナ名の両方が記録されるので、どちらでもグループ化して集計することが可能である。&lt;/p&gt;
+
+&lt;h3 id=&#34;fluent-plugin-bigquery-のセットアップ&#34;&gt;fluent-plugin-bigquery のセットアップ&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;match docker.metrics.**&amp;gt;
+  @type bigquery
+
+  auth_method json_key
+  email ***@PROJECT.iam.gserviceaccount.com
+  json_key /etc/td-agent/bigquery/key.json
+
+  project PROJECT
+  dataset docker
+  table   metrics_%Y%m%d
+  ignore_unknown_values true
+  auto_create_table true
+
+  time_format %s
+  time_field time
+
+  field_timestamp time
+  field_integer   value
+  field_string    key,type,hostname,id,name
+&amp;lt;/match&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;日別にテーブルに保存されるよう、&lt;code&gt;table&lt;/code&gt; は &lt;code&gt;metrics_%Y%m%d&lt;/code&gt; としている。&lt;/p&gt;
+
+&lt;p&gt;また、テーブルは自動で作られるが、データセットはあらかじめ作っておく必要があるらしい。&lt;/p&gt;
+
+&lt;h3 id=&#34;re-dash-でグラフ化&#34;&gt;Re:dash でグラフ化&lt;/h3&gt;
+
+&lt;p&gt;Re:dash 自体のセットアップについては割愛するが、個人的にはこれを Dokku で動かしていて、その手順については以前 Qiita に書いている。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://qiita.com/yuya_takeyama/items/9915f5ae3953a9c2c14b&#34;&gt;Dokku に Re:dash をインストールする&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;クエリはこんな感じ。&lt;br /&gt;
+Standard SQL を使っている。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;SELECT
+  time,
+  name,
+  value / 1024 / 1024 AS size
+FROM
+  `PROJECT.docker.metrics_*`
+WHERE
+  key = &#39;memory_stat_rss&#39;
+ORDER BY
+  name,
+  time
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;とりあえず全データを対象にしているが、データ量が増えてきたらテーブル名を日付で絞ったほうが良いかもしれない。&lt;/p&gt;
+
+&lt;p&gt;あとは適当に Visualize の設定を行う。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/chart-setting.png&#34; width=&#34;531&#34; height=&#34;608&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/stack-setting.png&#34; width=&#34;526&#34; height=&#34;607&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;これで先に載せた感じのグラフが出来上がる。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/chart.png&#34; width=&#34;414&#34; height=&#34;319&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/stack-chart.png&#34; width=&#34;416&#34; height=&#34;342&#34;&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;グラフ化した結果、メモリを一番使っているのは Re:dash の Worker だということがわかった。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>【RMP×Quipper】Food&amp;Drink meetup #3 で発表した</title>
