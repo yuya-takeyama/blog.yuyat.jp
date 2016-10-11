@@ -13,7 +13,9 @@
     <title>Docker のメトリクスを Re:dash でビジュアライズ | Born Too Late</title>
     
 
-    <meta property="og:title" content="Docker のメトリクスを Re:dash でビジュアライズ" />
+    <meta property="fb:admins" content="100000987494966" />
+<meta property="fb:app_id" content="285547814816502" />
+<meta property="og:title" content="Docker のメトリクスを Re:dash でビジュアライズ" />
 <meta property="og:description" content="しばらく前から Dokku という Docker ベースの Heroku ライクな PaaS 基盤を趣味で運用していて、その中で旧ブログの WordPress や 自分用のツールなんかを動かしたりしている。 サーバのメトリクス収集には Mackerel を利用しているが、Docker コンテナ単位での計測は行っていなかった。 Mackerel はホスト数に応じた課金を行っていて、5 ホストまでは無料だが、コンテナまで追加してしまうとすぐにその枠を溢れてしまう。 というわけで簡単な仕組みを自分で用意いてみた。 できたもの どちらもメモリ使用量 (MB) をコンテナ名ごとにグラフ化したもので、どちらもデータは同じものを使っている。 後者はグラフを積み上げることでコンテナ全体で使用しているメモリの使用量もわかるようになっている。 今のところ Docker のリソースに関して困っているのはメモリだけなので、とりあえずはこれだけ。 なお、Dokku ではコンテナ名が アプリ名.プロセス名.プロセス番号 という感じになる (例えば blog.web.1 といった具合) になるので、アプリを再起動してコンテナ ID が変わっても連続的にモニタリングできる。 グラフ中異常値っぽいのが出ているところはまさにアプリを再起動したりしているところ。 概要 以下のような流れでこのグラフを作り出している。 fluent-plugin-docker-metrics で Docker のメトリクスを td-agent に収集 fluent-plugin-bigquery でメトリクスを BigQuery に送信 Re:dash で BigQuery 上のデータをグラフ化 手順 fluent-plugin-docker-metrics のセットアップ td-agent.conf の設定はこんな感じ。 &lt;source&gt; @type docker_metrics stats_interval 1m tag_prefix docker.metrics &lt;/source&gt; tag_prefix はデフォルトだと" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.yuyat.jp/post/visualize-docker-metrics-with-redash/" />
