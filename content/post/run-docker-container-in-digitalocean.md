@@ -1,6 +1,7 @@
 +++
 date = "2016-10-11T21:29:41+09:00"
 title = "Docker コンテナを DigitalOcean 上でサクッと動かす"
+images = ["/images/run-docker-container-in-digitalocean/generate-new-token.png"]
 
 +++
 ## やりたいこと
