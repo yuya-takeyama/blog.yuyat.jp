@@ -6,8 +6,109 @@
     <description>Recent content in Posts on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 02 Oct 2016 14:56:46 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 11 Oct 2016 21:29:41 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Docker コンテナを DigitalOcean 上でサクッと動かす</title>
+      <link>https://blog.yuyat.jp/post/run-docker-container-in-digitalocean/</link>
+      <pubDate>Tue, 11 Oct 2016 21:29:41 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/run-docker-container-in-digitalocean/</guid>
+      <description>
+
+&lt;h2 id=&#34;やりたいこと&#34;&gt;やりたいこと&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;任意のアプリの Docker コンテナをサクッと立ち上げたい&lt;/li&gt;
+&lt;li&gt;かつグローバル IP アドレスを割り当てて外から接続したい&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;より具体的には、今回は &lt;code&gt;mitmproxy&lt;/code&gt; をインターネット上で動かして iPhone 等のスマートフォン端末からつなぎたかった、という感じです。&lt;/p&gt;
+
+&lt;h2 id=&#34;手順&#34;&gt;手順&lt;/h2&gt;
+
+&lt;h3 id=&#34;digitalocean-のアカウントを作成する&#34;&gt;DigitalOcean のアカウントを作成する&lt;/h3&gt;
+
+&lt;p&gt;ここは割愛。&lt;/p&gt;
+
+&lt;h3 id=&#34;digitalocean-のアクセストークンを作成&#34;&gt;DigitalOcean のアクセストークンを作成&lt;/h3&gt;
+
+&lt;p&gt;API -&amp;gt; Tokens -&amp;gt; Generate New Token から適当に名前をつけて作ります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/run-docker-container-in-digitalocean/generate-new-token.png&#34; width=&#34;608&#34; height=&#34;424&#34;&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;docker-machine-で-docker-環境を作る&#34;&gt;docker-machine で Docker 環境を作る&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;docker-machine&lt;/code&gt; のインストール手順については割愛。&lt;br /&gt;
+Mac だと Homebrew でもインストールできるので適当にやっておく。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ docker-machine create --driver digitalocean --digitalocean-access-token=ACCESS_TOKEN --digitalocean-region=sgp1 mitmproxy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;--digitalocean-access-token&lt;/code&gt; には前の手順で作ったアクセストークンを指定。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;--digitalocean-region&lt;/code&gt; にはリージョンの slug を指定します。&lt;br /&gt;
+省略すると New York にできてレイテンシが辛いので、日本からだとシンガポールでも指定しておくのがいいでしょう。&lt;/p&gt;
+
+&lt;p&gt;リージョンの slug 一覧はこんな感じに最新版を取得できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ curl -H &amp;quot;Content-Type: application/json&amp;quot; -H &amp;quot;Authorization: Bearer ACCESS_TOKEN&amp;quot; &amp;quot;https://api.digitalocean.com/v2/regions&amp;quot; -s | jq &#39;.regions[] | &amp;quot;\(.slug)\t\(.name)&amp;quot;&#39; -r | sort
+ams2    Amsterdam 2
+ams3    Amsterdam 3
+blr1    Bangalore 1
+fra1    Frankfurt 1
+lon1    London 1
+nyc1    New York 1
+nyc2    New York 2
+nyc3    New York 3
+sfo1    San Francisco 1
+sfo2    San Francisco 2
+sgp1    Singapore 1
+tor1    Toronto 1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;末尾の &lt;code&gt;mitmproxy&lt;/code&gt; という部分は Docker 環境に任意の名前をつけるだけなので適当に。&lt;/p&gt;
+
+&lt;p&gt;数分かかりますがトイレ行ってコーヒーでも淹れて来たりすれば終わっているでしょう。&lt;/p&gt;
+
+&lt;h3 id=&#34;docker-コンテナの起動&#34;&gt;Docker コンテナの起動&lt;/h3&gt;
+
+&lt;p&gt;Dockerfile を拾ってこれるような場合は Docker Hub のページ見ながら適当に。&lt;br /&gt;
+信頼していい Dockerfile なのかは注意する。&lt;/p&gt;
+
+&lt;p&gt;今回は &lt;a href=&#34;https://hub.docker.com/r/mitmproxy/mitmproxy/&#34;&gt;mitmproxy/mitmproxy&lt;/a&gt; のイメージを使いました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Docker への接続情報をターミナルのセッションに読み込む
+$ eval $(docker-machine env mitmproxy)
+
+# Docker コンテナの起動
+$ docker run --rm -it -p 8080:8080 mitmproxy/mitmproxy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;ip-アドレスの確認&#34;&gt;IP アドレスの確認&lt;/h3&gt;
+
+&lt;p&gt;今回は外部から接続する前提なので。&lt;br /&gt;
+DigitalOcean の Droplets の一覧から見てもいいです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ docker-machine ip mitmproxy
+128.199.***.***
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;docker-環境を削除する&#34;&gt;Docker 環境を削除する&lt;/h3&gt;
+
+&lt;p&gt;使い捨て前提なので削除しておきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ docker-machine rm mitmproxy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;アクセストークンも DigitalOcean のページ上から削除しておくとより安心でしょう。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;こういうシュッとサーバなりコンテナなり必要なとき DigitalOcean は便利なのでアカウントを持っていない人は&lt;a href=&#34;https://m.do.co/c/645fac0c10f9&#34;&gt;作っておきましょう。 (アフィリエイトリンク)&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Docker のメトリクスを Re:dash でビジュアライズ</title>

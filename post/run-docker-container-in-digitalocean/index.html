@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://blog.yuyat.jp/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
+    <link rel="canonical" href="https://blog.yuyat.jp/post/run-docker-container-in-digitalocean/">
+    <title>Docker コンテナを DigitalOcean 上でサクッと動かす | Born Too Late</title>
+    
+
+    <meta property="og:title" content="Docker コンテナを DigitalOcean 上でサクッと動かす" />
+<meta property="og:description" content="やりたいこと 任意のアプリの Docker コンテナをサクッと立ち上げたい かつグローバル IP アドレスを割り当てて外から接続したい より具体的には、今回は mitmproxy をインターネット上で動かして iPhone 等のスマートフォン端末からつなぎたかった、という感じです。 手順 DigitalOcean のアカウントを作成する ここは割愛。 DigitalOcean のアクセストークンを作成 API -&gt; Tokens -&gt; Generate New Token から適当に名前をつけて作ります。 docker-machine で Docker 環境を作る docker-machine のインストール手順については割愛。 Mac だと Homebrew でもインストールできるので適当にやっておく。 $ docker-machine create --driver digitalocean --digitalocean-access-token=ACCESS_TOKEN --digitalocean-region=sgp1 mitmproxy --digitalocean-access-token には前の手順で作ったアクセストークンを指定。 --digitalocean-region にはリージョンの slug を指定します。 省略すると New York にできてレイテンシが辛いので、日本からだとシンガポールでも指定しておくのがいいでしょう。 リージョンの slug 一覧はこんな感じに最新版を取得できます。 $ curl -H &quot;Content-Type: application/json&quot; -H &quot;Authorization: Bearer ACCESS_TOKEN&quot; &quot;https://api.digitalocean.com/v2/regions&quot; -s | jq" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.yuyat.jp/post/run-docker-container-in-digitalocean/" />
+
+  
+	  <meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg" />
+  
+
+
+  <meta property="og:updated_time" content="2016-10-11T21:29:41&#43;09:00"/>
+
+
+
+
+    <meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@yuya_takeyama">
+<meta name="twitter:creator" content="@yuya_takeyama">
+
+    
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="https://blog.yuyat.jp" class="navbar-brand">Born Too Late</a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="https://blog.yuyat.jp/post/">Archive</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">Docker コンテナを DigitalOcean 上でサクッと動かす</h1>
+      <p class="text-muted">Oct 11, 2016</p>
+
+<div>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2frun-docker-container-in-digitalocean%2f&amp;text=Docker%20%e3%82%b3%e3%83%b3%e3%83%86%e3%83%8a%e3%82%92%20DigitalOcean%20%e4%b8%8a%e3%81%a7%e3%82%b5%e3%82%af%e3%83%83%e3%81%a8%e5%8b%95%e3%81%8b%e3%81%99&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2frun-docker-container-in-digitalocean%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2frun-docker-container-in-digitalocean%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
+</div>
+
+    </div>
+    <div class="post-content">
+      
+
+<h2 id="やりたいこと">やりたいこと</h2>
+
+<ul>
+<li>任意のアプリの Docker コンテナをサクッと立ち上げたい</li>
+<li>かつグローバル IP アドレスを割り当てて外から接続したい</li>
+</ul>
+
+<p>より具体的には、今回は <code>mitmproxy</code> をインターネット上で動かして iPhone 等のスマートフォン端末からつなぎたかった、という感じです。</p>
+
+<h2 id="手順">手順</h2>
+
+<h3 id="digitalocean-のアカウントを作成する">DigitalOcean のアカウントを作成する</h3>
+
+<p>ここは割愛。</p>
+
+<h3 id="digitalocean-のアクセストークンを作成">DigitalOcean のアクセストークンを作成</h3>
+
+<p>API -&gt; Tokens -&gt; Generate New Token から適当に名前をつけて作ります。</p>
+
+<p><img src="/images/run-docker-container-in-digitalocean/generate-new-token.png" width="608" height="424"></p>
+
+<h3 id="docker-machine-で-docker-環境を作る">docker-machine で Docker 環境を作る</h3>
+
+<p><code>docker-machine</code> のインストール手順については割愛。<br />
+Mac だと Homebrew でもインストールできるので適当にやっておく。</p>
+
+<pre><code>$ docker-machine create --driver digitalocean --digitalocean-access-token=ACCESS_TOKEN --digitalocean-region=sgp1 mitmproxy
+</code></pre>
+
+<p><code>--digitalocean-access-token</code> には前の手順で作ったアクセストークンを指定。</p>
+
+<p><code>--digitalocean-region</code> にはリージョンの slug を指定します。<br />
+省略すると New York にできてレイテンシが辛いので、日本からだとシンガポールでも指定しておくのがいいでしょう。</p>
+
+<p>リージョンの slug 一覧はこんな感じに最新版を取得できます。</p>
+
+<pre><code>$ curl -H &quot;Content-Type: application/json&quot; -H &quot;Authorization: Bearer ACCESS_TOKEN&quot; &quot;https://api.digitalocean.com/v2/regions&quot; -s | jq '.regions[] | &quot;\(.slug)\t\(.name)&quot;' -r | sort
+ams2    Amsterdam 2
+ams3    Amsterdam 3
+blr1    Bangalore 1
+fra1    Frankfurt 1
+lon1    London 1
+nyc1    New York 1
+nyc2    New York 2
+nyc3    New York 3
+sfo1    San Francisco 1
+sfo2    San Francisco 2
+sgp1    Singapore 1
+tor1    Toronto 1
+</code></pre>
+
+<p>末尾の <code>mitmproxy</code> という部分は Docker 環境に任意の名前をつけるだけなので適当に。</p>
+
+<p>数分かかりますがトイレ行ってコーヒーでも淹れて来たりすれば終わっているでしょう。</p>
+
+<h3 id="docker-コンテナの起動">Docker コンテナの起動</h3>
+
+<p>Dockerfile を拾ってこれるような場合は Docker Hub のページ見ながら適当に。<br />
+信頼していい Dockerfile なのかは注意する。</p>
+
+<p>今回は <a href="https://hub.docker.com/r/mitmproxy/mitmproxy/">mitmproxy/mitmproxy</a> のイメージを使いました。</p>
+
+<pre><code># Docker への接続情報をターミナルのセッションに読み込む
+$ eval $(docker-machine env mitmproxy)
+
+# Docker コンテナの起動
+$ docker run --rm -it -p 8080:8080 mitmproxy/mitmproxy
+</code></pre>
+
+<h3 id="ip-アドレスの確認">IP アドレスの確認</h3>
+
+<p>今回は外部から接続する前提なので。<br />
+DigitalOcean の Droplets の一覧から見てもいいです。</p>
+
+<pre><code>$ docker-machine ip mitmproxy
+128.199.***.***
+</code></pre>
+
+<h3 id="docker-環境を削除する">Docker 環境を削除する</h3>
+
+<p>使い捨て前提なので削除しておきます。</p>
+
+<pre><code>$ docker-machine rm mitmproxy
+</code></pre>
+
+<p>アクセストークンも DigitalOcean のページ上から削除しておくとより安心でしょう。</p>
+
+<h2 id="まとめ">まとめ</h2>
+
+<p>こういうシュッとサーバなりコンテナなり必要なとき DigitalOcean は便利なのでアカウントを持っていない人は<a href="https://m.do.co/c/645fac0c10f9">作っておきましょう。 (アフィリエイトリンク)</a></p>
+
+    </div>
+    <div class="post-footer">
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 9 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4">
+    
+
+<h3>
+  Author
+</h3>
+
+<p>
+  <div class="media">
+    
+    <img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class="pull-left">
+    
+    
+    <div class="media-body">
+      <h4 class="media-heading">Yuya Takeyama</h4>
+    </div>
+    
+  </div>
+</p>
+
+
+
+<p><a href="https://twitter.com/yuya_takeyama" class="twitter-follow-button" data-show-screen-name="false" data-show-count="true" data-dnt="true" data-size="large">Follow @yuya_takeyama</a></p>
+
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          <footer>
+
+&copy; 2015.
+Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+<a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
+
+</footer>
+
+        </div>
+      </div>
+    </div>
+    <script src="https://blog.yuyat.jp/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12392004-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+</html>
+

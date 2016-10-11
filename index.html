@@ -24,7 +24,7 @@
   
 
 
-  <meta property="og:updated_time" content="2016-10-02T14:56:46&#43;09:00"/>
+  <meta property="og:updated_time" content="2016-10-11T21:29:41&#43;09:00"/>
 
 
 
@@ -65,6 +65,23 @@
 
 <div class="row">
   <div class="col-sm-8">
+    
+      
+        <div class="post-header-home">
+  <h1 class="post-title-home">
+    <a href="https://blog.yuyat.jp/post/run-docker-container-in-digitalocean/">Docker コンテナを DigitalOcean 上でサクッと動かす</a>
+  </h1>
+  <p class="text-muted">Oct 11, 2016</p>
+
+</div>
+<div class="post-excerpt-home">
+  やりたいこと 任意のアプリの Docker コンテナをサクッと立ち上げたい かつグローバル IP アドレスを割り当てて外から接続したい より具体的には、今回は mitmproxy をインターネット上で動かして iPhone 等のスマートフォン端末からつなぎたかった、という感じです。 手順 DigitalOcean のアカウントを作成する ここは割愛。 DigitalOcean のアクセストークンを作成 API -&gt; Tokens -&gt; Generate New Token から適当に名前をつけて作ります。 docker-machine で Docker 環境を作る docker-machine のインストール手順については割愛。 Mac だと Homebrew でもインストールできるので適当にやっておく。 $ docker-machine create --driver digitalocean --digitalocean-access-token=ACCESS_TOKEN --digitalocean-region=sgp1 mitmproxy --digitalocean-access-token には前の手順で作ったアクセストークンを指定。 --digitalocean-region にはリージョンの slug を指定します。 省略すると New York にできてレイテンシが辛いので、日本からだとシンガポールでも指定しておくのがいいでしょう。 リージョンの slug 一覧はこんな感じに最新版を取得できます。 $ curl -H &quot;Content-Type: application/json&quot; -H &quot;Authorization: Bearer ACCESS_TOKEN&quot; &quot;https://api.digitalocean.com/v2/regions&quot; -s | jq
+  
+  <p class="text-right"><a href="https://blog.yuyat.jp/post/run-docker-container-in-digitalocean/">Continue Reading &rarr;</a></p>
+  
+</div>
+
+      
     
       
         <div class="post-header-home">
@@ -198,7 +215,7 @@
     
     <hr>
     <div class="home-read-more">
-      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 8 Articles →</a>
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 9 Articles →</a>
     </div>
   </div>
   <div class="col-sm-4">
