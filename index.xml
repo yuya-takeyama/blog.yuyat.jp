@@ -10,7 +10,7 @@
     <atom:link href="https://blog.yuyat.jp/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>コマンドラインから GitHub の Issue を作るコマンドを作った</title>
+      <title>GitHub の Issue を作るコマンド ghissue を作った</title>
       <link>https://blog.yuyat.jp/post/ghissue-a-command-to-create-github-issues/</link>
       <pubDate>Sun, 27 Nov 2016 02:43:58 +0900</pubDate>
       
