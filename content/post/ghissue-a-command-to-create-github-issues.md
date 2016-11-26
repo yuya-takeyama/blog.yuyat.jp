@@ -1,6 +1,6 @@
 +++
 date = "2016-11-27T02:43:58+09:00"
-title = "コマンドラインから GitHub の Issue を作るコマンドを作った"
+title = "GitHub の Issue を作るコマンド ghissue を作った"
 
 +++
 作りました。
