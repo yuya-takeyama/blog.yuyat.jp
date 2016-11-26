@@ -6,8 +6,58 @@
     <description>Recent content on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 11 Oct 2016 21:29:41 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 27 Nov 2016 02:43:58 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>コマンドラインから GitHub の Issue を作るコマンドを作った</title>
+      <link>https://blog.yuyat.jp/post/ghissue-a-command-to-create-github-issues/</link>
+      <pubDate>Sun, 27 Nov 2016 02:43:58 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/ghissue-a-command-to-create-github-issues/</guid>
+      <description>
+
+&lt;p&gt;作りました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/ghissue&#34;&gt;yuya-takeyama/ghissue&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;なぜ作ったか&#34;&gt;なぜ作ったか&lt;/h2&gt;
+
+&lt;p&gt;いろいろな自動化スクリプトを書く中で、&lt;a href=&#34;https://octokit.github.io/&#34;&gt;Octokit&lt;/a&gt; とかで毎回実装するのは面倒だったので、標準入力だけ食わせればいい感じにやってくれるものが欲しいな、と思って作りました。&lt;/p&gt;
+
+&lt;p&gt;タイトル・本文だけを標準出力に書き出すスクリプトだけ書けば、それをパイプで繋げるだけで ghissue が Issue を立ててくれます。&lt;br /&gt;
+タイトル・本文だけうまく組み立てることに集中すればよくなり、テストも楽になるでしょう。&lt;/p&gt;
+
+&lt;p&gt;類似ツールとしては &lt;a href=&#34;https://github.com/stephencelis/ghi&#34;&gt;ghi&lt;/a&gt; というツールがありますが、これは標準入力からタイトル・本文を指定することができないので、他のコマンドと組み合わせて使うのはやや面倒です。&lt;br /&gt;
+また、ghi が Ruby なのに対して、ghissue は Go で実装されていてコンパイル済みのバイナリも GitHub 上で作っています。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;h3 id=&#34;アクセストークンの指定&#34;&gt;アクセストークンの指定&lt;/h3&gt;
+
+&lt;p&gt;GitHub のアクセストークンを &lt;code&gt;GITHUB_ACCESS_TOKEN&lt;/code&gt; という環境変数で指定します。&lt;/p&gt;
+
+&lt;h3 id=&#34;issue-を作る&#34;&gt;Issue を作る&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$ some_command | ghissue yuya-takeyama/test --labels Bug,Major --assignees yuya-takeyama
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;some_command&lt;/code&gt; は Issue のタイトル・本文を生成するためのコマンドです。&lt;br /&gt;
+1 行目がタイトルになり、残りは本文になります。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;--labels&lt;/code&gt; (&lt;code&gt;-l&lt;/code&gt;) ではラベルを指定します。カンマ区切りで複数指定可能です。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;--assignees&lt;/code&gt; (&lt;code&gt;-a&lt;/code&gt;) では assignee を指定します。これもカンマ区切りで複数指定可能です。&lt;/p&gt;
+
+&lt;h2 id=&#34;その他&#34;&gt;その他&lt;/h2&gt;
+
+&lt;p&gt;Issue を編集する機能・コメントを記入するための機能もあっていいだろうと思うものの、今のところ個人的には必要としてないので、まぁそのうち。&lt;/p&gt;
+
+&lt;p&gt;よければご利用ください。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Docker コンテナを DigitalOcean 上でサクッと動かす</title>
