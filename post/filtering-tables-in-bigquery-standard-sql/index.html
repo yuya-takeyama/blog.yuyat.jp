@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://blog.yuyat.jp/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
+    <link rel="canonical" href="https://blog.yuyat.jp/post/filtering-tables-in-bigquery-standard-sql/">
+    <title>BigQuery の標準 SQL モードで日付テーブルのフィルタリング、または Re:dash の Query Snippets を活用する話 | Born Too Late</title>
+    
+
+    <meta property="fb:admins" content="100000987494966" />
+<meta property="fb:app_id" content="285547814816502" />
+<meta property="og:title" content="BigQuery の標準 SQL モードで日付テーブルのフィルタリング、または Re:dash の Query Snippets を活用する話" />
+<meta property="og:description" content="要は Legacy SQL モード で FROM (TABLE_DATE_RANGE(dataset.table_, TIMESTAMP(&#39;2016-01-01&#39;), TIMESTAMP(&#39;2016-01-14&#39;))) とか書いていたのを標準 SQL でどう書くか、という話です。 すぐ忘れるのでメモ。 テーブルは以下のような名前になっている前提です。 table_20160101 table_20160102 table_20160103 &hellip; これで例えば直近 14 日分のテーブルを対象にしたい場合はこんな感じ。 SELECT time FROM `dataset.table_*` WHERE _TABLE_SUFFIX &gt;= FORMAT_DATE(&#39;%Y%m%d&#39;, DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY)) テーブル名はワイルドカードで指定しつつ、_TABLE_SUFFIX という擬似カラムに対して日付の条件を指定する。 詳細は以下の公式ドキュメントを参考にしましょう。 Wildcard table syntax よく使うパターンですが、覚えていられない、という人で普段 Re:dash でクエリを書いている、という人は v0.12.0 で追加された Query Snippets という機能を使うと、こんな感じにキーワード補完されるようになって便利です。 設定としては以下のようにしておけば _TABLE_SUFFIX というキーワードをトリガーに補完されます。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.yuyat.jp/post/filtering-tables-in-bigquery-standard-sql/" />
+
+  
+    
+      <meta property="og:image" content="https://blog.yuyat.jp/images/filtering-tables-in-bigquery-standard-sql/setting.png" />
+    
+  
+
+
+  <meta property="og:updated_time" content="2016-12-04T23:47:21&#43;09:00"/>
+
+
+
+
+    <meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@yuya_takeyama">
+<meta name="twitter:creator" content="@yuya_takeyama">
+
+    
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="https://blog.yuyat.jp" class="navbar-brand">Born Too Late</a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="https://blog.yuyat.jp/post/">Archive</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">BigQuery の標準 SQL モードで日付テーブルのフィルタリング、または Re:dash の Query Snippets を活用する話</h1>
+      <p class="text-muted">Dec 4, 2016</p>
+
+<div>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2ffiltering-tables-in-bigquery-standard-sql%2f&amp;text=BigQuery%20%e3%81%ae%e6%a8%99%e6%ba%96%20SQL%20%e3%83%a2%e3%83%bc%e3%83%89%e3%81%a7%e6%97%a5%e4%bb%98%e3%83%86%e3%83%bc%e3%83%96%e3%83%ab%e3%81%ae%e3%83%95%e3%82%a3%e3%83%ab%e3%82%bf%e3%83%aa%e3%83%b3%e3%82%b0%e3%80%81%e3%81%be%e3%81%9f%e3%81%af%20Re%3adash%20%e3%81%ae%20Query%20Snippets%20%e3%82%92%e6%b4%bb%e7%94%a8%e3%81%99%e3%82%8b%e8%a9%b1&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2ffiltering-tables-in-bigquery-standard-sql%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2ffiltering-tables-in-bigquery-standard-sql%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
+</div>
+
+    </div>
+    <div class="post-content">
+      <p>要は Legacy SQL モード で <code>FROM (TABLE_DATE_RANGE(dataset.table_, TIMESTAMP('2016-01-01'), TIMESTAMP('2016-01-14')))</code> とか書いていたのを標準 SQL でどう書くか、という話です。<br />
+すぐ忘れるのでメモ。</p>
+
+<p>テーブルは以下のような名前になっている前提です。</p>
+
+<ul>
+<li>table_20160101</li>
+<li>table_20160102</li>
+<li>table_20160103</li>
+<li>&hellip;</li>
+</ul>
+
+<p>これで例えば直近 14 日分のテーブルを対象にしたい場合はこんな感じ。</p>
+
+<pre><code class="language-sql">SELECT time
+FROM `dataset.table_*`
+WHERE _TABLE_SUFFIX &gt;= FORMAT_DATE('%Y%m%d', DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY))
+</code></pre>
+
+<p>テーブル名はワイルドカードで指定しつつ、<code>_TABLE_SUFFIX</code> という擬似カラムに対して日付の条件を指定する。</p>
+
+<p>詳細は以下の公式ドキュメントを参考にしましょう。</p>
+
+<ul>
+<li><a href="https://cloud.google.com/bigquery/docs/wildcard-tables#wildcard_table_syntax">Wildcard table syntax</a></li>
+</ul>
+
+<p>よく使うパターンですが、覚えていられない、という人で普段 <a href="https://redash.io/">Re:dash</a> でクエリを書いている、という人は <a href="https://github.com/getredash/redash/blob/master/CHANGELOG.md#v0120---2016-11-20">v0.12.0</a> で追加された Query Snippets という機能を使うと、こんな感じにキーワード補完されるようになって便利です。</p>
+
+<p><img src="/images/filtering-tables-in-bigquery-standard-sql/query_snippets.gif" alt="query snippets" /></p>
+
+<p>設定としては以下のようにしておけば <code>_TABLE_SUFFIX</code> というキーワードをトリガーに補完されます。</p>
+
+<p><img src="/images/filtering-tables-in-bigquery-standard-sql/setting.png" width="658" height="257"></p>
+
+    </div>
+    <div class="post-footer">
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 11 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4">
+    
+
+<h3>
+  Author
+</h3>
+
+<p>
+  <div class="media">
+    
+    <img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class="pull-left">
+    
+    
+    <div class="media-body">
+      <h4 class="media-heading">Yuya Takeyama</h4>
+    </div>
+    
+  </div>
+</p>
+
+
+
+<p><a href="https://twitter.com/yuya_takeyama" class="twitter-follow-button" data-show-screen-name="false" data-show-count="true" data-dnt="true" data-size="large">Follow @yuya_takeyama</a></p>
+
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          <footer>
+
+&copy; 2015.
+Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+<a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
+
+</footer>
+
+        </div>
+      </div>
+    </div>
+    <script src="https://blog.yuyat.jp/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12392004-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+</html>
+

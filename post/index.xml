@@ -6,8 +6,51 @@
     <description>Recent content in Posts on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 27 Nov 2016 02:43:58 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 04 Dec 2016 23:47:21 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>BigQuery の標準 SQL モードで日付テーブルのフィルタリング、または Re:dash の Query Snippets を活用する話</title>
+      <link>https://blog.yuyat.jp/post/filtering-tables-in-bigquery-standard-sql/</link>
+      <pubDate>Sun, 04 Dec 2016 23:47:21 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/filtering-tables-in-bigquery-standard-sql/</guid>
+      <description>&lt;p&gt;要は Legacy SQL モード で &lt;code&gt;FROM (TABLE_DATE_RANGE(dataset.table_, TIMESTAMP(&#39;2016-01-01&#39;), TIMESTAMP(&#39;2016-01-14&#39;)))&lt;/code&gt; とか書いていたのを標準 SQL でどう書くか、という話です。&lt;br /&gt;
+すぐ忘れるのでメモ。&lt;/p&gt;
+
+&lt;p&gt;テーブルは以下のような名前になっている前提です。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;table_20160101&lt;/li&gt;
+&lt;li&gt;table_20160102&lt;/li&gt;
+&lt;li&gt;table_20160103&lt;/li&gt;
+&lt;li&gt;&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;これで例えば直近 14 日分のテーブルを対象にしたい場合はこんな感じ。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;SELECT time
+FROM `dataset.table_*`
+WHERE _TABLE_SUFFIX &amp;gt;= FORMAT_DATE(&#39;%Y%m%d&#39;, DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY))
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;テーブル名はワイルドカードで指定しつつ、&lt;code&gt;_TABLE_SUFFIX&lt;/code&gt; という擬似カラムに対して日付の条件を指定する。&lt;/p&gt;
+
+&lt;p&gt;詳細は以下の公式ドキュメントを参考にしましょう。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://cloud.google.com/bigquery/docs/wildcard-tables#wildcard_table_syntax&#34;&gt;Wildcard table syntax&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;よく使うパターンですが、覚えていられない、という人で普段 &lt;a href=&#34;https://redash.io/&#34;&gt;Re:dash&lt;/a&gt; でクエリを書いている、という人は &lt;a href=&#34;https://github.com/getredash/redash/blob/master/CHANGELOG.md#v0120---2016-11-20&#34;&gt;v0.12.0&lt;/a&gt; で追加された Query Snippets という機能を使うと、こんな感じにキーワード補完されるようになって便利です。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/filtering-tables-in-bigquery-standard-sql/query_snippets.gif&#34; alt=&#34;query snippets&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;設定としては以下のようにしておけば &lt;code&gt;_TABLE_SUFFIX&lt;/code&gt; というキーワードをトリガーに補完されます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/filtering-tables-in-bigquery-standard-sql/setting.png&#34; width=&#34;658&#34; height=&#34;257&#34;&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>GitHub の Issue を作るコマンド ghissue を作った</title>

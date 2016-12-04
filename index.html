@@ -26,7 +26,7 @@
   
 
 
-  <meta property="og:updated_time" content="2016-11-27T02:43:58&#43;09:00"/>
+  <meta property="og:updated_time" content="2016-12-04T23:47:21&#43;09:00"/>
 
 
 
@@ -67,6 +67,21 @@
 
 <div class="row">
   <div class="col-sm-8">
+    
+      
+        <div class="post-header-home">
+  <h1 class="post-title-home">
+    <a href="https://blog.yuyat.jp/post/filtering-tables-in-bigquery-standard-sql/">BigQuery の標準 SQL モードで日付テーブルのフィルタリング、または Re:dash の Query Snippets を活用する話</a>
+  </h1>
+  <p class="text-muted">Dec 4, 2016</p>
+
+</div>
+<div class="post-excerpt-home">
+  要は Legacy SQL モード で FROM (TABLE_DATE_RANGE(dataset.table_, TIMESTAMP('2016-01-01'), TIMESTAMP('2016-01-14'))) とか書いていたのを標準 SQL でどう書くか、という話です。 すぐ忘れるのでメモ。 テーブルは以下のような名前になっている前提です。 table_20160101 table_20160102 table_20160103 &hellip; これで例えば直近 14 日分のテーブルを対象にしたい場合はこんな感じ。 SELECT time FROM `dataset.table_*` WHERE _TABLE_SUFFIX &gt;= FORMAT_DATE('%Y%m%d', DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY)) テーブル名はワイルドカードで指定しつつ、_TABLE_SUFFIX という擬似カラムに対して日付の条件を指定する。 詳細は以下の公式ドキュメントを参考にしましょう。 Wildcard table syntax よく使うパターンですが、覚えていられない、という人で普段 Re:dash でクエリを書いている、という人は v0.12.0 で追加された Query Snippets という機能を使うと、こんな感じにキーワード補完されるようになって便利です。 設定としては以下のようにしておけば _TABLE_SUFFIX というキーワードをトリガーに補完されます。
+  
+</div>
+
+      
     
       
         <div class="post-header-home">
@@ -215,24 +230,9 @@
 
       
     
-      
-        <div class="post-header-home">
-  <h1 class="post-title-home">
-    <a href="https://blog.yuyat.jp/post/brand-new-blog/">ブログを Hugo でリニューアルした</a>
-  </h1>
-  <p class="text-muted">Sep 19, 2016</p>
-
-</div>
-<div class="post-excerpt-home">
-  長年 Wordpress を使ってきたけどいい加減辛くなってきたので Hugo に移行しました。 過去ブログのデータ移行については過去に何度も挫折していて、結局リバースプロキシを使っていい感じに振り分けることにしました。 以前の記事 URL は基本的に全て生きているはずです。 コメントとかはできませんが。 新ブログは GitHub Pages からリバースプロキシを介して配信しています。 Let&rsquo;s Encrypt で SSL 化し、ついでに Nginx も HTTP2 化したので、その辺のネタはそのうちに書いていければと思ってます。 あと、テーマは @chibicode さんの hugo-theme-shiori をカスタマイズして使っています。 今後ともよろしくお願いします。
-  
-</div>
-
-      
-    
     <hr>
     <div class="home-read-more">
-      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 10 Articles →</a>
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 11 Articles →</a>
     </div>
   </div>
   <div class="col-sm-4">
