@@ -7,6 +7,8 @@ title = "GitHub の Issue を作るコマンド ghissue を作った"
 
 * [yuya-takeyama/ghissue](https://github.com/yuya-takeyama/ghissue)
 
+<!--more-->
+
 ## なぜ作ったか
 
 いろいろな自動化スクリプトを書く中で、[Octokit](https://octokit.github.io/) とかで毎回実装するのは面倒だったので、標準入力だけ食わせればいい感じにやってくれるものが欲しいな、と思って作りました。

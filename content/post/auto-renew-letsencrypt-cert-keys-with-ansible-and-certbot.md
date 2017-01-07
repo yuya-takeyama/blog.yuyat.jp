@@ -6,6 +6,8 @@ title = "Let's Encrypt の証明書を Ansible と certbot で Nginx にイン�
 +++
 これも[リニューアル](/post/brand-new-blog/)ネタです。
 
+<!--more-->
+
 ## やりたいこと
 
 * Let's Encrypt の証明書を Ansible でインストールする

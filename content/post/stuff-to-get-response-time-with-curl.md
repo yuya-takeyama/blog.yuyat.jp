@@ -5,6 +5,8 @@ title = "curl でレスポンスタイムをシュッと取るヤツ"
 +++
 以前 Qiita に[curl でサッと HTTP ベンチマーク](http://qiita.com/yuya_takeyama/items/baf48a3f643e743a46b4)と書いたが、それをもうちょい簡単にやるために以下のようなコマンドを用意してみた。
 
+<!--more-->
+
 ```sh
 #!/bin/sh
 curl -s -o /dev/null -w '%{time_starttransfer}\n' "$@"

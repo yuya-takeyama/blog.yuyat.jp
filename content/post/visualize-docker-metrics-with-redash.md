@@ -11,6 +11,8 @@ Mackerel はホスト数に応じた課金を行っていて、5 ホストまで
 
 というわけで簡単な仕組みを自分で用意いてみた。
 
+<!--more-->
+
 ## できたもの
 
 <img src="/images/visualize-docker-metrics-with-redash/chart.png" width="414" height="319">

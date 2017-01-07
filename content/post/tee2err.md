@@ -5,7 +5,9 @@ title = "標準エラー出力に tee するコマンド tee2err を作った"
 +++
 GNU tee でも BSD tee でもできないので作りました。
 
-[yuya-takeyama/tee2err](https://github.com/yuya-takeyama/tee2err)
+* [yuya-takeyama/tee2err](https://github.com/yuya-takeyama/tee2err)
+
+<!--more-->
 
 ## これは何か
 

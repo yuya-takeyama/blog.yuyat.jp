@@ -7,6 +7,8 @@ images = ["/images/filtering-tables-in-bigquery-standard-sql/setting.png"]
 要は Legacy SQL モード で `FROM (TABLE_DATE_RANGE(dataset.table_, TIMESTAMP('2016-01-01'), TIMESTAMP('2016-01-14')))` とか書いていたのを標準 SQL でどう書くか、という話です。  
 すぐ忘れるのでメモ。
 
+<!--more-->
+
 テーブルは以下のような名前になっている前提です。
 
 * table_20160101
