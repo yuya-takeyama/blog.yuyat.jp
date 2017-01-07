@@ -84,7 +84,10 @@
 
 </div>
 <div class="post-excerpt-home">
-  去年 1 番のイベントは転職でしたが、今年は引越・同棲というのが一大イベントでした。 丸 7 年住んだ埼玉から浅草に引越したことで京橋の職場への出勤時間が半分の 30 分に縮まったのも良かったですが、生活環境が変わったのを機に家具も色々と買い、QoL も大幅に向上したので、それを振り返ってみるという体でアフィブログを書きます。 生活編 東芝ドラム式洗濯機 TW-117X3L(WW) MVP は明らかにこれです。 埼玉に住んでいた 7 年間は洗濯機外置きという洗濯機もあってドラム式の大きいのは無理だったんですが、ようやく室内に置ける部屋に引っ越せたので奮発して買いました。 乾燥機付きでもドラム式とタテ型で迷いました。ドラム式について事前に調べた中で特に気になったのが臭いの問題でしたが、以下に気をつけたところ、購入から 7 ヶ月経つ今の所臭い問題は起きていません。 ドラム式へに対応した抗菌洗剤 を使う 臭いの原因になるのは雑菌と、ドラム式に合わない洗剤が洗濯に残ってしまうこと、ということだったのでその点に注意した 2 ヶ月に 1 回は洗濯槽カビキラーで洗う 乾燥なしの洗濯だけで終わらせない 乾燥機を使えない洗濯があっても、そのあとに乾燥機を使う洗濯物を別途洗うことで、洗濯槽を濡れたまま放置しないようにした 洗濯機を使わない間はなるべくフタを開けておいて換気した 排水エルボ を買う 洗濯物の臭いとは関係ないけど下水から臭いが上がってこないようにするのに必要 Thule Paramount 29L Backpack これは自分で買ったのではなくて誕生日に買ってもらいました。 長年 Chrome の斜めがけメッセンジャーバッグを使っていましたが、以下のまとめを見てからずっとバックパックが欲しいと思っていました。 重い鞄の斜めがけで椎間板ダメージ疑惑とバックパックのススメ 具体的になんらかの症状が出ていたわけではなかったものの、単純に片方だけに重さがかかるのは辛かったので、バックパックに変えて良かったです。 肩のところも程よく厚みがあるので、多少重い荷物も苦になりません。 ポケットが多くて荷物はいろいろ入りますし、背中の部分は厚みのある素材が使われているので、ラップトップも安心して入れておけます。 コクヨ ホワイトボード ピタボ 壁に貼れるホワイトボードですが、貼り直しがしやすく、かつ壁紙にもダメージがないので使いやすいです。 自分の机の横に貼ってあるので、開発の時の頭の整理や設計メモに使ったり、あとは家事とかの細かい TODO のうち、Trello に記入するのも煩わしいやつとかメモしています。 アプリで写真を取ると綺麗に取り込めるのも便利です。 近々もっと大きいのを別途買おうかなと思ってます。 平和工業 ゴミ箱 ペダルペール 40L キッチン用に買いました。 特に夏場は虫が来ないようにフタ付きなのが良いのと、料理中とかで手がふさがっている状態でも使えるようペダル付きのものを探していました。 割としっかりしているので、壁際に置いておけばルンバがガンガン当たっても全然問題ないのも良いです。 ねこのロールペーパーホルダー クロ 特に便利とかではないですが、猫がトイレットペーパーを抱えているみたいになって可愛いので気に入ってます。 料理編 ツインバード タイマー付きスロークッカー ぜっぴん亭 引越す前はコンロのついていない部屋だったので、ずっと一口の
+  <p>去年 1 番のイベントは<a href="http://blog.yuyat.jp/archives/2631">転職</a>でしたが、今年は引越・同棲というのが一大イベントでした。</p>
+
+<p>丸 7 年住んだ埼玉から浅草に引越したことで京橋の職場への出勤時間が半分の 30 分に縮まったのも良かったですが、生活環境が変わったのを機に家具も色々と買い、QoL も大幅に向上したので、それを振り返ってみるという体でアフィブログを書きます。</p>
+
   
   <p class="text-right"><a href="https://blog.yuyat.jp/post/best-buys-2016/">Continue Reading &rarr;</a></p>
   
@@ -101,7 +104,11 @@
 
 </div>
 <div class="post-excerpt-home">
-  要は Legacy SQL モード で FROM (TABLE_DATE_RANGE(dataset.table_, TIMESTAMP('2016-01-01'), TIMESTAMP('2016-01-14'))) とか書いていたのを標準 SQL でどう書くか、という話です。 すぐ忘れるのでメモ。 テーブルは以下のような名前になっている前提です。 table_20160101 table_20160102 table_20160103 &hellip; これで例えば直近 14 日分のテーブルを対象にしたい場合はこんな感じ。 SELECT time FROM `dataset.table_*` WHERE _TABLE_SUFFIX &gt;= FORMAT_DATE('%Y%m%d', DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY)) テーブル名はワイルドカードで指定しつつ、_TABLE_SUFFIX という擬似カラムに対して日付の条件を指定する。 詳細は以下の公式ドキュメントを参考にしましょう。 Wildcard table syntax よく使うパターンですが、覚えていられない、という人で普段 Re:dash でクエリを書いている、という人は v0.12.0 で追加された Query Snippets という機能を使うと、こんな感じにキーワード補完されるようになって便利です。 設定としては以下のようにしておけば _TABLE_SUFFIX というキーワードをトリガーに補完されます。
+  <p>要は Legacy SQL モード で <code>FROM (TABLE_DATE_RANGE(dataset.table_, TIMESTAMP('2016-01-01'), TIMESTAMP('2016-01-14')))</code> とか書いていたのを標準 SQL でどう書くか、という話です。<br />
+すぐ忘れるのでメモ。</p>
+
+  
+  <p class="text-right"><a href="https://blog.yuyat.jp/post/filtering-tables-in-bigquery-standard-sql/">Continue Reading &rarr;</a></p>
   
 </div>
 
@@ -116,7 +123,14 @@
 
 </div>
 <div class="post-excerpt-home">
-  作りました。 yuya-takeyama/ghissue なぜ作ったか いろいろな自動化スクリプトを書く中で、Octokit とかで毎回実装するのは面倒だったので、標準入力だけ食わせればいい感じにやってくれるものが欲しいな、と思って作りました。 タイトル・本文だけを標準出力に書き出すスクリプトだけ書けば、それをパイプで繋げるだけで ghissue が Issue を立ててくれます。 タイトル・本文だけうまく組み立てることに集中すればよくなり、テストも楽になるでしょう。 類似ツールとしては ghi というツールがありますが、これは標準入力からタイトル・本文を指定することができないので、他のコマンドと組み合わせて使うのはやや面倒です。 また、ghi が Ruby なのに対して、ghissue は Go で実装されていてコンパイル済みのバイナリも GitHub からダウンロードできます。 使い方 アクセストークンの指定 GitHub のアクセストークンを GITHUB_ACCESS_TOKEN という環境変数で指定します。 Issue を作る $ some_command | ghissue yuya-takeyama/test --labels Bug,Major --assignees yuya-takeyama some_command は Issue のタイトル・本文を生成するためのコマンドです。 1 行目がタイトルになり、残りは本文になります。 --labels (-l) ではラベルを指定します。カンマ区切りで複数指定可能です。 --assignees (-a) では assignee を指定します。これもカンマ区切りで複数指定可能です。 その他 Issue を編集する機能・コメントを記入するための機能もあっていいだろうと思うものの、今のところ個人的には必要としてないので、まぁそのうち。 よければご利用ください。
+  <p>作りました。</p>
+
+<ul>
+<li><a href="https://github.com/yuya-takeyama/ghissue">yuya-takeyama/ghissue</a></li>
+</ul>
+
+  
+  <p class="text-right"><a href="https://blog.yuyat.jp/post/ghissue-a-command-to-create-github-issues/">Continue Reading &rarr;</a></p>
   
 </div>
 
@@ -131,7 +145,15 @@
 
 </div>
 <div class="post-excerpt-home">
-  やりたいこと 任意のアプリの Docker コンテナをサクッと立ち上げたい かつグローバル IP アドレスを割り当てて外から接続したい より具体的には、今回は mitmproxy をインターネット上で動かして iPhone 等のスマートフォン端末からつなぎたかった、という感じです。 手順 DigitalOcean のアカウントを作成する ここは割愛。 DigitalOcean のアクセストークンを作成 API -&gt; Tokens -&gt; Generate New Token から適当に名前をつけて作ります。 docker-machine で Docker 環境を作る docker-machine のインストール手順については割愛。 Mac だと Homebrew でもインストールできるので適当にやっておく。 $ docker-machine create --driver digitalocean --digitalocean-access-token=ACCESS_TOKEN --digitalocean-region=sgp1 mitmproxy --digitalocean-access-token には前の手順で作ったアクセストークンを指定。 --digitalocean-region にはリージョンの slug を指定します。 省略すると New York にできてレイテンシが辛いので、日本からだとシンガポールでも指定しておくのがいいでしょう。 リージョンの slug 一覧はこんな感じに最新版を取得できます。 $ curl -H &quot;Content-Type: application/json&quot; -H &quot;Authorization: Bearer ACCESS_TOKEN&quot; &quot;https://api.digitalocean.com/v2/regions&quot; -s | jq
+  <h2 id="やりたいこと">やりたいこと</h2>
+
+<ul>
+<li>任意のアプリの Docker コンテナをサクッと立ち上げたい</li>
+<li>かつグローバル IP アドレスを割り当てて外から接続したい</li>
+</ul>
+
+<p>より具体的には、今回は <code>mitmproxy</code> をインターネット上で動かして iPhone 等のスマートフォン端末からつなぎたかった、という感じです。</p>
+
   
   <p class="text-right"><a href="https://blog.yuyat.jp/post/run-docker-container-in-digitalocean/">Continue Reading &rarr;</a></p>
   
@@ -148,7 +170,13 @@
 
 </div>
 <div class="post-excerpt-home">
-  しばらく前から Dokku という Docker ベースの Heroku ライクな PaaS 基盤を趣味で運用していて、その中で旧ブログの WordPress や 自分用のツールなんかを動かしたりしている。 サーバのメトリクス収集には Mackerel を利用しているが、Docker コンテナ単位での計測は行っていなかった。 Mackerel はホスト数に応じた課金を行っていて、5 ホストまでは無料だが、コンテナまで追加してしまうとすぐにその枠を溢れてしまう。 というわけで簡単な仕組みを自分で用意いてみた。 できたもの どちらもメモリ使用量 (MB) をコンテナ名ごとにグラフ化したもので、どちらもデータは同じものを使っている。 後者はグラフを積み上げることでコンテナ全体で使用しているメモリの使用量もわかるようになっている。 今のところ Docker のリソースに関して困っているのはメモリだけなので、とりあえずはこれだけ。 なお、Dokku ではコンテナ名が アプリ名.プロセス名.プロセス番号 という感じになる (例えば blog.web.1 といった具合) になるので、アプリを再起動してコンテナ ID が変わっても連続的にモニタリングできる。 グラフ中異常値っぽいのが出ているところはまさにアプリを再起動したりしているところ。 概要 以下のような流れでこのグラフを作り出している。 fluent-plugin-docker-metrics で Docker のメトリクスを td-agent に収集 fluent-plugin-bigquery でメトリクスを BigQuery に送信 Re:dash で BigQuery 上のデータをグラフ化 手順 fluent-plugin-docker-metrics のセットアップ td-agent.conf の設定はこんな感じ。 &lt;source&gt; @type docker_metrics stats_interval 1m tag_prefix docker.metrics &lt;/source&gt; tag_prefix はデフォルトだと
+  <p>しばらく前から <a href="http://dokku.viewdocs.io/dokku/">Dokku</a> という Docker ベースの Heroku ライクな PaaS 基盤を趣味で運用していて、その中で旧ブログの WordPress や 自分用のツールなんかを動かしたりしている。</p>
+
+<p>サーバのメトリクス収集には <a href="https://mackerel.io/">Mackerel</a> を利用しているが、Docker コンテナ単位での計測は行っていなかった。<br />
+Mackerel はホスト数に応じた課金を行っていて、5 ホストまでは無料だが、コンテナまで追加してしまうとすぐにその枠を溢れてしまう。</p>
+
+<p>というわけで簡単な仕組みを自分で用意いてみた。</p>
+
   
   <p class="text-right"><a href="https://blog.yuyat.jp/post/visualize-docker-metrics-with-redash/">Continue Reading &rarr;</a></p>
   
@@ -165,7 +193,10 @@
 
 </div>
 <div class="post-excerpt-home">
-  Quipper とその親会社であるところのリクルートマーケティングパートナーズ (RMP) とでの合同イベント (平たくいうと採用イベント) があって、LT の発表枠が空いていたので発表してきた。 スライドは Qiita のスライド機能を初めて使ってみた。 スクリーンに写すと文字が結構小さかったので、事前のチェックが大事だと思った。 curl でサッとベンチマークをとる (スライド版) 内容的には以前同じく Qiita に書いた記事 を加筆・再編集した程度のものなので、準備にはあまり時間がかかっていない。 Google Chrome の Developer Tools からリクエストを curl コマンドとしてコピーする機能について知らない人が意外と多かったので、その点が一番バリュー高かったのかもしれない。 あとは見つけた時に超クールだと思った hyst というツールについても軽く紹介した。 hyst を作っている @winebarrel さんには miam や roadworker でもお世話になっています。 あと Quipper でも使われているみたいです。
+  <p>Quipper とその親会社であるところのリクルートマーケティングパートナーズ (RMP) とでの<a href="http://rmp-quipper.connpass.com/event/39082/">合同イベント</a> (平たくいうと採用イベント) があって、LT の発表枠が空いていたので発表してきた。</p>
+
+  
+  <p class="text-right"><a href="https://blog.yuyat.jp/post/rmp-quipper-food-and-drink-meetup/">Continue Reading &rarr;</a></p>
   
 </div>
 
@@ -180,7 +211,10 @@
 
 </div>
 <div class="post-excerpt-home">
-  以前 Qiita にcurl でサッと HTTP ベンチマークと書いたが、それをもうちょい簡単にやるために以下のようなコマンドを用意してみた。 #!/bin/sh curl -s -o /dev/null -w '%{time_starttransfer}\n' &quot;$@&quot; これを curlb という名前で $PATH の通ったところに置いておくと以下のようにできる。 $ curlb https://blog.yuyat.jp/ 0.067
+  <p>以前 Qiita に<a href="http://qiita.com/yuya_takeyama/items/baf48a3f643e743a46b4">curl でサッと HTTP ベンチマーク</a>と書いたが、それをもうちょい簡単にやるために以下のようなコマンドを用意してみた。</p>
+
+  
+  <p class="text-right"><a href="https://blog.yuyat.jp/post/stuff-to-get-response-time-with-curl/">Continue Reading &rarr;</a></p>
   
 </div>
 
@@ -195,7 +229,12 @@
 
 </div>
 <div class="post-excerpt-home">
-  GNU tee でも BSD tee でもできないので作りました。 yuya-takeyama/tee2err これは何か 標準入力を食わせると、標準出力と標準エラー出力に同じものを出力するだけのコマンドです。 $ echo foo | tee2err foo foo foo と 2 回出力されていますが、一方は標準出力に、もう一方は標準エラー出力に出力されています。 どういう時に使うか 標準入力からストリームを食わせるとなんらかの終端操作を行うようなツールと一緒に使います。 例えば 1 から 10 までの数列の総和を求める場合。 $ seq 10 | perl -ane '$i+=$_; END { print &quot;SUM: $i\n&quot;; }' SUM: 55 これはこれで特に問題ないですが、これに tee2err を組み合わせるとこのようになります。 $ seq 10 | tee2err | perl -ane '$i+=$_; END { print &quot;SUM: $i\n&quot;; }' 1 2 3 4 5 6 7 8 9 10
+  <p>GNU tee でも BSD tee でもできないので作りました。</p>
+
+<ul>
+<li><a href="https://github.com/yuya-takeyama/tee2err">yuya-takeyama/tee2err</a></li>
+</ul>
+
   
   <p class="text-right"><a href="https://blog.yuyat.jp/post/tee2err/">Continue Reading &rarr;</a></p>
   
@@ -212,7 +251,10 @@
 
 </div>
 <div class="post-excerpt-home">
-  このブログは以前の記事にも書いた通り、GitHub Pages から配信しています。 そしてさらに、前段に nginx のリバースプロキシを置いた構成になってます。 何故リバースプロキシを利用するか はっきり言って普通に考えたら無駄感はありますが、良い点をいくつか挙げてみます。 Zone apex domain を使用することができる GitHub Pages は CNAME による Custom domain に対応していますが、CNAME では通常 Zone apex domain に対応することができません。 リバースプロキシを利用することで、ドメインの A レコードにリバースプロキシを指定し、その upstream に GitHub Pages の URL を指定することで、対応することができます。 (このブログはご覧の通り Zone apex domain ではないですが、そのうちそっちにもページを作るつもりです) Custom domain でも HTTPS を使用することができる GitHub Pages はデフォルトでは USERNAME.github.io ドメインが割り当てられ、HTTPS で配信されます。 ですが、CNAME を使った場合は HTTP となってしまい、HTTPS を利用する方法は GitHub からは提供されていません。 Let&rsquo;s Encrypt を使えばセットアップは簡単です。 アクセスログをちゃんと取得できる GitHub でもリポジトリの Graphs -&gt; Traffic を見るとある程度わかりますが、nginx で好きなログを残せるようになります。 設定手順
+  <p>このブログは<a href="/post/auto-deploy-hugo-to-github-pages-with-circleci/">以前の記事</a>にも書いた通り、<a href="https://pages.github.com/">GitHub Pages</a> から配信しています。</p>
+
+<p>そしてさらに、前段に nginx のリバースプロキシを置いた構成になってます。</p>
+
   
   <p class="text-right"><a href="https://blog.yuyat.jp/post/serving-github-pages-through-reverse-proxy/">Continue Reading &rarr;</a></p>
   
@@ -229,7 +271,8 @@
 
 </div>
 <div class="post-excerpt-home">
-  これもリニューアルネタです。 やりたいこと Let&rsquo;s Encrypt の証明書を Ansible でインストールする その後の証明書の更新も自動で行うようにする その設定もやはり Ansible で行う 前提とする環境 Ubuntu 16.04 だと certbot が apt-get でインストールできますが、それ未満だと certbot-auto というコマンドを手動でインストールする必要があります。 中身はほぼ同じだと思いますが、そちらについての説明はしません。 Ubuntu 16.04 Ansible 2.1.1.0 nginx 1.10.1 手順 certbot のインストール certbot とは Let&rsquo;s Encrypt の証明書の取得や更新を自動化するためのコマンドラインツールです。 こんな感じの playbook でインストールします。 - name: install certbot apt: name=letsencrypt state=present update_cache=yes 証明書の取得 certbot は Automated Certificate Management Environment (ACME) というプロトコルにより証明書の取得を行います。 これは、Let&rsquo;s Encrypt のサーバが証明書を取得しようとしているドメインのある URL にアクセスし、ちゃんとレスポンスを返すことができるかチェックするというものです。 そのため事前に nginx 等の Web サーバを起動して、インターネットからリーチできる状態にしておく必要があります。 (--standalone オプションを使えば certbot 自身が
+  <p>これも<a href="/post/brand-new-blog/">リニューアル</a>ネタです。</p>
+
   
   <p class="text-right"><a href="https://blog.yuyat.jp/post/auto-renew-letsencrypt-cert-keys-with-ansible-and-certbot/">Continue Reading &rarr;</a></p>
   

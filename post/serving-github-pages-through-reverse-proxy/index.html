@@ -23,7 +23,10 @@
     <meta property="fb:admins" content="100000987494966" />
 <meta property="fb:app_id" content="285547814816502" />
 <meta property="og:title" content="GitHub Pages を nginx のリバースプロキシ越しに配信する" />
-<meta property="og:description" content="このブログは以前の記事にも書いた通り、GitHub Pages から配信しています。 そしてさらに、前段に nginx のリバースプロキシを置いた構成になってます。 何故リバースプロキシを利用するか はっきり言って普通に考えたら無駄感はありますが、良い点をいくつか挙げてみます。 Zone apex domain を使用することができる GitHub Pages は CNAME による Custom domain に対応していますが、CNAME では通常 Zone apex domain に対応することができません。 リバースプロキシを利用することで、ドメインの A レコードにリバースプロキシを指定し、その upstream に GitHub Pages の URL を指定することで、対応することができます。 (このブログはご覧の通り Zone apex domain ではないですが、そのうちそっちにもページを作るつもりです) Custom domain でも HTTPS を使用することができる GitHub Pages はデフォルトでは USERNAME.github.io ドメインが割り当てられ、HTTPS で配信されます。 ですが、CNAME を使った場合は HTTP となってしまい、HTTPS を利用する方法は GitHub からは提供されていません。 Let&rsquo;s Encrypt を使えばセットアップは簡単です。 アクセスログをちゃんと取得できる GitHub でもリポジトリの Graphs -&gt; Traffic を見るとある程度わかりますが、nginx で好きなログを残せるようになります。 設定手順" />
+<meta property="og:description" content="このブログは以前の記事にも書いた通り、GitHub Pages から配信しています。
+
+そしてさらに、前段に nginx のリバースプロキシを置いた構成になってます。
+" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.yuyat.jp/post/serving-github-pages-through-reverse-proxy/" />
 

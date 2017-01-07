@@ -781,7 +781,9 @@ curl -s -o /dev/null -w &#39;%{time_starttransfer}\n&#39; &amp;quot;$@&amp;quot;
 
 &lt;p&gt;GNU tee でも BSD tee でもできないので作りました。&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/tee2err&#34;&gt;yuya-takeyama/tee2err&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/tee2err&#34;&gt;yuya-takeyama/tee2err&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h2 id=&#34;これは何か&#34;&gt;これは何か&lt;/h2&gt;
 

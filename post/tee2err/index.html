@@ -23,7 +23,12 @@
     <meta property="fb:admins" content="100000987494966" />
 <meta property="fb:app_id" content="285547814816502" />
 <meta property="og:title" content="標準エラー出力に tee するコマンド tee2err を作った" />
-<meta property="og:description" content="GNU tee でも BSD tee でもできないので作りました。 yuya-takeyama/tee2err これは何か 標準入力を食わせると、標準出力と標準エラー出力に同じものを出力するだけのコマンドです。 $ echo foo | tee2err foo foo foo と 2 回出力されていますが、一方は標準出力に、もう一方は標準エラー出力に出力されています。 どういう時に使うか 標準入力からストリームを食わせるとなんらかの終端操作を行うようなツールと一緒に使います。 例えば 1 から 10 までの数列の総和を求める場合。 $ seq 10 | perl -ane &#39;$i&#43;=$_; END { print &quot;SUM: $i\n&quot;; }&#39; SUM: 55 これはこれで特に問題ないですが、これに tee2err を組み合わせるとこのようになります。 $ seq 10 | tee2err | perl -ane &#39;$i&#43;=$_; END { print &quot;SUM: $i\n&quot;; }&#39; 1 2 3 4 5 6 7 8 9 10" />
+<meta property="og:description" content="GNU tee でも BSD tee でもできないので作りました。
+
+
+yuya-takeyama/tee2err
+
+" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.yuyat.jp/post/tee2err/" />
 
@@ -89,7 +94,9 @@
 
 <p>GNU tee でも BSD tee でもできないので作りました。</p>
 
-<p><a href="https://github.com/yuya-takeyama/tee2err">yuya-takeyama/tee2err</a></p>
+<ul>
+<li><a href="https://github.com/yuya-takeyama/tee2err">yuya-takeyama/tee2err</a></li>
+</ul>
 
 <h2 id="これは何か">これは何か</h2>
 
