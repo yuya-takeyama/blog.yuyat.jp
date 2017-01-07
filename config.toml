@@ -5,6 +5,7 @@ theme = "hugo-theme-shiori"
 
 [params]
     author_name = "Yuya Takeyama"
+    website_url = "https://yuyat.jp"
     twitter_username = "yuya_takeyama"
     gravatar_id = "33685a20ded68e6861bec3c1bd7f0870"
     google_analytics_tracking_id = "UA-12392004-1"
