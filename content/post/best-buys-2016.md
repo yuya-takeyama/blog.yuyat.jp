@@ -1,6 +1,7 @@
 +++
 date = "2016-12-31T19:49:41+09:00"
 title = "引越・同棲 1 年目の 2016 年に買って良かったもの"
+images = ["/images/best-buys-2016/thule_paramount.jpg"]
 +++
 去年 1 番のイベントは[転職](http://blog.yuyat.jp/archives/2631)でしたが、今年は引越・同棲というのが一大イベントでした。
 
