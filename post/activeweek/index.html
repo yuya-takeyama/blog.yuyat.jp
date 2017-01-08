@@ -16,24 +16,28 @@
     <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
-    <link rel="canonical" href="https://blog.yuyat.jp/post/stuff-to-get-response-time-with-curl/">
-    <title>curl でレスポンスタイムをシュッと取るヤツ | Born Too Late</title>
+    <link rel="canonical" href="https://blog.yuyat.jp/post/activeweek/">
+    <title>Ruby で週をオブジェクトとして扱うライブラリ ActiveWeek を作った | Born Too Late</title>
     
 
     <meta property="fb:admins" content="100000987494966" />
 <meta property="fb:app_id" content="285547814816502" />
-<meta property="og:title" content="curl でレスポンスタイムをシュッと取るヤツ" />
-<meta property="og:description" content="以前 Qiita にcurl でサッと HTTP ベンチマークと書いたが、それをもうちょい簡単にやるために以下のようなコマンドを用意してみた。
+<meta property="og:title" content="Ruby で週をオブジェクトとして扱うライブラリ ActiveWeek を作った" />
+<meta property="og:description" content="仕事で必要があって作ったものから仕事固有の事情とかを取り除いた形で作り直してみた。
+
+
+yuya-takeyama/activeweek
+
 " />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.yuyat.jp/post/stuff-to-get-response-time-with-curl/" />
+<meta property="og:url" content="https://blog.yuyat.jp/post/activeweek/" />
 
   
 	  <meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg" />
   
 
 
-  <meta property="og:updated_time" content="2016-09-27T09:10:34&#43;09:00"/>
+  <meta property="og:updated_time" content="2017-01-09T03:02:40&#43;09:00"/>
 
 
 
@@ -75,27 +79,62 @@
 <div class="row">
   <div class="col-sm-8">
     <div class="post-header">
-      <h1 class="post-title-main">curl でレスポンスタイムをシュッと取るヤツ</h1>
-      <p class="text-muted">Sep 27, 2016</p>
+      <h1 class="post-title-main">Ruby で週をオブジェクトとして扱うライブラリ ActiveWeek を作った</h1>
+      <p class="text-muted">Jan 9, 2017</p>
 
 <div>
-  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fstuff-to-get-response-time-with-curl%2f&amp;text=curl%20%e3%81%a7%e3%83%ac%e3%82%b9%e3%83%9d%e3%83%b3%e3%82%b9%e3%82%bf%e3%82%a4%e3%83%a0%e3%82%92%e3%82%b7%e3%83%a5%e3%83%83%e3%81%a8%e5%8f%96%e3%82%8b%e3%83%a4%e3%83%84&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
-  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fstuff-to-get-response-time-with-curl%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fstuff-to-get-response-time-with-curl%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2factiveweek%2f&amp;text=Ruby%20%e3%81%a7%e9%80%b1%e3%82%92%e3%82%aa%e3%83%96%e3%82%b8%e3%82%a7%e3%82%af%e3%83%88%e3%81%a8%e3%81%97%e3%81%a6%e6%89%b1%e3%81%86%e3%83%a9%e3%82%a4%e3%83%96%e3%83%a9%e3%83%aa%20ActiveWeek%20%e3%82%92%e4%bd%9c%e3%81%a3%e3%81%9f&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2factiveweek%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2factiveweek%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
 </div>
 
     </div>
     <div class="post-content">
-      <p>以前 Qiita に<a href="http://qiita.com/yuya_takeyama/items/baf48a3f643e743a46b4">curl でサッと HTTP ベンチマーク</a>と書いたが、それをもうちょい簡単にやるために以下のようなコマンドを用意してみた。</p>
+      
 
-<pre><code class="language-sh">#!/bin/sh
-curl -s -o /dev/null -w '%{time_starttransfer}\n' &quot;$@&quot;
+<p>仕事で必要があって作ったものから仕事固有の事情とかを取り除いた形で作り直してみた。</p>
+
+<ul>
+<li><a href="https://github.com/yuya-takeyama/activeweek">yuya-takeyama/activeweek</a></li>
+</ul>
+
+<h2 id="インストール">インストール</h2>
+
+<p>名前が強すぎるので一旦 RubyGems.org への publish はしていない。<br />
+いろんな人に見てもらって良さそうならする予定。</p>
+
+<p>なので <code>Gemfile</code> では <code>github</code> オプションを使う。</p>
+
+<pre><code class="language-rb">gem 'activeweek', github: 'yuya-takeyama/activeweek'
 </code></pre>
 
-<p>これを <code>curlb</code> という名前で <code>$PATH</code> の通ったところに置いておくと以下のようにできる。</p>
+<h2 id="使い方">使い方</h2>
 
-<pre><code>$ curlb https://blog.yuyat.jp/
-0.067
+<p><a href="https://github.com/yuya-takeyama/activeweek#activeweek">README.md</a> を訳しただけだけど以下のような感じ。</p>
+
+<p>API がキモのライブラリだと思うので、Ruby ライブラリの API に一家言ある方は<a href="https://twitter.com/yuya_takeyama">是非お願いします</a>。</p>
+
+<h3 id="現在の週を取得">現在の週を取得</h3>
+
+<pre><code class="language-rb">require 'activeweek'
+
+week = ActiveWeek::Week.current
+</code></pre>
+
+<h3 id="特定のタイムゾーンにおける現在の週を取得">特定のタイムゾーンにおける現在の週を取得</h3>
+
+<pre><code class="language-rb">week = Time.use_zone('Asia/Tokyo') { ActiveWeek::Week.current }
+</code></pre>
+
+<h3 id="週の中の日付を-date-オブジェクトとして列挙する">週の中の日付を <code>Date</code> オブジェクトとして列挙する</h3>
+
+<pre><code class="language-rb">week.each_day { |date| p date }
+</code></pre>
+
+<h3 id="前後の週を取得する">前後の週を取得する</h3>
+
+<pre><code class="language-rb">next_week = week.next_week
+prev_week = week.prev_week
 </code></pre>
 
     </div>

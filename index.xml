@@ -6,8 +6,63 @@
     <description>Recent content on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 31 Dec 2016 19:49:41 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 09 Jan 2017 03:02:40 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Ruby で週をオブジェクトとして扱うライブラリ ActiveWeek を作った</title>
+      <link>https://blog.yuyat.jp/post/activeweek/</link>
+      <pubDate>Mon, 09 Jan 2017 03:02:40 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/activeweek/</guid>
+      <description>
+
+&lt;p&gt;仕事で必要があって作ったものから仕事固有の事情とかを取り除いた形で作り直してみた。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/activeweek&#34;&gt;yuya-takeyama/activeweek&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;インストール&#34;&gt;インストール&lt;/h2&gt;
+
+&lt;p&gt;名前が強すぎるので一旦 RubyGems.org への publish はしていない。&lt;br /&gt;
+いろんな人に見てもらって良さそうならする予定。&lt;/p&gt;
+
+&lt;p&gt;なので &lt;code&gt;Gemfile&lt;/code&gt; では &lt;code&gt;github&lt;/code&gt; オプションを使う。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;gem &#39;activeweek&#39;, github: &#39;yuya-takeyama/activeweek&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/activeweek#activeweek&#34;&gt;README.md&lt;/a&gt; を訳しただけだけど以下のような感じ。&lt;/p&gt;
+
+&lt;p&gt;API がキモのライブラリだと思うので、Ruby ライブラリの API に一家言ある方は&lt;a href=&#34;https://twitter.com/yuya_takeyama&#34;&gt;是非お願いします&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h3 id=&#34;現在の週を取得&#34;&gt;現在の週を取得&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;require &#39;activeweek&#39;
+
+week = ActiveWeek::Week.current
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;特定のタイムゾーンにおける現在の週を取得&#34;&gt;特定のタイムゾーンにおける現在の週を取得&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;week = Time.use_zone(&#39;Asia/Tokyo&#39;) { ActiveWeek::Week.current }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;週の中の日付を-date-オブジェクトとして列挙する&#34;&gt;週の中の日付を &lt;code&gt;Date&lt;/code&gt; オブジェクトとして列挙する&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;week.each_day { |date| p date }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;前後の週を取得する&#34;&gt;前後の週を取得する&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;next_week = week.next_week
+prev_week = week.prev_week
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>引越・同棲 1 年目の 2016 年に買って良かったもの</title>
