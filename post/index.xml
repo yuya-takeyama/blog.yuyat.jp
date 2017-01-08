@@ -28,9 +28,9 @@
 &lt;p&gt;名前が強すぎるので一旦 RubyGems.org への publish はしていない。&lt;br /&gt;
 いろんな人に見てもらって良さそうならする予定。&lt;/p&gt;
 
-&lt;p&gt;なので &lt;code&gt;Gemfile&lt;/code&gt; では &lt;code&gt;github&lt;/code&gt; オプションを使う。&lt;/p&gt;
+&lt;p&gt;なので &lt;code&gt;Gemfile&lt;/code&gt; では GitHub から直接インストール指定するようにする。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;gem &#39;activeweek&#39;, github: &#39;yuya-takeyama/activeweek&#39;
+&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;gem &#39;activeweek&#39;, git: &#39;https://github.com/yuya-takeyama/activeweek.git&#39;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
@@ -61,6 +61,15 @@ week = ActiveWeek::Week.current
 &lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;next_week = week.next_week
 prev_week = week.prev_week
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ruby-2-4-rails-2-2-について&#34;&gt;Ruby 2.4/Rails 2.2 について&lt;/h2&gt;
+
+&lt;p&gt;現状 Ruby 2.4/Rails 2.2 の組み合わせにおいては、Rails が依存する &lt;code&gt;json&lt;/code&gt; gem の問題でインストールすることができない。&lt;br /&gt;
+Rails 2.2.8 がリリースされれば動くようになる予定。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/rails/rails/pull/26334&#34;&gt;Removed json dependency from ActiveSupport&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     

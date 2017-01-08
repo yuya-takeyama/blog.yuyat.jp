@@ -103,9 +103,9 @@ yuya-takeyama/activeweek
 <p>名前が強すぎるので一旦 RubyGems.org への publish はしていない。<br />
 いろんな人に見てもらって良さそうならする予定。</p>
 
-<p>なので <code>Gemfile</code> では <code>github</code> オプションを使う。</p>
+<p>なので <code>Gemfile</code> では GitHub から直接インストール指定するようにする。</p>
 
-<pre><code class="language-rb">gem 'activeweek', github: 'yuya-takeyama/activeweek'
+<pre><code class="language-rb">gem 'activeweek', git: 'https://github.com/yuya-takeyama/activeweek.git'
 </code></pre>
 
 <h2 id="使い方">使い方</h2>
@@ -136,6 +136,15 @@ week = ActiveWeek::Week.current
 <pre><code class="language-rb">next_week = week.next_week
 prev_week = week.prev_week
 </code></pre>
+
+<h2 id="ruby-2-4-rails-2-2-について">Ruby 2.4/Rails 2.2 について</h2>
+
+<p>現状 Ruby 2.4/Rails 2.2 の組み合わせにおいては、Rails が依存する <code>json</code> gem の問題でインストールすることができない。<br />
+Rails 2.2.8 がリリースされれば動くようになる予定。</p>
+
+<ul>
+<li><a href="https://github.com/rails/rails/pull/26334">Removed json dependency from ActiveSupport</a></li>
+</ul>
 
     </div>
     <div class="post-footer">
