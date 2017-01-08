@@ -14,10 +14,10 @@ title = "Ruby で週をオブジェクトとして扱うライブラリ ActiveWe
 名前が強すぎるので一旦 RubyGems.org への publish はしていない。  
 いろんな人に見てもらって良さそうならする予定。
 
-なので `Gemfile` では `github` オプションを使う。
+なので `Gemfile` では GitHub から直接インストール指定するようにする。
 
 ```rb
-gem 'activeweek', github: 'yuya-takeyama/activeweek'
+gem 'activeweek', git: 'https://github.com/yuya-takeyama/activeweek.git'
 ```
 
 ## 使い方
@@ -52,3 +52,10 @@ week.each_day { |date| p date }
 next_week = week.next_week
 prev_week = week.prev_week
 ```
+
+## Ruby 2.4/Rails 2.2 について
+
+現状 Ruby 2.4/Rails 2.2 の組み合わせにおいては、Rails が依存する `json` gem の問題でインストールすることができない。  
+Rails 2.2.8 がリリースされれば動くようになる予定。
+
+* [Removed json dependency from ActiveSupport](https://github.com/rails/rails/pull/26334)
