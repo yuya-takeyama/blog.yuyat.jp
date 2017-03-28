@@ -5,7 +5,7 @@ title = "Node.js のスタックトレースを控えめにする supress-stack-
 +++
 最近仕事で React/Redux で構築されたアプリを触っていて、[mocha](https://mochajs.org/) でテストがコケたときのスタックトレースがうるさい感じだったので `node_modules` 内のエラーを除外するためのものを作ってみた。
 
-* [supress-stack-trace](https://github.com/yuya-takeyama/supress-stack-trace)
+* [yuya-takeyama/supress-stack-trace](https://github.com/yuya-takeyama/supress-stack-trace)
 
 <!--more-->
 
