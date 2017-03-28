@@ -23,7 +23,8 @@
     <meta property="fb:admins" content="100000987494966" />
 <meta property="fb:app_id" content="285547814816502" />
 <meta property="og:title" content="instance_eval で特異メソッドを定義する" />
-<meta property="og:description" content="最近 Flagship という機能フラグを Ruby の言語内 DSL で定義する gem を作っていて、その中で出てきた DSL 定義パターンっぽいものをメモ。 特異メソッド 特異メソッドというのはインスタンスメソッドとは違って特定のオブジェクト固有のメソッドです。 普通は以下のように定義します。 class Foo end foo = Foo.new # Foo オブジェクトに定義 def foo.bar puts &quot;bar!&quot; end foo.bar # =&gt; bar! # Foo クラスの Class オブジェクトに定義 def Foo.baz puts &quot;baz!&quot; end Foo.baz # =&gt; baz! 特異メソッドを instance_eval で で、本題ですが、これを instance_eval でも定義できることに気づいたという話。 class Foo end foo = Foo.new foo.instance_eval do def bar puts &quot;bar!&quot; end end foo.bar # =&gt; bar!" />
+<meta property="og:description" content="最近 Flagship という機能フラグを Ruby の言語内 DSL で定義する gem を作っていて、その中で出てきた DSL 定義パターンっぽいものをメモ。
+" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.yuyat.jp/post/defining-singleton-methods-with-instance_eval/" />
 

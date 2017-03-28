@@ -87,7 +87,7 @@
   <p>最近仕事で React/Redux で構築されたアプリを触っていて、<a href="https://mochajs.org/">mocha</a> でテストがコケたときのスタックトレースがうるさい感じだったので <code>node_modules</code> 内のエラーを除外するためのものを作ってみた。</p>
 
 <ul>
-<li><a href="https://github.com/yuya-takeyama/supress-stack-trace">supress-stack-trace</a></li>
+<li><a href="https://github.com/yuya-takeyama/supress-stack-trace">yuya-takeyama/supress-stack-trace</a></li>
 </ul>
 
   
@@ -148,7 +148,8 @@
 
 </div>
 <div class="post-excerpt-home">
-  最近 Flagship という機能フラグを Ruby の言語内 DSL で定義する gem を作っていて、その中で出てきた DSL 定義パターンっぽいものをメモ。 特異メソッド 特異メソッドというのはインスタンスメソッドとは違って特定のオブジェクト固有のメソッドです。 普通は以下のように定義します。 class Foo end foo = Foo.new # Foo オブジェクトに定義 def foo.bar puts &quot;bar!&quot; end foo.bar # =&gt; bar! # Foo クラスの Class オブジェクトに定義 def Foo.baz puts &quot;baz!&quot; end Foo.baz # =&gt; baz! 特異メソッドを instance_eval で で、本題ですが、これを instance_eval でも定義できることに気づいたという話。 class Foo end foo = Foo.new foo.instance_eval do def bar puts &quot;bar!&quot; end end foo.bar # =&gt; bar!
+  <p>最近 <a href="https://github.com/yuya-takeyama/flagship">Flagship</a> という機能フラグを Ruby の言語内 DSL で定義する gem を作っていて、その中で出てきた DSL 定義パターンっぽいものをメモ。</p>
+
   
   <p class="text-right"><a href="https://blog.yuyat.jp/post/defining-singleton-methods-with-instance_eval/">Continue Reading &rarr;</a></p>
   

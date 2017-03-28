@@ -20,7 +20,7 @@
 &lt;p&gt;最近仕事で React/Redux で構築されたアプリを触っていて、&lt;a href=&#34;https://mochajs.org/&#34;&gt;mocha&lt;/a&gt; でテストがコケたときのスタックトレースがうるさい感じだったので &lt;code&gt;node_modules&lt;/code&gt; 内のエラーを除外するためのものを作ってみた。&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/supress-stack-trace&#34;&gt;supress-stack-trace&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/supress-stack-trace&#34;&gt;yuya-takeyama/supress-stack-trace&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
