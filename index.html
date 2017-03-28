@@ -84,7 +84,12 @@
 
 </div>
 <div class="post-excerpt-home">
-  最近仕事で React/Redux で構築されたアプリを触っていて、mocha でテストがコケたときのスタックトレースがうるさい感じだったので node_modules 内のエラーを除外するためのものを作ってみた。 supress-stack-trace 使い方 まだ npm には登録してないのでとりあえず GitHub から直接インストールする必要があります。 $ yarn add -D yuya-takeyama/supress-stack-trace 使い方は読み込むだけで OK require('supress-stack-trace') mocha の場合は mocha.opts に --require supress-stack-trace とかしてあげるだけでいいと思います。 今の仕事では mocha-webpack を使っていて、mocha-webpack.opts に同じ感じに指定すればうまくできました。 なお、source-map-support のように Error.prepareStackTrace をオーバーライドするライブラリを既に使っている場合は、そのあとで読み込むのが良いと思います。ライブラリの組み合わせによっては動かないこともあると思います。 使用感 このようにすっきりします。 Before Error: aghhhhhhhhhhhh!!! at app/components/foo/Foo.jsx:18:11 at Object.LinkedValueUtils.executeOnChange (node_modules/react-dom/lib/LinkedValueUtils.js:129:1) at ReactDOMComponent._handleChange (node_modules/react-dom/lib/ReactDOMInput.js:232:1) at Object.invokeGuardedCallback [as invokeGuardedCallbackWithCatch] (node_modules/react-dom/lib/ReactErrorUtils.js:26:1) at executeDispatch (node_modules/react-dom/lib/EventPluginUtils.js:83:1) at Object.executeDispatchesInOrder (node_modules/react-dom/lib/EventPluginUtils.js:108:1) at executeDispatchesAndRelease (node_modules/react-dom/lib/EventPluginHub.js:43:1) at executeDispatchesAndReleaseSimulated (node_modules/react-dom/lib/EventPluginHub.js:51:1) at forEachAccumulated (node_modules/react-dom/lib/forEachAccumulated.js:26:1) at
+  <p>最近仕事で React/Redux で構築されたアプリを触っていて、<a href="https://mochajs.org/">mocha</a> でテストがコケたときのスタックトレースがうるさい感じだったので <code>node_modules</code> 内のエラーを除外するためのものを作ってみた。</p>
+
+<ul>
+<li><a href="https://github.com/yuya-takeyama/supress-stack-trace">supress-stack-trace</a></li>
+</ul>
+
   
   <p class="text-right"><a href="https://blog.yuyat.jp/post/supress-stack-trace/">Continue Reading &rarr;</a></p>
   
@@ -137,6 +142,23 @@
       
         <div class="post-header-home">
   <h1 class="post-title-home">
+    <a href="https://blog.yuyat.jp/post/defining-singleton-methods-with-instance_eval/">instance_eval で特異メソッドを定義する</a>
+  </h1>
+  <p class="text-muted">Dec 25, 2016</p>
+
+</div>
+<div class="post-excerpt-home">
+  最近 Flagship という機能フラグを Ruby の言語内 DSL で定義する gem を作っていて、その中で出てきた DSL 定義パターンっぽいものをメモ。 特異メソッド 特異メソッドというのはインスタンスメソッドとは違って特定のオブジェクト固有のメソッドです。 普通は以下のように定義します。 class Foo end foo = Foo.new # Foo オブジェクトに定義 def foo.bar puts &quot;bar!&quot; end foo.bar # =&gt; bar! # Foo クラスの Class オブジェクトに定義 def Foo.baz puts &quot;baz!&quot; end Foo.baz # =&gt; baz! 特異メソッドを instance_eval で で、本題ですが、これを instance_eval でも定義できることに気づいたという話。 class Foo end foo = Foo.new foo.instance_eval do def bar puts &quot;bar!&quot; end end foo.bar # =&gt; bar!
+  
+  <p class="text-right"><a href="https://blog.yuyat.jp/post/defining-singleton-methods-with-instance_eval/">Continue Reading &rarr;</a></p>
+  
+</div>
+
+      
+    
+      
+        <div class="post-header-home">
+  <h1 class="post-title-home">
     <a href="https://blog.yuyat.jp/post/filtering-tables-in-bigquery-standard-sql/">BigQuery の標準 SQL モードで日付テーブルのフィルタリング、または Re:dash の Query Snippets を活用する話</a>
   </h1>
   <p class="text-muted">Dec 4, 2016</p>
@@ -170,6 +192,21 @@
 
   
   <p class="text-right"><a href="https://blog.yuyat.jp/post/ghissue-a-command-to-create-github-issues/">Continue Reading &rarr;</a></p>
+  
+</div>
+
+      
+    
+      
+        <div class="post-header-home">
+  <h1 class="post-title-home">
+    <a href="https://blog.yuyat.jp/post/make-sure-loading-order-to-be-consistent/">Ruby で Dir.glob して require するときは sort してからにする</a>
+  </h1>
+  <p class="text-muted">Oct 23, 2016</p>
+
+</div>
+<div class="post-excerpt-home">
+  以下のように特定のディレクトリ配下のファイルを雑に require することがあるとする。 Dir.glob('./lib/**/*.rb').each {|f| require f } これだと読み込み順が一定でないので、場合によっては A というクラスが依存している B というクラスを読み込む前に参照しようとして NameError にったりする。 # a.rb class A &lt; B end # b.rb class B end もちろん、これは a.rb の先頭で require 'b.rb' すればいい話ではある。 だが問題は、テスト中はたまたま問題なくいっていたものが本番で急にエラーになったりすることである。 そのため事前に sort しておくと良い。 Dir.glob('./lib/**/*.rb').each.sort {|f| require f } これならファイルの読み込み順序は一定になる、はず。 (OS やファイルシステムによって違う可能性もあり得る?)
   
 </div>
 
@@ -241,49 +278,9 @@ Mackerel はホスト数に応じた課金を行っていて、5 ホストまで
 
       
     
-      
-        <div class="post-header-home">
-  <h1 class="post-title-home">
-    <a href="https://blog.yuyat.jp/post/stuff-to-get-response-time-with-curl/">curl でレスポンスタイムをシュッと取るヤツ</a>
-  </h1>
-  <p class="text-muted">Sep 27, 2016</p>
-
-</div>
-<div class="post-excerpt-home">
-  <p>以前 Qiita に<a href="http://qiita.com/yuya_takeyama/items/baf48a3f643e743a46b4">curl でサッと HTTP ベンチマーク</a>と書いたが、それをもうちょい簡単にやるために以下のようなコマンドを用意してみた。</p>
-
-  
-  <p class="text-right"><a href="https://blog.yuyat.jp/post/stuff-to-get-response-time-with-curl/">Continue Reading &rarr;</a></p>
-  
-</div>
-
-      
-    
-      
-        <div class="post-header-home">
-  <h1 class="post-title-home">
-    <a href="https://blog.yuyat.jp/post/tee2err/">標準エラー出力に tee するコマンド tee2err を作った</a>
-  </h1>
-  <p class="text-muted">Sep 26, 2016</p>
-
-</div>
-<div class="post-excerpt-home">
-  <p>GNU tee でも BSD tee でもできないので作りました。</p>
-
-<ul>
-<li><a href="https://github.com/yuya-takeyama/tee2err">yuya-takeyama/tee2err</a></li>
-</ul>
-
-  
-  <p class="text-right"><a href="https://blog.yuyat.jp/post/tee2err/">Continue Reading &rarr;</a></p>
-  
-</div>
-
-      
-    
     <hr>
     <div class="home-read-more">
-      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 14 Articles →</a>
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 16 Articles →</a>
     </div>
   </div>
   <div class="col-sm-4">

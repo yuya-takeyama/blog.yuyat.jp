@@ -22,6 +22,11 @@
   </url>
   
   <url>
+    <loc>https://blog.yuyat.jp/post/defining-singleton-methods-with-instance_eval/</loc>
+    <lastmod>2016-12-25T04:29:36+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://blog.yuyat.jp/post/filtering-tables-in-bigquery-standard-sql/</loc>
     <lastmod>2016-12-04T23:47:21+09:00</lastmod>
   </url>
@@ -29,6 +34,11 @@
   <url>
     <loc>https://blog.yuyat.jp/post/ghissue-a-command-to-create-github-issues/</loc>
     <lastmod>2016-11-27T02:43:58+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://blog.yuyat.jp/post/make-sure-loading-order-to-be-consistent/</loc>
+    <lastmod>2016-10-23T16:39:29+09:00</lastmod>
   </url>
   
   <url>

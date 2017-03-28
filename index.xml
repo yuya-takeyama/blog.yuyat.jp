@@ -545,6 +545,72 @@ Rails 2.2.8 がリリースされれば動くようになる予定。&lt;/p&gt;
     </item>
     
     <item>
+      <title>instance_eval で特異メソッドを定義する</title>
+      <link>https://blog.yuyat.jp/post/defining-singleton-methods-with-instance_eval/</link>
+      <pubDate>Sun, 25 Dec 2016 04:29:36 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/defining-singleton-methods-with-instance_eval/</guid>
+      <description>
+
+&lt;p&gt;最近 &lt;a href=&#34;https://github.com/yuya-takeyama/flagship&#34;&gt;Flagship&lt;/a&gt; という機能フラグを Ruby の言語内 DSL で定義する gem を作っていて、その中で出てきた DSL 定義パターンっぽいものをメモ。&lt;/p&gt;
+
+&lt;h2 id=&#34;特異メソッド&#34;&gt;特異メソッド&lt;/h2&gt;
+
+&lt;p&gt;特異メソッドというのはインスタンスメソッドとは違って特定のオブジェクト固有のメソッドです。&lt;/p&gt;
+
+&lt;p&gt;普通は以下のように定義します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;class Foo
+end
+
+foo = Foo.new
+
+# Foo オブジェクトに定義
+def foo.bar
+  puts &amp;quot;bar!&amp;quot;
+end
+
+foo.bar
+# =&amp;gt; bar!
+
+# Foo クラスの Class オブジェクトに定義
+def Foo.baz
+  puts &amp;quot;baz!&amp;quot;
+end
+
+Foo.baz
+# =&amp;gt; baz!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;特異メソッドを-instance-eval-で&#34;&gt;特異メソッドを instance_eval で&lt;/h2&gt;
+
+&lt;p&gt;で、本題ですが、これを &lt;code&gt;instance_eval&lt;/code&gt; でも定義できることに気づいたという話。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;class Foo
+end
+
+foo = Foo.new
+foo.instance_eval do
+  def bar
+    puts &amp;quot;bar!&amp;quot;
+  end
+end
+
+foo.bar
+# =&amp;gt; bar!
+
+foo2 = Foo.new
+foo2.bar
+# =&amp;gt; NoMethodError
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このように最初の &lt;code&gt;foo&lt;/code&gt; では &lt;code&gt;#bar&lt;/code&gt; を呼び出すことはできましたが、別オブジェクトである &lt;code&gt;foo2&lt;/code&gt; に対しては呼び出せないので、&lt;code&gt;Foo&lt;/code&gt; クラスのインスタンスメソッドではなく &lt;code&gt;foo&lt;/code&gt; の特異メソッドであることがわかります。&lt;/p&gt;
+
+&lt;h2 id=&#34;dsl-に応用する&#34;&gt;DSL に応用する&lt;/h2&gt;
+</description>
+    </item>
+    
+    <item>
       <title>BigQuery の標準 SQL モードで日付テーブルのフィルタリング、または Re:dash の Query Snippets を活用する話</title>
       <link>https://blog.yuyat.jp/post/filtering-tables-in-bigquery-standard-sql/</link>
       <pubDate>Sun, 04 Dec 2016 23:47:21 +0900</pubDate>
@@ -634,6 +700,40 @@ WHERE _TABLE_SUFFIX &amp;gt;= FORMAT_DATE(&#39;%Y%m%d&#39;, DATE_SUB(CURRENT_DAT
 &lt;p&gt;Issue を編集する機能・コメントを記入するための機能もあっていいだろうと思うものの、今のところ個人的には必要としてないので、まぁそのうち。&lt;/p&gt;
 
 &lt;p&gt;よければご利用ください。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Ruby で Dir.glob して require するときは sort してからにする</title>
+      <link>https://blog.yuyat.jp/post/make-sure-loading-order-to-be-consistent/</link>
+      <pubDate>Sun, 23 Oct 2016 16:39:29 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/make-sure-loading-order-to-be-consistent/</guid>
+      <description>&lt;p&gt;以下のように特定のディレクトリ配下のファイルを雑に &lt;code&gt;require&lt;/code&gt; することがあるとする。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;Dir.glob(&#39;./lib/**/*.rb&#39;).each {|f| require f }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これだと読み込み順が一定でないので、場合によっては A というクラスが依存している B というクラスを読み込む前に参照しようとして &lt;code&gt;NameError&lt;/code&gt; にったりする。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;# a.rb
+class A &amp;lt; B
+end
+
+# b.rb
+class B
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;もちろん、これは &lt;code&gt;a.rb&lt;/code&gt; の先頭で &lt;code&gt;require &#39;b.rb&#39;&lt;/code&gt; すればいい話ではある。&lt;br /&gt;
+だが問題は、テスト中はたまたま問題なくいっていたものが本番で急にエラーになったりすることである。&lt;/p&gt;
+
+&lt;p&gt;そのため事前に &lt;code&gt;sort&lt;/code&gt; しておくと良い。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;Dir.glob(&#39;./lib/**/*.rb&#39;).each.sort {|f| require f }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これならファイルの読み込み順序は一定になる、はず。 (OS やファイルシステムによって違う可能性もあり得る?)&lt;/p&gt;
 </description>
     </item>
     
@@ -1334,27 +1434,6 @@ git push -f origin gh-pages
 &lt;p&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/blog.yuyat.jp&#34;&gt;https://github.com/yuya-takeyama/blog.yuyat.jp&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;Enjoy blogging!&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>ブログを Hugo でリニューアルした</title>
-      <link>https://blog.yuyat.jp/post/brand-new-blog/</link>
-      <pubDate>Mon, 19 Sep 2016 02:39:31 +0900</pubDate>
-      
-      <guid>https://blog.yuyat.jp/post/brand-new-blog/</guid>
-      <description>&lt;p&gt;長年 Wordpress を使ってきたけどいい加減辛くなってきたので &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt; に移行しました。&lt;/p&gt;
-
-&lt;p&gt;過去ブログのデータ移行については過去に何度も挫折していて、結局リバースプロキシを使っていい感じに振り分けることにしました。&lt;br /&gt;
-以前の記事 URL は基本的に全て生きているはずです。&lt;br /&gt;
-コメントとかはできませんが。&lt;/p&gt;
-
-&lt;p&gt;新ブログは GitHub Pages からリバースプロキシを介して配信しています。&lt;br /&gt;
-Let&amp;rsquo;s Encrypt で SSL 化し、ついでに Nginx も HTTP2 化したので、その辺のネタはそのうちに書いていければと思ってます。&lt;/p&gt;
-
-&lt;p&gt;あと、テーマは &lt;a href=&#34;https://github.com/chibicode&#34;&gt;@chibicode&lt;/a&gt; さんの &lt;a href=&#34;https://github.com/chibicode/hugo-theme-shiori&#34;&gt;hugo-theme-shiori&lt;/a&gt; をカスタマイズして使っています。&lt;/p&gt;
-
-&lt;p&gt;今後ともよろしくお願いします。&lt;/p&gt;
 </description>
     </item>
     

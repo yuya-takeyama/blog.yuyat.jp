@@ -16,28 +16,23 @@
     <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
-    <link rel="canonical" href="https://blog.yuyat.jp/post/ghissue-a-command-to-create-github-issues/">
-    <title>GitHub の Issue を作るコマンド ghissue を作った | Born Too Late</title>
+    <link rel="canonical" href="https://blog.yuyat.jp/post/defining-singleton-methods-with-instance_eval/">
+    <title>instance_eval で特異メソッドを定義する | Born Too Late</title>
     
 
     <meta property="fb:admins" content="100000987494966" />
 <meta property="fb:app_id" content="285547814816502" />
-<meta property="og:title" content="GitHub の Issue を作るコマンド ghissue を作った" />
-<meta property="og:description" content="作りました。
-
-
-yuya-takeyama/ghissue
-
-" />
+<meta property="og:title" content="instance_eval で特異メソッドを定義する" />
+<meta property="og:description" content="最近 Flagship という機能フラグを Ruby の言語内 DSL で定義する gem を作っていて、その中で出てきた DSL 定義パターンっぽいものをメモ。 特異メソッド 特異メソッドというのはインスタンスメソッドとは違って特定のオブジェクト固有のメソッドです。 普通は以下のように定義します。 class Foo end foo = Foo.new # Foo オブジェクトに定義 def foo.bar puts &quot;bar!&quot; end foo.bar # =&gt; bar! # Foo クラスの Class オブジェクトに定義 def Foo.baz puts &quot;baz!&quot; end Foo.baz # =&gt; baz! 特異メソッドを instance_eval で で、本題ですが、これを instance_eval でも定義できることに気づいたという話。 class Foo end foo = Foo.new foo.instance_eval do def bar puts &quot;bar!&quot; end end foo.bar # =&gt; bar!" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.yuyat.jp/post/ghissue-a-command-to-create-github-issues/" />
+<meta property="og:url" content="https://blog.yuyat.jp/post/defining-singleton-methods-with-instance_eval/" />
 
   
 	  <meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg" />
   
 
 
-  <meta property="og:updated_time" content="2016-11-27T02:43:58&#43;09:00"/>
+  <meta property="og:updated_time" content="2016-12-25T04:29:36&#43;09:00"/>
 
 
 
@@ -79,58 +74,74 @@ yuya-takeyama/ghissue
 <div class="row">
   <div class="col-sm-8">
     <div class="post-header">
-      <h1 class="post-title-main">GitHub の Issue を作るコマンド ghissue を作った</h1>
-      <p class="text-muted">Nov 27, 2016</p>
+      <h1 class="post-title-main">instance_eval で特異メソッドを定義する</h1>
+      <p class="text-muted">Dec 25, 2016</p>
 
 <div>
-  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fghissue-a-command-to-create-github-issues%2f&amp;text=GitHub%20%e3%81%ae%20Issue%20%e3%82%92%e4%bd%9c%e3%82%8b%e3%82%b3%e3%83%9e%e3%83%b3%e3%83%89%20ghissue%20%e3%82%92%e4%bd%9c%e3%81%a3%e3%81%9f&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
-  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fghissue-a-command-to-create-github-issues%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fghissue-a-command-to-create-github-issues%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fdefining-singleton-methods-with-instance_eval%2f&amp;text=instance_eval%20%e3%81%a7%e7%89%b9%e7%95%b0%e3%83%a1%e3%82%bd%e3%83%83%e3%83%89%e3%82%92%e5%ae%9a%e7%be%a9%e3%81%99%e3%82%8b&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fdefining-singleton-methods-with-instance_eval%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fdefining-singleton-methods-with-instance_eval%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
 </div>
 
     </div>
     <div class="post-content">
       
 
-<p>作りました。</p>
+<p>最近 <a href="https://github.com/yuya-takeyama/flagship">Flagship</a> という機能フラグを Ruby の言語内 DSL で定義する gem を作っていて、その中で出てきた DSL 定義パターンっぽいものをメモ。</p>
 
-<ul>
-<li><a href="https://github.com/yuya-takeyama/ghissue">yuya-takeyama/ghissue</a></li>
-</ul>
+<h2 id="特異メソッド">特異メソッド</h2>
 
-<h2 id="なぜ作ったか">なぜ作ったか</h2>
+<p>特異メソッドというのはインスタンスメソッドとは違って特定のオブジェクト固有のメソッドです。</p>
 
-<p>いろいろな自動化スクリプトを書く中で、<a href="https://octokit.github.io/">Octokit</a> とかで毎回実装するのは面倒だったので、標準入力だけ食わせればいい感じにやってくれるものが欲しいな、と思って作りました。</p>
+<p>普通は以下のように定義します。</p>
 
-<p>タイトル・本文だけを標準出力に書き出すスクリプトだけ書けば、それをパイプで繋げるだけで ghissue が Issue を立ててくれます。<br />
-タイトル・本文だけうまく組み立てることに集中すればよくなり、テストも楽になるでしょう。</p>
+<pre><code>class Foo
+end
 
-<p>類似ツールとしては <a href="https://github.com/stephencelis/ghi">ghi</a> というツールがありますが、これは標準入力からタイトル・本文を指定することができないので、他のコマンドと組み合わせて使うのはやや面倒です。<br />
-また、ghi が Ruby なのに対して、ghissue は Go で実装されていてコンパイル済みのバイナリも GitHub からダウンロードできます。</p>
+foo = Foo.new
 
-<h2 id="使い方">使い方</h2>
+# Foo オブジェクトに定義
+def foo.bar
+  puts &quot;bar!&quot;
+end
 
-<h3 id="アクセストークンの指定">アクセストークンの指定</h3>
+foo.bar
+# =&gt; bar!
 
-<p>GitHub のアクセストークンを <code>GITHUB_ACCESS_TOKEN</code> という環境変数で指定します。</p>
+# Foo クラスの Class オブジェクトに定義
+def Foo.baz
+  puts &quot;baz!&quot;
+end
 
-<h3 id="issue-を作る">Issue を作る</h3>
-
-<pre><code>$ some_command | ghissue yuya-takeyama/test --labels Bug,Major --assignees yuya-takeyama
+Foo.baz
+# =&gt; baz!
 </code></pre>
 
-<p><code>some_command</code> は Issue のタイトル・本文を生成するためのコマンドです。<br />
-1 行目がタイトルになり、残りは本文になります。</p>
+<h2 id="特異メソッドを-instance-eval-で">特異メソッドを instance_eval で</h2>
 
-<p><code>--labels</code> (<code>-l</code>) ではラベルを指定します。カンマ区切りで複数指定可能です。</p>
+<p>で、本題ですが、これを <code>instance_eval</code> でも定義できることに気づいたという話。</p>
 
-<p><code>--assignees</code> (<code>-a</code>) では assignee を指定します。これもカンマ区切りで複数指定可能です。</p>
+<pre><code class="language-rb">class Foo
+end
 
-<h2 id="その他">その他</h2>
+foo = Foo.new
+foo.instance_eval do
+  def bar
+    puts &quot;bar!&quot;
+  end
+end
 
-<p>Issue を編集する機能・コメントを記入するための機能もあっていいだろうと思うものの、今のところ個人的には必要としてないので、まぁそのうち。</p>
+foo.bar
+# =&gt; bar!
 
-<p>よければご利用ください。</p>
+foo2 = Foo.new
+foo2.bar
+# =&gt; NoMethodError
+</code></pre>
+
+<p>このように最初の <code>foo</code> では <code>#bar</code> を呼び出すことはできましたが、別オブジェクトである <code>foo2</code> に対しては呼び出せないので、<code>Foo</code> クラスのインスタンスメソッドではなく <code>foo</code> の特異メソッドであることがわかります。</p>
+
+<h2 id="dsl-に応用する">DSL に応用する</h2>
 
     </div>
     <div class="post-footer">
