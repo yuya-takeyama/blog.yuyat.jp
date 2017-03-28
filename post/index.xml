@@ -6,8 +6,83 @@
     <description>Recent content in Posts on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 09 Jan 2017 03:02:40 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 29 Mar 2017 02:21:11 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Node.js のスタックトレースを控えめにする supress-stack-trace 書いた</title>
+      <link>https://blog.yuyat.jp/post/supress-stack-trace/</link>
+      <pubDate>Wed, 29 Mar 2017 02:21:11 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/supress-stack-trace/</guid>
+      <description>
+
+&lt;p&gt;最近仕事で React/Redux で構築されたアプリを触っていて、&lt;a href=&#34;https://mochajs.org/&#34;&gt;mocha&lt;/a&gt; でテストがコケたときのスタックトレースがうるさい感じだったので &lt;code&gt;node_modules&lt;/code&gt; 内のエラーを除外するためのものを作ってみた。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/supress-stack-trace&#34;&gt;supress-stack-trace&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
+
+&lt;p&gt;まだ npm には登録してないのでとりあえず GitHub から直接インストールする必要があります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ yarn add -D yuya-takeyama/supress-stack-trace
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使い方は読み込むだけで OK&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;require(&#39;supress-stack-trace&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;mocha の場合は &lt;code&gt;mocha.opts&lt;/code&gt; に &lt;code&gt;--require supress-stack-trace&lt;/code&gt; とかしてあげるだけでいいと思います。&lt;/p&gt;
+
+&lt;p&gt;今の仕事では &lt;a href=&#34;https://www.npmjs.com/package/mocha-webpack&#34;&gt;mocha-webpack&lt;/a&gt; を使っていて、&lt;code&gt;mocha-webpack.opts&lt;/code&gt; に同じ感じに指定すればうまくできました。&lt;/p&gt;
+
+&lt;p&gt;なお、&lt;a href=&#34;https://github.com/evanw/node-source-map-support&#34;&gt;source-map-support&lt;/a&gt; のように &lt;code&gt;Error.prepareStackTrace&lt;/code&gt; をオーバーライドするライブラリを既に使っている場合は、そのあとで読み込むのが良いと思います。ライブラリの組み合わせによっては動かないこともあると思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;使用感&#34;&gt;使用感&lt;/h2&gt;
+
+&lt;p&gt;このようにすっきりします。&lt;/p&gt;
+
+&lt;h3 id=&#34;before&#34;&gt;Before&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;     Error: aghhhhhhhhhhhh!!!
+      at app/components/foo/Foo.jsx:18:11
+      at Object.LinkedValueUtils.executeOnChange (node_modules/react-dom/lib/LinkedValueUtils.js:129:1)
+      at ReactDOMComponent._handleChange (node_modules/react-dom/lib/ReactDOMInput.js:232:1)
+      at Object.invokeGuardedCallback [as invokeGuardedCallbackWithCatch] (node_modules/react-dom/lib/ReactErrorUtils.js:26:1)
+      at executeDispatch (node_modules/react-dom/lib/EventPluginUtils.js:83:1)
+      at Object.executeDispatchesInOrder (node_modules/react-dom/lib/EventPluginUtils.js:108:1)
+      at executeDispatchesAndRelease (node_modules/react-dom/lib/EventPluginHub.js:43:1)
+      at executeDispatchesAndReleaseSimulated (node_modules/react-dom/lib/EventPluginHub.js:51:1)
+      at forEachAccumulated (node_modules/react-dom/lib/forEachAccumulated.js:26:1)
+      at Object.EventPluginHub.processEventQueue (node_modules/react-dom/lib/EventPluginHub.js:255:1)
+      at node_modules/react-dom/lib/ReactTestUtils.js:340:1
+      at ReactDefaultBatchingStrategyTransaction.TransactionImpl.perform (node_modules/react-dom/lib/Transaction.js:140:1)
+      at Object.ReactDefaultBatchingStrategy.batchedUpdates (node_modules/react-dom/lib/ReactDefaultBatchingStrategy.js:62:1)
+      at Object.batchedUpdates (node_modules/react-dom/lib/ReactUpdates.js:97:1)
+      at node_modules/react-dom/lib/ReactTestUtils.js:338:1
+      at ReactWrapper.&amp;lt;anonymous&amp;gt; (node_modules/enzyme/build/ReactWrapper.js:776:1)
+      at ReactWrapper.single (node_modules/enzyme/build/ReactWrapper.js:1421:1)
+      at ReactWrapper.simulate (node_modules/enzyme/build/ReactWrapper.js:769:1)
+      at Context.&amp;lt;anonymous&amp;gt; (test/components/foo/Foo-test.js:168:20)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;after&#34;&gt;After&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;     Error: error
+      at app/components/foo/Foo.jsx:18:11
+      at Context.&amp;lt;anonymous&amp;gt; (test/components/foo/Foo-test.js:168:20)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;その他&#34;&gt;その他&lt;/h2&gt;
+
+&lt;p&gt;あとはやっぱり環境変数で supress しないモードとかもあったらいいと思うんですが、いい名前が思いつかないのでとりあえず後回し。&lt;/p&gt;
+
+&lt;p&gt;思いついたら npm に公開しようと思います。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Ruby で週をオブジェクトとして扱うライブラリ ActiveWeek を作った</title>

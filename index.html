@@ -33,7 +33,7 @@
   
 
 
-  <meta property="og:updated_time" content="2017-01-09T03:02:40&#43;09:00"/>
+  <meta property="og:updated_time" content="2017-03-29T02:21:11&#43;09:00"/>
 
 
 
@@ -74,6 +74,23 @@
 
 <div class="row">
   <div class="col-sm-8">
+    
+      
+        <div class="post-header-home">
+  <h1 class="post-title-home">
+    <a href="https://blog.yuyat.jp/post/supress-stack-trace/">Node.js のスタックトレースを控えめにする supress-stack-trace 書いた</a>
+  </h1>
+  <p class="text-muted">Mar 29, 2017</p>
+
+</div>
+<div class="post-excerpt-home">
+  最近仕事で React/Redux で構築されたアプリを触っていて、mocha でテストがコケたときのスタックトレースがうるさい感じだったので node_modules 内のエラーを除外するためのものを作ってみた。 supress-stack-trace 使い方 まだ npm には登録してないのでとりあえず GitHub から直接インストールする必要があります。 $ yarn add -D yuya-takeyama/supress-stack-trace 使い方は読み込むだけで OK require('supress-stack-trace') mocha の場合は mocha.opts に --require supress-stack-trace とかしてあげるだけでいいと思います。 今の仕事では mocha-webpack を使っていて、mocha-webpack.opts に同じ感じに指定すればうまくできました。 なお、source-map-support のように Error.prepareStackTrace をオーバーライドするライブラリを既に使っている場合は、そのあとで読み込むのが良いと思います。ライブラリの組み合わせによっては動かないこともあると思います。 使用感 このようにすっきりします。 Before Error: aghhhhhhhhhhhh!!! at app/components/foo/Foo.jsx:18:11 at Object.LinkedValueUtils.executeOnChange (node_modules/react-dom/lib/LinkedValueUtils.js:129:1) at ReactDOMComponent._handleChange (node_modules/react-dom/lib/ReactDOMInput.js:232:1) at Object.invokeGuardedCallback [as invokeGuardedCallbackWithCatch] (node_modules/react-dom/lib/ReactErrorUtils.js:26:1) at executeDispatch (node_modules/react-dom/lib/EventPluginUtils.js:83:1) at Object.executeDispatchesInOrder (node_modules/react-dom/lib/EventPluginUtils.js:108:1) at executeDispatchesAndRelease (node_modules/react-dom/lib/EventPluginHub.js:43:1) at executeDispatchesAndReleaseSimulated (node_modules/react-dom/lib/EventPluginHub.js:51:1) at forEachAccumulated (node_modules/react-dom/lib/forEachAccumulated.js:26:1) at
+  
+  <p class="text-right"><a href="https://blog.yuyat.jp/post/supress-stack-trace/">Continue Reading &rarr;</a></p>
+  
+</div>
+
+      
     
       
         <div class="post-header-home">
@@ -264,29 +281,9 @@ Mackerel はホスト数に応じた課金を行っていて、5 ホストまで
 
       
     
-      
-        <div class="post-header-home">
-  <h1 class="post-title-home">
-    <a href="https://blog.yuyat.jp/post/serving-github-pages-through-reverse-proxy/">GitHub Pages を nginx のリバースプロキシ越しに配信する</a>
-  </h1>
-  <p class="text-muted">Sep 25, 2016</p>
-
-</div>
-<div class="post-excerpt-home">
-  <p>このブログは<a href="/post/auto-deploy-hugo-to-github-pages-with-circleci/">以前の記事</a>にも書いた通り、<a href="https://pages.github.com/">GitHub Pages</a> から配信しています。</p>
-
-<p>そしてさらに、前段に nginx のリバースプロキシを置いた構成になってます。</p>
-
-  
-  <p class="text-right"><a href="https://blog.yuyat.jp/post/serving-github-pages-through-reverse-proxy/">Continue Reading &rarr;</a></p>
-  
-</div>
-
-      
-    
     <hr>
     <div class="home-read-more">
-      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 13 Articles →</a>
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 14 Articles →</a>
     </div>
   </div>
   <div class="col-sm-4">
