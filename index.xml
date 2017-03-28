@@ -76,6 +76,16 @@
       at Context.&amp;lt;anonymous&amp;gt; (test/components/foo/Foo-test.js:168:20)
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;h2 id=&#34;仕組み&#34;&gt;仕組み&lt;/h2&gt;
+
+&lt;p&gt;V8 には &lt;a href=&#34;https://github.com/v8/v8/wiki/Stack-Trace-API&#34;&gt;Stack Trace API&lt;/a&gt; というものがあって、&lt;code&gt;Error.prepareStackTrace&lt;/code&gt; という関数をセットすることでスタックトレースの出力をいじることができます。&lt;/p&gt;
+
+&lt;p&gt;ただこれは API 的にはあまりイケてなくて、エラーとスタックトレースを受け取って文字列を返す関数なので、チェインすることはちょっと難しい感じです。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;source-map-support&lt;/code&gt; も &lt;code&gt;Error.prepareStackTrace&lt;/code&gt; をセットしているので、既にセットされた関数があった場合は、その出力の文字列から &lt;code&gt;node_modules/&lt;/code&gt; と含まれた行だけ消す、みたいなことをしています。&lt;/p&gt;
+
+&lt;p&gt;なので例えばエラーメッセージに &lt;code&gt;node_modules/&lt;/code&gt; と含まれていた場合はそこまで省略されてしまいます。 (気が向いたらなおす)&lt;/p&gt;
+
 &lt;h2 id=&#34;その他&#34;&gt;その他&lt;/h2&gt;
 
 &lt;p&gt;あとはやっぱり環境変数で supress しないモードとかもあったらいいと思うんですが、いい名前が思いつかないのでとりあえず後回し。&lt;/p&gt;

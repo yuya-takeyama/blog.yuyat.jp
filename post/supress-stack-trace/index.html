@@ -146,6 +146,16 @@
       at Context.&lt;anonymous&gt; (test/components/foo/Foo-test.js:168:20)
 </code></pre>
 
+<h2 id="仕組み">仕組み</h2>
+
+<p>V8 には <a href="https://github.com/v8/v8/wiki/Stack-Trace-API">Stack Trace API</a> というものがあって、<code>Error.prepareStackTrace</code> という関数をセットすることでスタックトレースの出力をいじることができます。</p>
+
+<p>ただこれは API 的にはあまりイケてなくて、エラーとスタックトレースを受け取って文字列を返す関数なので、チェインすることはちょっと難しい感じです。</p>
+
+<p><code>source-map-support</code> も <code>Error.prepareStackTrace</code> をセットしているので、既にセットされた関数があった場合は、その出力の文字列から <code>node_modules/</code> と含まれた行だけ消す、みたいなことをしています。</p>
+
+<p>なので例えばエラーメッセージに <code>node_modules/</code> と含まれていた場合はそこまで省略されてしまいます。 (気が向いたらなおす)</p>
+
 <h2 id="その他">その他</h2>
 
 <p>あとはやっぱり環境変数で supress しないモードとかもあったらいいと思うんですが、いい名前が思いつかないのでとりあえず後回し。</p>
