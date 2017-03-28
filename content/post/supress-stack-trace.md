@@ -7,6 +7,8 @@ title = "Node.js のスタックトレースを控えめにする supress-stack-
 
 * [supress-stack-trace](https://github.com/yuya-takeyama/supress-stack-trace)
 
+<!--more-->
+
 ## 使い方
 
 まだ npm には登録してないのでとりあえず GitHub から直接インストールする必要があります。
