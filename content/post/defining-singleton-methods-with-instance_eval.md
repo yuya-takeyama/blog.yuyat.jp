@@ -5,6 +5,8 @@ title = "instance_eval で特異メソッドを定義する"
 +++
 最近 [Flagship](https://github.com/yuya-takeyama/flagship) という機能フラグを Ruby の言語内 DSL で定義する gem を作っていて、その中で出てきた DSL 定義パターンっぽいものをメモ。
 
+<!--more-->
+
 ## 特異メソッド
 
 特異メソッドというのはインスタンスメソッドとは違って特定のオブジェクト固有のメソッドです。
