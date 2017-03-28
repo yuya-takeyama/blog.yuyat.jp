@@ -64,6 +64,16 @@ mocha の場合は `mocha.opts` に `--require supress-stack-trace` とかして
       at Context.<anonymous> (test/components/foo/Foo-test.js:168:20)
 ```
 
+## 仕組み
+
+V8 には [Stack Trace API](https://github.com/v8/v8/wiki/Stack-Trace-API) というものがあって、`Error.prepareStackTrace` という関数をセットすることでスタックトレースの出力をいじることができます。
+
+ただこれは API 的にはあまりイケてなくて、エラーとスタックトレースを受け取って文字列を返す関数なので、チェインすることはちょっと難しい感じです。
+
+`source-map-support` も `Error.prepareStackTrace` をセットしているので、既にセットされた関数があった場合は、その出力の文字列から `node_modules/` と含まれた行だけ消す、みたいなことをしています。
+
+なので例えばエラーメッセージに `node_modules/` と含まれていた場合はそこまで省略されてしまいます。 (気が向いたらなおす)
+
 ## その他
 
 あとはやっぱり環境変数で supress しないモードとかもあったらいいと思うんですが、いい名前が思いつかないのでとりあえず後回し。
