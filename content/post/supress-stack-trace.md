@@ -36,7 +36,7 @@ mocha の場合は `mocha.opts` に `--require supress-stack-trace` とかして
 ### Before
 
 ```
-     Error: aghhhhhhhhhhhh!!!
+     Error: error
       at app/components/foo/Foo.jsx:18:11
       at Object.LinkedValueUtils.executeOnChange (node_modules/react-dom/lib/LinkedValueUtils.js:129:1)
       at ReactDOMComponent._handleChange (node_modules/react-dom/lib/ReactDOMInput.js:232:1)
