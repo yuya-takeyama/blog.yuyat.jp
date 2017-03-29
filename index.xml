@@ -47,7 +47,7 @@
 
 &lt;h3 id=&#34;before&#34;&gt;Before&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code&gt;     Error: aghhhhhhhhhhhh!!!
+&lt;pre&gt;&lt;code&gt;     Error: error
       at app/components/foo/Foo.jsx:18:11
       at Object.LinkedValueUtils.executeOnChange (node_modules/react-dom/lib/LinkedValueUtils.js:129:1)
       at ReactDOMComponent._handleChange (node_modules/react-dom/lib/ReactDOMInput.js:232:1)
