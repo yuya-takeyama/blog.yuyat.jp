@@ -6,8 +6,232 @@
     <description>Recent content in Posts on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 29 Mar 2017 02:21:11 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 10 Apr 2017 02:02:59 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Heroku で Resque を Graceful Shutdown する</title>
+      <link>https://blog.yuyat.jp/post/graceful-shutdown-resque-in-heroku/</link>
+      <pubDate>Mon, 10 Apr 2017 02:02:59 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/graceful-shutdown-resque-in-heroku/</guid>
+      <description>
+
+&lt;p&gt;Heroku で Resque を動かす場合、何も考えないでセットアップすると、デプロイによるプロセスの再起動時や、Dyno のスケールダウン時に Worker プロセスが強制終了され、&lt;code&gt;Resque::DirtyExit&lt;/code&gt; としてエラーになってしまいます。&lt;/p&gt;
+
+&lt;p&gt;これを避けるために正しく &lt;strong&gt;Graceful Shutdown&lt;/strong&gt; する方法について調べてみました。&lt;/p&gt;
+
+&lt;h2 id=&#34;前提とするバージョン&#34;&gt;前提とするバージョン&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Ruby 2.4.1&lt;/li&gt;
+&lt;li&gt;Rails 5.0.2&lt;/li&gt;
+&lt;li&gt;Resque 1.27.2&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;graceful-shutdown-とは-この記事における定義&#34;&gt;Graceful Shutdown とは (この記事における定義)&lt;/h2&gt;
+
+&lt;p&gt;厳密な定義を知っているわけではないですが、この記事では以下のような定義で話を進めます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Graceful Shutdown: 中途半端なデータが残らないよう、行儀よくプロセスを終了する&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;さらにこれを細分化して、この記事では以下のように呼ぶことにします。これらは私の造語で、全く一般的でない呼び方です。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Halfway Graceful Shutdown: やりかけの処理に完了処理を行ってから全体の途中で処理を終了する&lt;/li&gt;
+&lt;li&gt;Entire Graceful Shutdown: すべての処理が完了してから終了する&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;例えば、100 件のデータを処理する Worker があり、50 件目を行っている途中で終了のシグナルを受け取った場合、その 50 件目まで正しくやりきったタイミングで終了するのが &lt;strong&gt;Halfway Graceful Shutdown&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;そして、50 件目の段階で終了のシグナルを受け取っても、100 件すべてをやりきった上で終了するのが &lt;strong&gt;Entire Graceful Shutdown&lt;/strong&gt; となります。&lt;/p&gt;
+
+&lt;p&gt;これに対して、いきなり終了してしまうことをここでは &lt;strong&gt;Immediate Shutdown&lt;/strong&gt; と呼ぶことにします。
+これも一般的な用語なのかはわからないですが、検索した感じではこういう用語を使っているドキュメントもいくつか見つかりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;resque-における-graceful-shutdown&#34;&gt;Resque における Graceful Shutdown&lt;/h2&gt;
+
+&lt;p&gt;Resque では Graceful Shutdown を行う方法として、QUIT シグナルによる方法が提供されています。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/resque/resque#signals&#34;&gt;resque/resque: Signals&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;つまり Resque のプロセス ID に対して以下のようなコマンドを実行すれば良いことになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kill -QUIT PID
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;なお、&lt;code&gt;QUIT&lt;/code&gt; を受け取った時の挙動は、この記事の定義で言えば Entire Graceful Shutdown です。&lt;/p&gt;
+
+&lt;h2 id=&#34;heroku-で-graceful-shutdown-を行う際の問題点&#34;&gt;Heroku で Graceful Shutdown を行う際の問題点&lt;/h2&gt;
+
+&lt;p&gt;Heroku のような PaaS では任意の UNIX プロセスに対して任意のシグナルを送ることはできないことが一般的でしょう。 (少なくとも Heorku ではできません)&lt;/p&gt;
+
+&lt;p&gt;それでいて、以下のような場合は &lt;code&gt;TERM&lt;/code&gt; シグナルが送信されます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;デプロイの実行による Dyno の再起動&lt;/li&gt;
+&lt;li&gt;Dyno のスケールダウン&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Heroku ではこれらの場合、まずは &lt;code&gt;TERM&lt;/code&gt; シグナルが送られ、それでもプロセスが残っている場合は 30 秒後に &lt;code&gt;KILL&lt;/code&gt; シグナルが送られて強制終了となります。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://devcenter.heroku.com/articles/error-codes#r12-exit-timeout&#34;&gt;Heroku Error Codes: R12 - Exit Timeout&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;そして &lt;code&gt;TERM&lt;/code&gt; が送られた場合の Resque のデフォルトの挙動は Immediate Shutdown です。&lt;/p&gt;
+
+&lt;h2 id=&#34;heroku-で-resque-を-graceful-shutdown-する&#34;&gt;Heroku で Resque を Graceful Shutdown する&lt;/h2&gt;
+
+&lt;p&gt;実は &lt;a href=&#34;https://github.com/resque/resque#resque&#34;&gt;Resque の README&lt;/a&gt; や &lt;a href=&#34;https://devcenter.heroku.com/articles/queuing-ruby-resque#process-options&#34;&gt;Heroku のドキュメント&lt;/a&gt;にもいろいろ説明はあるんですが、以下のような理由で、一読しただけ正しく理解するのは難しいと思いました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Resque の &lt;code&gt;master&lt;/code&gt; ブランチの README に書いてある内容の一部は現状の最新版 (&lt;code&gt;v1.27.2&lt;/code&gt;) では使えないのでややこしい
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/resque/resque/pull/1514&#34;&gt;&lt;code&gt;RESQUE_PRE_SHUTDOWN_TIMEOUT&lt;/code&gt;&lt;/a&gt; というオプションはまだリリースされていない&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Resque のドキュメントには記載されていないが有用なオプションがある
+
+&lt;ul&gt;
+&lt;li&gt;Entire Gracful Shutdown を行う上で必要な &lt;a href=&#34;https://github.com/resque/resque/pull/1007&#34;&gt;GRACEFUL_TERM&lt;/a&gt; というオプション&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Heroku のドキュメントは Resque に関する情報が一部古いか間違っている
+
+&lt;ul&gt;
+&lt;li&gt;少なくとも Rails 5.0.2 では &lt;code&gt;rake resque:work&lt;/code&gt; ではなく &lt;code&gt;rake environment resque:work&lt;/code&gt; としないとエラーで Worker が起動できない&lt;/li&gt;
+&lt;li&gt;SIGTERM から 10 秒後に SIGKILL、と言う説明があるが正しくは 30 秒&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Resque の &lt;code&gt;GRACEFUL_TERM&lt;/code&gt; についてはプルリクエストを送ればいいとして、Heroku のドキュメントの問題についてはどこに報告すべきかよくわからないので知ってる人は教えてください。&lt;/p&gt;
+
+&lt;h3 id=&#34;halfway-graceful-shutdown&#34;&gt;Halfway Graceful Shutdown&lt;/h3&gt;
+
+&lt;p&gt;これは実は以下の記事でほぼ説明されています。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://webtech-walker.com/archive/2012/09/resque_heroku.html&#34;&gt;HerokuでResqueを使うときに優雅に再起動する&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;ただしこれも 4 年半ほど前の記事なので、現時点では以下のようにする必要があるでしょう。&lt;/p&gt;
+
+&lt;h4 id=&#34;worker-の実装&#34;&gt;Worker の実装&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;perform&lt;/code&gt; メソッドの中で &lt;code&gt;Resque::TermException&lt;/code&gt; を &lt;code&gt;rescue&lt;/code&gt; し、完了処理を実装します。&lt;/p&gt;
+
+&lt;p&gt;これについては上記の記事通りで問題ありません。&lt;/p&gt;
+
+&lt;h4 id=&#34;procfile&#34;&gt;Procfile&lt;/h4&gt;
+
+&lt;p&gt;以下のようにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;resque: QUEUE=* TERM_CHILD=1 RESQUE_TERM_TIMEOUT=30 bundle exec rake environment resque:work
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;現在のバージョンでは &lt;code&gt;QUEUE&lt;/code&gt; の指定が必須です。 (もちろん必要に応じて変更する)&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;TERM_CHILD&lt;/code&gt; をセットすると &lt;code&gt;TERM&lt;/code&gt; シグナルを受け取った時の挙動が変わります。&lt;/p&gt;
+
+&lt;p&gt;デフォルトでは &lt;code&gt;TERM&lt;/code&gt; を受け取ると容赦なく Worker である子プロセスに &lt;code&gt;KILL&lt;/code&gt; を送り Immediate Shutdown となります。&lt;/p&gt;
+
+&lt;p&gt;これに対して &lt;code&gt;TERM_CHILD&lt;/code&gt; をセットした場合は以下のような流れになります。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Worker である子プロセスに対して &lt;code&gt;TERM&lt;/code&gt; を送る
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Resque::TermException&lt;/code&gt; が &lt;code&gt;raise&lt;/code&gt; される&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;TERM_TIMEOUT&lt;/code&gt; に指定した秒数の間、子プロセスが終了するのを待つ&lt;/li&gt;
+&lt;li&gt;それでも子プロセスが残っていれば今度は &lt;code&gt;KILL&lt;/code&gt; を送って強制終了する&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;前述の Heroku の制限のため、&lt;code&gt;RESQUE_TERM_TIMEOUT&lt;/code&gt; は 30 秒以下にする必要があります。 (それ以上を指定しても結局 Heroku から &lt;code&gt;KILL&lt;/code&gt; される)&lt;/p&gt;
+
+&lt;h3 id=&#34;resque-pre-shutdown-timeout-について&#34;&gt;&lt;code&gt;RESQUE_PRE_SHUTDOWN_TIMEOUT&lt;/code&gt; について&lt;/h3&gt;
+
+&lt;p&gt;前述の通り未リリースではあるものの、&lt;code&gt;master&lt;/code&gt; ブランチに入っていてそのうち使えるようになると思われるこのオプションについても調べてみました。&lt;/p&gt;
+
+&lt;p&gt;これは &lt;code&gt;TERM_CHILD&lt;/code&gt; をセットしている場合のみに有効なオプションで、子プロセスに &lt;code&gt;TERM&lt;/code&gt; を送る前の待ち時間を秒数で指定することができます。&lt;/p&gt;
+
+&lt;p&gt;つまりこれは &lt;code&gt;Halfway Graceful Shutdown&lt;/code&gt; と &lt;code&gt;Entire Graceful Shutdown&lt;/code&gt; 複合です。&lt;/p&gt;
+
+&lt;p&gt;例えば &lt;code&gt;Procfile&lt;/code&gt; を以下のようにした場合、&lt;code&gt;TERM&lt;/code&gt; を受け取った後の挙動は以下のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;resque: QUEUE=* TERM_CHILD=1 RESQUE_PRE_SHUTDOWN_TIMEOUT=20 RESQUE_TERM_TIMEOUT=10 bundle exec rake environment resque:work
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;子プロセスの処理が完了するまで 20 秒間待つ
+
+&lt;ul&gt;
+&lt;li&gt;この 20 秒間に処理が全て完了すれば Entire Graceful Shutdown&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;子プロセスに &lt;code&gt;TERM&lt;/code&gt; を送る
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Resque::TermException&lt;/code&gt; が &lt;code&gt;raise&lt;/code&gt; される&lt;/li&gt;
+&lt;li&gt;この場合は Halfway Graceful Shutdown&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;子プロセスが終了するまでさらに 10 秒間待つ&lt;/li&gt;
+&lt;li&gt;それでも子プロセスが残っていれば今度は &lt;code&gt;KILL&lt;/code&gt; を送って強制終了する&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;具体的な秒数については実際に動いている Worker の実行時間を元にチューニングするのが良いでしょう。&lt;/p&gt;
+
+&lt;p&gt;いずれにせよ &lt;code&gt;RESQUE_PRE_SHUTDOWN_TIMEOUT&lt;/code&gt; と &lt;code&gt;RESQUE_TERM_TIMEOUT&lt;/code&gt; の合計は 30 以下にする必要があります。&lt;/p&gt;
+
+&lt;h3 id=&#34;entire-graceful-shutdown&#34;&gt;Entire Graceful Shutdown&lt;/h3&gt;
+
+&lt;p&gt;これについては説明されている記事が見つけられなかったので、自分で実際に Heroku で動かしながらわかったことを元に書きます。&lt;/p&gt;
+
+&lt;h4 id=&#34;worker-の実装-1&#34;&gt;Worker の実装&lt;/h4&gt;
+
+&lt;p&gt;Halfway Graceful Shutdown を行わないのであれば、&lt;code&gt;Resque::TermException&lt;/code&gt; の &lt;code&gt;rescue&lt;/code&gt; は不要です。&lt;/p&gt;
+
+&lt;h4 id=&#34;procfile-1&#34;&gt;Procfile&lt;/h4&gt;
+
+&lt;p&gt;以下のようにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;resque: QUEUE=* GRACEFUL_TERM=1 bundle exec rake environment resque:work
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この場合は &lt;code&gt;TERM_CHILD&lt;/code&gt; を指定してはいけません。指定した場合、&lt;code&gt;GRACEFUL_TERM&lt;/code&gt; の設定が&lt;a href=&#34;https://github.com/resque/resque/blob/v1.27.2/lib/resque/worker.rb#L866&#34;&gt;無効果されます&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h4 id=&#34;graceful-term-とは&#34;&gt;&lt;code&gt;GRACEFUL_TERM&lt;/code&gt; とは&lt;/h4&gt;
+
+&lt;p&gt;これは &lt;code&gt;TERM&lt;/code&gt; を受け取った時の処理を (Entire) Graceful Shutdown にするというものです。&lt;/p&gt;
+
+&lt;p&gt;前述の通り今の所ドキュメント化されていないようです。&lt;/p&gt;
+
+&lt;h2 id=&#34;どちらの方法を選ぶべきか&#34;&gt;どちらの方法を選ぶべきか&lt;/h2&gt;
+
+&lt;p&gt;基本的には Halfway Graceful Shutdown を選ぶべきでしょう。&lt;/p&gt;
+
+&lt;p&gt;Heroku では 30 秒制限がある以上、Entire Graceful Shutdown を選ぶとしても、Worker は全て 30 秒で完了できなくてはなりません。通常 1 分かかる処理があったとして、20 秒時点で &lt;code&gt;TERM&lt;/code&gt; を受け取った場合、Entire Graceful Shutdown では最後の 10 秒分の処理を残して強制終了されてしまうからです。&lt;/p&gt;
+
+&lt;p&gt;30 秒間に全てを終えることはできなくても、今やりかけの分だけ綺麗に完了させることはできるかもしれません。&lt;/p&gt;
+
+&lt;p&gt;ただし、Halfway Graceful Shutdown を行うには、前述の通り &lt;code&gt;Resque::TermException&lt;/code&gt; を正しく &lt;code&gt;rescue&lt;/code&gt; するような実装を行わなければなりません。&lt;/p&gt;
+
+&lt;p&gt;全ての Worker が 30 秒もかからないような場合であれば、その実装をサボって Entire Graceful Shutdown で妥協するのも良いでしょう。&lt;/p&gt;
+
+&lt;h2 id=&#34;関連するソースの読み方&#34;&gt;関連するソースの読み方&lt;/h2&gt;
+
+&lt;p&gt;ここに書いてあることは基本的には &lt;code&gt;Resque::Worker&lt;/code&gt; だけ読めば全て書いてあります。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/resque/resque/blob/master/lib/resque/worker.rb&#34;&gt;resque/lib/resque/worker.rb&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Resque は想像していたよりは意外と重厚な感じではなく、比較的読みやすい分量だと思いました。UNIX プロセスについての勉強としても面白いと思うのでオススメです。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Node.js のスタックトレースを控えめにする supress-stack-trace 書いた</title>
@@ -1275,165 +1499,6 @@ SUM: 55
 &lt;p&gt;デフォルトだと &lt;code&gt;/usr/sbin&lt;/code&gt; には &lt;code&gt;$PATH&lt;/code&gt; が通ってないところに注意が必要です。&lt;/p&gt;
 
 &lt;p&gt;実際には &lt;a href=&#34;https://github.com/kazuho/kaztools/blob/master/cronlog&#34;&gt;cronlog&lt;/a&gt; を使うなどしてうまく通知を受け取れるようにしておくのが良いでしょう。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Hugo で作ったサイトを CircleCI で GitHub Pages に自動デプロイ</title>
-      <link>https://blog.yuyat.jp/post/auto-deploy-hugo-to-github-pages-with-circleci/</link>
-      <pubDate>Mon, 19 Sep 2016 10:30:35 +0900</pubDate>
-      
-      <guid>https://blog.yuyat.jp/post/auto-deploy-hugo-to-github-pages-with-circleci/</guid>
-      <description>
-
-&lt;p&gt;Hugo は Jekyll と違って、GitHub Pages に push しても勝手にページ生成はされません。&lt;br /&gt;
-どうにかして自分で Hugo を実行し、それで生成されたファイルを push する必要があります。&lt;br /&gt;
-このブログを構築するにあたって、CircleCI でビルドして自動デプロイする手順がまとまったので公開します。&lt;/p&gt;
-
-&lt;p&gt;なお、このブログはカスタムドメインを使用していますが、それについての説明はこの記事ではしません。&lt;/p&gt;
-
-&lt;h2 id=&#34;前提とする環境&#34;&gt;前提とする環境&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Hugo Ver. 0.16&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-
-&lt;p&gt;以下のような環境・手順で自動デプロイが行われるようにします。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;記事のソースは &lt;code&gt;master&lt;/code&gt; ブランチに push する&lt;/li&gt;
-&lt;li&gt;GitHub Pages 用のブランチには &lt;code&gt;gh-pages&lt;/code&gt; を使う&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;master&lt;/code&gt; ブランチが更新された時に &lt;code&gt;gh-pages&lt;/code&gt; が自動的に更新される&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;セットアップ手順&#34;&gt;セットアップ手順&lt;/h2&gt;
-
-&lt;h3 id=&#34;対象ブランチの設定&#34;&gt;対象ブランチの設定&lt;/h3&gt;
-
-&lt;p&gt;当然ですがリポジトリを準備します。&lt;/p&gt;
-
-&lt;p&gt;そしてリポジトリの Settings から GitHub Pages の Source として &lt;code&gt;gh-pages&lt;/code&gt; を選択します。&lt;/p&gt;
-
-&lt;p&gt;ただし、&lt;code&gt;gh-pages&lt;/code&gt; ブランチがない状態だと選択できないと思うので、その場合は手動でブランチだけ作るか、CircleCI によるデプロイが行われた後で行うと良いでしょう。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/auto-deploy-hugo-to-github-pages-with-circleci/github-setting.png&#34; width=&#34;248&#34; height=&#34;222&#34;&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;デプロイキーの用意&#34;&gt;デプロイキーの用意&lt;/h3&gt;
-
-&lt;p&gt;CircleCI は CI 対象のリポジトリを登録する時に、自動的に対象リポジトリの SSH キーを生成します。&lt;br /&gt;
-が、これは read-only なので、今回の様に CircleCI から GitHub に push したい場合は使えません。&lt;br /&gt;
-なので手動で生成し、登録する必要があります。&lt;/p&gt;
-
-&lt;p&gt;鍵の生成については GitHub のドキュメント等を参照してください。&lt;br /&gt;
-&lt;a href=&#34;https://help.github.com/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/#generating-a-new-ssh-key&#34;&gt;Generating a new SSH key&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;生成したら GitHub リポジトリの Settings -&amp;gt; Deploy keys -&amp;gt; Add deploy key と進み、Key には生成した公開鍵ファイルの中身を貼り付け、Allow write access にチェックを入れてください。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/auto-deploy-hugo-to-github-pages-with-circleci/add-a-deploy-key.png&#34; width=&#34;311&#34; height=&#34;502&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;また、CircleCI 側には秘密鍵を登録します。&lt;br /&gt;
-Project Settings -&amp;gt; SSH Permissions -&amp;gt; Add SSH Key と進み、hostname には github.com、Private Key には秘密鍵の中身を貼り付けてください。&lt;br /&gt;
-これで github.com へのデプロイ時にはこの鍵ファイルが使われるようになります。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/auto-deploy-hugo-to-github-pages-with-circleci/add-an-ssh-key.png&#34; width=&#34;429&#34; height=&#34;289&#34;&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;デプロイスクリプトの用意&#34;&gt;デプロイスクリプトの用意&lt;/h3&gt;
-
-&lt;p&gt;circle.yml は以下のようなものを準備します。&lt;br /&gt;
-&lt;code&gt;master&lt;/code&gt; ブランチが更新された時はデプロイ用のスクリプトを実行するようになっています。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;dependencies:
-  pre:
-  - wget https://github.com/spf13/hugo/releases/download/v0.16/hugo_0.16-1_amd64.deb
-  - sudo dpkg -i hugo_0.16-1_amd64.deb
-
-test:
-  override:
-    - &amp;quot;true&amp;quot;
-
-deployment:
-  production:
-    branch: master
-    commands:
-    - ./scripts/deploy_production.sh
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;デプロイスクリプトは以下のようにします。&lt;br /&gt;
-これを &lt;code&gt;scripts/deploy_production.sh&lt;/code&gt; という名前で保存して、忘れずに &lt;code&gt;chmod +x&lt;/code&gt; しておきましょう。&lt;br /&gt;
-設定部分は環境変数でセットするようにしてあるので、コピペそのままで使えると思います。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/bin/bash -eux
-
-if [ -z &amp;quot;${GIT_USER_NAME}&amp;quot; ]; then
-  echo &amp;quot;Please set an env var GIT_USER_NAME&amp;quot;
-  exit 1
-fi
-
-if [ -z &amp;quot;${GIT_USER_EMAIL}&amp;quot; ]; then
-  echo &amp;quot;Please set an env var GIT_USER_EMAIL&amp;quot;
-  exit 1
-fi
-
-GIT_REPO=&amp;quot;git@github.com:${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git&amp;quot;
-
-git submodule init
-git submodule update
-
-remote=`git ls-remote --heads 2&amp;gt; /dev/null | grep gh-pages || true`
-
-if [ -n &amp;quot;$remote&amp;quot; ]; then
-  git clone -b gh-pages &amp;quot;${GIT_REPO}&amp;quot; public
-  rm -rf public/*
-else
-  git init public
-  cd public
-  git checkout -b gh-pages
-  git remote add origin &amp;quot;${GIT_REPO}&amp;quot;
-  cd ..
-fi
-
-hugo
-cd public
-git config --global user.name &amp;quot;${GIT_USER_NAME}&amp;quot;
-git config --global user.email &amp;quot;${GIT_USER_EMAIL}&amp;quot;
-git add --all
-git commit -m &#39;Update [ci skip]&#39;
-git push -f origin gh-pages
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;環境変数は CircleCI の Project Settings から Environment Variables へと進んで、以下を登録します。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;GIT_USER_NAME&lt;/code&gt;: git commit 時の名前&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;GIT_USER_EMAIL&lt;/code&gt;: git commit 時のメールアドレス&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;いずれも普段使いの Git と同じ設定にするのが良いでしょう。&lt;/p&gt;
-
-&lt;h3 id=&#34;hugo-をセットアップして-git-push&#34;&gt;Hugo をセットアップして git push&lt;/h3&gt;
-
-&lt;p&gt;あとは Hugo のファイルを &lt;code&gt;git push&lt;/code&gt; すれば勝手にデプロイされます。&lt;br /&gt;
-このとき以下の点に注意してください。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;public&lt;/code&gt; ディレクトリは &lt;code&gt;.gitignore&lt;/code&gt; に入れておき、生成されたファイルはコミットしないようにする&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;config.toml&lt;/code&gt; に &lt;code&gt;theme&lt;/code&gt; を設定する
-
-&lt;ul&gt;
-&lt;li&gt;本来コマンドラインオプションで渡すこともできるが、デプロイスクリプト中では指定していないので&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;こうして出来上がったのがこのブログです。&lt;br /&gt;
-リポジトリは公開してあるので、気になる点があればチェックしてみてください。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/blog.yuyat.jp&#34;&gt;https://github.com/yuya-takeyama/blog.yuyat.jp&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Enjoy blogging!&lt;/p&gt;
 </description>
     </item>
     
