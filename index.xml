@@ -6,8 +6,64 @@
     <description>Recent content on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 10 Apr 2017 02:02:59 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 13 Apr 2017 01:14:30 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>MongoMapper で Mass Assignment を自動検出する</title>
+      <link>https://blog.yuyat.jp/post/automatic-mass-assignment-detection-for-mongomapper/</link>
+      <pubDate>Thu, 13 Apr 2017 01:14:30 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/automatic-mass-assignment-detection-for-mongomapper/</guid>
+      <description>
+
+&lt;p&gt;GitHub が &lt;a href=&#34;https://www.infoq.com/jp/news/2012/03/GitHub-Compromised&#34;&gt;Mass Assignment 脆弱性を突かれて&lt;/a&gt;からもう 5 年も経っているんですね。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ActiveRecord&lt;/code&gt; (というか &lt;code&gt;ActiveModel&lt;/code&gt;) では適切に &lt;code&gt;.permit&lt;/code&gt; したパラメータ以外は &lt;code&gt;ActiveModel::ForbiddenAttributesError&lt;/code&gt; が発生するようになっていますが、&lt;code&gt;MongoMapper&lt;/code&gt; ではそうなってなかったので対応させてみました。&lt;/p&gt;
+
+&lt;h2 id=&#34;プラグインの実装&#34;&gt;プラグインの実装&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;ActiveModel&lt;/code&gt; の &lt;a href=&#34;https://apidock.com/rails/ActiveModel/ForbiddenAttributesProtection&#34;&gt;&lt;code&gt;ForbiddenAttributesProtection&lt;/code&gt;&lt;/a&gt; をそのまま利用します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;module MongoMapper
+  module Plugins
+    module ForbiddenAttributesProtection
+      extend ActiveSupport::Concern
+
+      included do
+        include ::ActiveModel::ForbiddenAttributesProtection
+      end
+
+      def attributes=(attrs = {})
+        super sanitize_for_mass_assignment(attrs)
+      end
+    end
+  end
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;利用する&#34;&gt;利用する&lt;/h2&gt;
+
+&lt;p&gt;とりあえず &lt;code&gt;MongoMapper::Document&lt;/code&gt; を &lt;code&gt;include&lt;/code&gt; した全てのクラスに適用するには以下を呼ぶ。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;MongoMapper::Document.plugin(MongoMapper::Plugins::ForbiddenAttributesProtection)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ただし、各クラスが &lt;code&gt;MongoMapper::Document&lt;/code&gt; を &lt;code&gt;include&lt;/code&gt; するのより先に実行されている必要があると思います。&lt;/p&gt;
+
+&lt;p&gt;もしくは個別のクラスに適用する場合は普通に &lt;code&gt;include&lt;/code&gt; でも良いです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;class User
+  include MongoMapper::Document
+  include MongoMapper::Plugins::ForbiddenAttributesProtection
+end
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで、適切に &lt;code&gt;.permit&lt;/code&gt; していない &lt;code&gt;ActionController::Parameters&lt;/code&gt; をセットしたりしようとすると &lt;code&gt;ActiveModel::ForbiddenAttributesError&lt;/code&gt; が発生するようになります。&lt;/p&gt;
+
+&lt;p&gt;もちろん雑に &lt;code&gt;.to_h&lt;/code&gt; したりしたものを渡したりするとそれは検出できないので、そういうのは人間が気づく必要があります。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Heroku で Resque を Graceful Shutdown する</title>
@@ -1388,117 +1444,6 @@ SUM: 55
 &lt;p&gt;HTTPS の場合は &lt;code&gt;proxy_redirect&lt;/code&gt; も設定が必要です。&lt;br /&gt;
 これは例えば &lt;code&gt;https://blog.yuyat.jp/post&lt;/code&gt; のような末尾のスラッシュを省略した URL にアクセスした場合リダイレクトが発生しますが、&lt;br /&gt;
 その時に http にリダイレクトしてしまうのを防ぐために必要です。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Let&#39;s Encrypt の証明書を Ansible と certbot で Nginx にインストール &amp; 自動更新</title>
-      <link>https://blog.yuyat.jp/post/auto-renew-letsencrypt-cert-keys-with-ansible-and-certbot/</link>
-      <pubDate>Mon, 19 Sep 2016 14:12:38 +0900</pubDate>
-      
-      <guid>https://blog.yuyat.jp/post/auto-renew-letsencrypt-cert-keys-with-ansible-and-certbot/</guid>
-      <description>
-
-&lt;p&gt;これも&lt;a href=&#34;https://blog.yuyat.jp/post/brand-new-blog/&#34;&gt;リニューアル&lt;/a&gt;ネタです。&lt;/p&gt;
-
-&lt;h2 id=&#34;やりたいこと&#34;&gt;やりたいこと&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Let&amp;rsquo;s Encrypt の証明書を Ansible でインストールする&lt;/li&gt;
-&lt;li&gt;その後の証明書の更新も自動で行うようにする
-
-&lt;ul&gt;
-&lt;li&gt;その設定もやはり Ansible で行う&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;前提とする環境&#34;&gt;前提とする環境&lt;/h2&gt;
-
-&lt;p&gt;Ubuntu 16.04 だと certbot が apt-get でインストールできますが、それ未満だと &lt;a href=&#34;https://certbot.eff.org/all-instructions/#ubuntu-14-04-trusty-apache&#34;&gt;certbot-auto&lt;/a&gt; というコマンドを手動でインストールする必要があります。&lt;br /&gt;
-中身はほぼ同じだと思いますが、そちらについての説明はしません。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Ubuntu 16.04&lt;/li&gt;
-&lt;li&gt;Ansible 2.1.1.0&lt;/li&gt;
-&lt;li&gt;nginx 1.10.1&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;手順&#34;&gt;手順&lt;/h2&gt;
-
-&lt;h3 id=&#34;certbot-のインストール&#34;&gt;certbot のインストール&lt;/h3&gt;
-
-&lt;p&gt;certbot とは Let&amp;rsquo;s Encrypt の証明書の取得や更新を自動化するためのコマンドラインツールです。&lt;/p&gt;
-
-&lt;p&gt;こんな感じの playbook でインストールします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;- name: install certbot
-  apt: name=letsencrypt state=present update_cache=yes
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;証明書の取得&#34;&gt;証明書の取得&lt;/h3&gt;
-
-&lt;p&gt;certbot は &lt;a href=&#34;https://github.com/letsencrypt/acme-spec&#34;&gt;Automated Certificate Management Environment (ACME)&lt;/a&gt; というプロトコルにより証明書の取得を行います。&lt;br /&gt;
-これは、Let&amp;rsquo;s Encrypt のサーバが証明書を取得しようとしているドメインのある URL にアクセスし、ちゃんとレスポンスを返すことができるかチェックするというものです。&lt;/p&gt;
-
-&lt;p&gt;そのため事前に nginx 等の Web サーバを起動して、インターネットからリーチできる状態にしておく必要があります。&lt;br /&gt;
-(&lt;code&gt;--standalone&lt;/code&gt; オプションを使えば certbot 自身が Web サーバを立ち上げてくれるが、すでに立っている Web サーバを止める必要があるので今回は使いませんでした)&lt;/p&gt;
-
-&lt;p&gt;nginx の設定は以下のようにしておきます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nginx&#34;&gt;server {
-  listen 80;
-  server_name blog.yuyat.jp;
-
-  location /.well-known/ {
-    default_type &amp;quot;text/plain&amp;quot;;
-    root /var/www/html;
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;そして証明書を取得する playbook はこんな感じ。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;- name: obtains cert keys
-  command: letsencrypt certonly --webroot -d blog.yuyat.jp -w /var/www/html --email YOUR_EMAIL@example.com --agree-tos --keep-until-expiring --non-interactive
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;-d&lt;/code&gt;: 取得対象のドメイン&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;-w&lt;/code&gt;: Web サーバのルートディレクトリ (nginx.conf に合わせる)&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;--email&lt;/code&gt;: 自分のメールアドレス&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;--agree-tos&lt;/code&gt;: &lt;a href=&#34;https://letsencrypt.org/repository/&#34;&gt;規約&lt;/a&gt;への同意の意思表示。自動化においては必須のコマンドです。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;--keep-until-expiring&lt;/code&gt;: 証明書取得済みの場合、期限切れでなければ取得を行わない。Ansible で再実行するときのために必要です。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;証明書が取得できたら nginx に証明書の設定を追加します。&lt;br /&gt;
-証明書ファイルはドメイン名に応じたパスに格納されます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;server {
-  listen 443 ssl http2;
-  server_name blog.yuyat.jp;
-
-  ssl_certificate     /etc/letsencrypt/live/blog.yuyat.jp/fullchain.pem;
-  ssl_certificate_key /etc/letsencrypt/live/blog.yuyat.jp/privkey.pem;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;証明書の自動更新&#34;&gt;証明書の自動更新&lt;/h3&gt;
-
-&lt;p&gt;certbot には自動更新のためのサブコマンドも用意されています。&lt;br /&gt;
-これを cron に登録しておくことで、証明書の有効期限を気にする必要がなくなります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;- name: auto update cert keys
-  cron:
-    name: letsencrypt
-    cron_file: letsencrypt
-    user: root
-    special_time: daily
-    job: sh -c &#39;letsencrypt renew &amp;amp;&amp;amp; /usr/sbin/service nginx reload&#39; &amp;gt;&amp;gt; /var/log/letsencrypt/cron.log
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;デフォルトだと &lt;code&gt;/usr/sbin&lt;/code&gt; には &lt;code&gt;$PATH&lt;/code&gt; が通ってないところに注意が必要です。&lt;/p&gt;
-
-&lt;p&gt;実際には &lt;a href=&#34;https://github.com/kazuho/kaztools/blob/master/cronlog&#34;&gt;cronlog&lt;/a&gt; を使うなどしてうまく通知を受け取れるようにしておくのが良いでしょう。&lt;/p&gt;
 </description>
     </item>
     
