@@ -6,8 +6,65 @@
     <description>Recent content in Posts on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 13 Apr 2017 01:14:30 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 12 May 2017 00:46:00 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>peco で S3 のバケット・ファイル一覧を見るやつを作ったらめちゃくちゃ便利なのができた</title>
+      <link>https://blog.yuyat.jp/post/peco-s3.zsh/</link>
+      <pubDate>Fri, 12 May 2017 00:46:00 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/peco-s3.zsh/</guid>
+      <description>
+
+&lt;p&gt;釣りっぽいタイトルにしてしまったけどまぁ主観なので&amp;hellip;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/peco-s3.zsh&#34;&gt;yuya-takeyama/peco-s3.zsh&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;これがどんなものなのかはこのスクリーンキャストを見てもらうのが一番良いでしょう。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/peco-s3.zsh/screenshot.gif&#34; alt=&#34;Screenshot&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;機能&#34;&gt;機能&lt;/h2&gt;
+
+&lt;h3 id=&#34;バケットの一覧化&#34;&gt;バケットの一覧化&lt;/h3&gt;
+
+&lt;p&gt;このスクリーンキャストではバケット名を指定してその中身を一覧化していますが、引数を省略した場合はバケットの一覧が表示され、選択することでさらにその中のファイルを一覧化することができます。&lt;/p&gt;
+
+&lt;h3 id=&#34;元の一覧に戻る&#34;&gt;元の一覧に戻る&lt;/h3&gt;
+
+&lt;p&gt;バケット・ディレクトリの中に移動したあとで Esc を押すと元のディレクトリに戻ることができます。&lt;/p&gt;
+
+&lt;h3 id=&#34;peco-によるフィルタ&#34;&gt;peco によるフィルタ&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/peco/peco&#34;&gt;peco&lt;/a&gt; をベースとしているので、文字列で対象をフィルタしながらファイル・ディレクトリを選択することができます。&lt;/p&gt;
+
+&lt;h3 id=&#34;s3cat-コマンドの生成&#34;&gt;s3cat コマンドの生成&lt;/h3&gt;
+
+&lt;p&gt;ファイルを選択すると、そのファイルを出力するための &lt;code&gt;s3cat&lt;/code&gt; コマンドがプロンプトに出力されます。&lt;/p&gt;
+
+&lt;p&gt;そのまま実行すればファイルを出力できますし、パイプでつないで別のコマンドに繋げていくこともできます。&lt;/p&gt;
+
+&lt;h3 id=&#34;ファイルの再帰的な一覧化&#34;&gt;ファイルの再帰的な一覧化&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;--recursive&lt;/code&gt; (&lt;code&gt;-r&lt;/code&gt;) オプションを使うことで、ディレクトリ以下のファイルも再帰的に取得し、全て一覧化することができます。&lt;/p&gt;
+
+&lt;h2 id=&#34;使い方-インストール手順&#34;&gt;使い方・インストール手順&lt;/h2&gt;
+
+&lt;p&gt;GitHub の &lt;code&gt;README.md&lt;/code&gt; を参照してください。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/peco-s3.zsh&#34;&gt;yuya-takeyama/peco-s3.zsh&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;終わりに&#34;&gt;終わりに&lt;/h2&gt;
+
+&lt;p&gt;zsh というかシェルスクリプトはあんまり得意じゃないので、コード的には結構拙い感じだと思います。&lt;br /&gt;
+良ければ Pull Request ください。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>MongoMapper で Mass Assignment を自動検出する</title>
@@ -1362,88 +1419,6 @@ SUM: 55
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;または &lt;a href=&#34;https://github.com/yuya-takeyama/tee2err/releases&#34;&gt;releases&lt;/a&gt; にビルド済みバイナリも置いてます。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>GitHub Pages を nginx のリバースプロキシ越しに配信する</title>
-      <link>https://blog.yuyat.jp/post/serving-github-pages-through-reverse-proxy/</link>
-      <pubDate>Sun, 25 Sep 2016 17:57:40 +0900</pubDate>
-      
-      <guid>https://blog.yuyat.jp/post/serving-github-pages-through-reverse-proxy/</guid>
-      <description>
-
-&lt;p&gt;このブログは&lt;a href=&#34;https://blog.yuyat.jp/post/auto-deploy-hugo-to-github-pages-with-circleci/&#34;&gt;以前の記事&lt;/a&gt;にも書いた通り、&lt;a href=&#34;https://pages.github.com/&#34;&gt;GitHub Pages&lt;/a&gt; から配信しています。&lt;/p&gt;
-
-&lt;p&gt;そしてさらに、前段に nginx のリバースプロキシを置いた構成になってます。&lt;/p&gt;
-
-&lt;h2 id=&#34;何故リバースプロキシを利用するか&#34;&gt;何故リバースプロキシを利用するか&lt;/h2&gt;
-
-&lt;p&gt;はっきり言って普通に考えたら無駄感はありますが、良い点をいくつか挙げてみます。&lt;/p&gt;
-
-&lt;h3 id=&#34;zone-apex-domain-を使用することができる&#34;&gt;Zone apex domain を使用することができる&lt;/h3&gt;
-
-&lt;p&gt;GitHub Pages は CNAME による Custom domain に対応していますが、CNAME では通常 Zone apex domain に対応することができません。&lt;/p&gt;
-
-&lt;p&gt;リバースプロキシを利用することで、ドメインの A レコードにリバースプロキシを指定し、その upstream に GitHub Pages の URL を指定することで、対応することができます。&lt;/p&gt;
-
-&lt;p&gt;(このブログはご覧の通り Zone apex domain ではないですが、そのうちそっちにもページを作るつもりです)&lt;/p&gt;
-
-&lt;h3 id=&#34;custom-domain-でも-https-を使用することができる&#34;&gt;Custom domain でも HTTPS を使用することができる&lt;/h3&gt;
-
-&lt;p&gt;GitHub Pages はデフォルトでは USERNAME.github.io ドメインが割り当てられ、HTTPS で配信されます。&lt;/p&gt;
-
-&lt;p&gt;ですが、CNAME を使った場合は HTTP となってしまい、HTTPS を利用する方法は GitHub からは提供されていません。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://blog.yuyat.jp/post/auto-renew-letsencrypt-cert-keys-with-ansible-and-certbot/&#34;&gt;Let&amp;rsquo;s Encrypt&lt;/a&gt; を使えばセットアップは簡単です。&lt;/p&gt;
-
-&lt;h3 id=&#34;アクセスログをちゃんと取得できる&#34;&gt;アクセスログをちゃんと取得できる&lt;/h3&gt;
-
-&lt;p&gt;GitHub でもリポジトリの Graphs -&amp;gt; Traffic を見るとある程度わかりますが、nginx で好きなログを残せるようになります。&lt;/p&gt;
-
-&lt;h2 id=&#34;設定手順&#34;&gt;設定手順&lt;/h2&gt;
-
-&lt;h3 id=&#34;github-上で-custom-domain-の設定をする&#34;&gt;GitHub 上で Custom domain の設定をする&lt;/h3&gt;
-
-&lt;p&gt;これは必須というわけではないですが、やった方がいいと思うのでその前提で進めます。&lt;br /&gt;
-設定しない場合、以降の設定手順も微妙に違ってくるので注意が必要です。&lt;/p&gt;
-
-&lt;p&gt;Custom domain はいつからか Web の UI 上から設定が可能になっていたので、そこからやるのがお手軽です。&lt;br /&gt;
-リポジトリの Settings -&amp;gt; Options からできます。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/serving-github-pages-through-reverse-proxy/custom-domain.png&#34; width=&#34;349&#34; height=&#34;125&#34;&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;nginx-の設定&#34;&gt;nginx の設定&lt;/h3&gt;
-
-&lt;p&gt;HTTPS で配信する場合、おそらくこれが最小限の設定です。&lt;br /&gt;
-(実際は &lt;code&gt;X-Forwarded-For&lt;/code&gt; とかも指定しているけど多分特に影響していない)&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-nginx&#34;&gt;server {
-  listen 443 ssl ;
-  server_name blog.yuyat.jp;
-
-  ssl_certificate     /etc/letsencrypt/live/blog.yuyat.jp/fullchain.pem;
-  ssl_certificate_key /etc/letsencrypt/live/blog.yuyat.jp/privkey.pem;
-
-  location / {
-    proxy_pass https://yuya-takeyama.github.io;
-
-    proxy_redirect http://blog.yuyat.jp https://blog.yuyat.jp;
-
-    proxy_set_header Host $host;
-  }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;注意する必要があるのは &lt;code&gt;proxy_pass&lt;/code&gt; の URL です。&lt;br /&gt;
-このブログの GitHub Pages 上の URL は本来 &lt;code&gt;https://yuya-takeyama.github.io/blog.yuyat.jp/&lt;/code&gt; ですが、リポジトリ名の部分は指定しません。&lt;/p&gt;
-
-&lt;p&gt;その変わり、リポジトリ名は &lt;code&gt;proxy_set_header&lt;/code&gt; で &lt;code&gt;Host&lt;/code&gt; として指定します。&lt;br /&gt;
-この場合はリポジトリ名がそのままドメイン名になっているので &lt;code&gt;$host&lt;/code&gt; を使っています。&lt;/p&gt;
-
-&lt;p&gt;HTTPS の場合は &lt;code&gt;proxy_redirect&lt;/code&gt; も設定が必要です。&lt;br /&gt;
-これは例えば &lt;code&gt;https://blog.yuyat.jp/post&lt;/code&gt; のような末尾のスラッシュを省略した URL にアクセスした場合リダイレクトが発生しますが、&lt;br /&gt;
-その時に http にリダイレクトしてしまうのを防ぐために必要です。&lt;/p&gt;
 </description>
     </item>
     
