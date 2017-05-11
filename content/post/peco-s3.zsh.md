@@ -1,7 +1,7 @@
 +++
 date = "2017-05-12T00:46:00+09:00"
 title = "peco で S3 のバケット・ファイル一覧を見るやつを作ったらめちゃくちゃ便利なのができた"
-images = ["/images/peco-s3.zsh/screenshot.gif"]
+images = ["/images/peco-s3.zsh/peco-s3.png"]
 +++
 
 釣りっぽいタイトルにしてしまったけどまぁ主観なので...
