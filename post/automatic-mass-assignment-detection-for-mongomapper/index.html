@@ -26,6 +26,7 @@
 <meta property="og:description" content="GitHub が Mass Assignment 脆弱性を突かれてからもう 5 年も経っているんですね。
 
 ActiveRecord (というか ActiveModel) では適切に .permit したパラメータ以外は ActiveModel::ForbiddenAttributesError が発生するようになっていますが、MongoMapper ではそうなってなかったので対応させてみました。
+
 " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.yuyat.jp/post/automatic-mass-assignment-detection-for-mongomapper/" />
@@ -88,11 +89,11 @@ ActiveRecord (というか ActiveModel) では適切に .permit したパラメ�
 
     </div>
     <div class="post-content">
-      
-
-<p>GitHub が <a href="https://www.infoq.com/jp/news/2012/03/GitHub-Compromised">Mass Assignment 脆弱性を突かれて</a>からもう 5 年も経っているんですね。</p>
+      <p>GitHub が <a href="https://www.infoq.com/jp/news/2012/03/GitHub-Compromised">Mass Assignment 脆弱性を突かれて</a>からもう 5 年も経っているんですね。</p>
 
 <p><code>ActiveRecord</code> (というか <code>ActiveModel</code>) では適切に <code>.permit</code> したパラメータ以外は <code>ActiveModel::ForbiddenAttributesError</code> が発生するようになっていますが、<code>MongoMapper</code> ではそうなってなかったので対応させてみました。</p>
+
+<p></p>
 
 <h2 id="プラグインの実装">プラグインの実装</h2>
 
@@ -135,10 +136,9 @@ end
 <p>これで、適切に <code>.permit</code> していない <code>ActionController::Parameters</code> をセットしたりしようとすると <code>ActiveModel::ForbiddenAttributesError</code> が発生するようになります。</p>
 
 <p>もちろん雑に <code>.to_h</code> したりしたものを渡したりするとそれは検出できないので、そういうのは人間が気づく必要があります。</p>
-
     </div>
     <div class="post-footer">
-      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 19 Articles →</a>
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 20 Articles →</a>
 
     </div>
     
@@ -188,7 +188,7 @@ end
           <footer>
 
 &copy; 2015.
-Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+Built with <a href="http://gohugo.io/">Hugo</a> (0.31.1) and
 <a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
 
 </footer>

@@ -26,6 +26,7 @@
 <meta property="og:description" content="このブログは以前の記事にも書いた通り、GitHub Pages から配信しています。
 
 そしてさらに、前段に nginx のリバースプロキシを置いた構成になってます。
+
 " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.yuyat.jp/post/serving-github-pages-through-reverse-proxy/" />
@@ -88,11 +89,11 @@
 
     </div>
     <div class="post-content">
-      
-
-<p>このブログは<a href="/post/auto-deploy-hugo-to-github-pages-with-circleci/">以前の記事</a>にも書いた通り、<a href="https://pages.github.com/">GitHub Pages</a> から配信しています。</p>
+      <p>このブログは<a href="/post/auto-deploy-hugo-to-github-pages-with-circleci/">以前の記事</a>にも書いた通り、<a href="https://pages.github.com/">GitHub Pages</a> から配信しています。</p>
 
 <p>そしてさらに、前段に nginx のリバースプロキシを置いた構成になってます。</p>
+
+<p></p>
 
 <h2 id="何故リバースプロキシを利用するか">何故リバースプロキシを利用するか</h2>
 
@@ -161,10 +162,9 @@
 <p>HTTPS の場合は <code>proxy_redirect</code> も設定が必要です。<br />
 これは例えば <code>https://blog.yuyat.jp/post</code> のような末尾のスラッシュを省略した URL にアクセスした場合リダイレクトが発生しますが、<br />
 その時に http にリダイレクトしてしまうのを防ぐために必要です。</p>
-
     </div>
     <div class="post-footer">
-      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 19 Articles →</a>
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 20 Articles →</a>
 
     </div>
     
@@ -214,7 +214,7 @@
           <footer>
 
 &copy; 2015.
-Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+Built with <a href="http://gohugo.io/">Hugo</a> (0.31.1) and
 <a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
 
 </footer>

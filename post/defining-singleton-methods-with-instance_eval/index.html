@@ -24,6 +24,7 @@
 <meta property="fb:app_id" content="285547814816502" />
 <meta property="og:title" content="instance_eval で特異メソッドを定義する" />
 <meta property="og:description" content="最近 Flagship という機能フラグを Ruby の言語内 DSL で定義する gem を作っていて、その中で出てきた DSL 定義パターンっぽいものをメモ。
+
 " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.yuyat.jp/post/defining-singleton-methods-with-instance_eval/" />
@@ -86,9 +87,9 @@
 
     </div>
     <div class="post-content">
-      
+      <p>最近 <a href="https://github.com/yuya-takeyama/flagship">Flagship</a> という機能フラグを Ruby の言語内 DSL で定義する gem を作っていて、その中で出てきた DSL 定義パターンっぽいものをメモ。</p>
 
-<p>最近 <a href="https://github.com/yuya-takeyama/flagship">Flagship</a> という機能フラグを Ruby の言語内 DSL で定義する gem を作っていて、その中で出てきた DSL 定義パターンっぽいものをメモ。</p>
+<p></p>
 
 <h2 id="特異メソッド">特異メソッド</h2>
 
@@ -143,10 +144,9 @@ foo2.bar
 <p>このように最初の <code>foo</code> では <code>#bar</code> を呼び出すことはできましたが、別オブジェクトである <code>foo2</code> に対しては呼び出せないので、<code>Foo</code> クラスのインスタンスメソッドではなく <code>foo</code> の特異メソッドであることがわかります。</p>
 
 <h2 id="dsl-に応用する">DSL に応用する</h2>
-
     </div>
     <div class="post-footer">
-      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 19 Articles →</a>
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 20 Articles →</a>
 
     </div>
     
@@ -196,7 +196,7 @@ foo2.bar
           <footer>
 
 &copy; 2015.
-Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+Built with <a href="http://gohugo.io/">Hugo</a> (0.31.1) and
 <a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
 
 </footer>

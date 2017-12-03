@@ -29,6 +29,7 @@
 Mackerel はホスト数に応じた課金を行っていて、5 ホストまでは無料だが、コンテナまで追加してしまうとすぐにその枠を溢れてしまう。
 
 というわけで簡単な仕組みを自分で用意いてみた。
+
 " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.yuyat.jp/post/visualize-docker-metrics-with-redash/" />
@@ -95,14 +96,14 @@ Mackerel はホスト数に応じた課金を行っていて、5 ホストまで
 
     </div>
     <div class="post-content">
-      
-
-<p>しばらく前から <a href="http://dokku.viewdocs.io/dokku/">Dokku</a> という Docker ベースの Heroku ライクな PaaS 基盤を趣味で運用していて、その中で旧ブログの WordPress や 自分用のツールなんかを動かしたりしている。</p>
+      <p>しばらく前から <a href="http://dokku.viewdocs.io/dokku/">Dokku</a> という Docker ベースの Heroku ライクな PaaS 基盤を趣味で運用していて、その中で旧ブログの WordPress や 自分用のツールなんかを動かしたりしている。</p>
 
 <p>サーバのメトリクス収集には <a href="https://mackerel.io/">Mackerel</a> を利用しているが、Docker コンテナ単位での計測は行っていなかった。<br />
 Mackerel はホスト数に応じた課金を行っていて、5 ホストまでは無料だが、コンテナまで追加してしまうとすぐにその枠を溢れてしまう。</p>
 
 <p>というわけで簡単な仕組みを自分で用意いてみた。</p>
+
+<p></p>
 
 <h2 id="できたもの">できたもの</h2>
 
@@ -223,10 +224,9 @@ ORDER BY
 <h2 id="まとめ">まとめ</h2>
 
 <p>グラフ化した結果、メモリを一番使っているのは Re:dash の Worker だということがわかった。</p>
-
     </div>
     <div class="post-footer">
-      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 19 Articles →</a>
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 20 Articles →</a>
 
     </div>
     
@@ -276,7 +276,7 @@ ORDER BY
           <footer>
 
 &copy; 2015.
-Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+Built with <a href="http://gohugo.io/">Hugo</a> (0.31.1) and
 <a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
 
 </footer>

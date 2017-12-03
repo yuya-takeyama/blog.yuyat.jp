@@ -7,7 +7,9 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Fri, 12 May 2017 00:46:00 +0900</lastBuildDate>
-    <atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml" />
+    
+	<atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>peco で S3 のバケット・ファイル一覧を見るやつを作ったらめちゃくちゃ便利なのができた</title>
@@ -15,55 +17,13 @@
       <pubDate>Fri, 12 May 2017 00:46:00 +0900</pubDate>
       
       <guid>https://blog.yuyat.jp/post/peco-s3.zsh/</guid>
-      <description>
-
-&lt;p&gt;釣りっぽいタイトルにしてしまったけどまぁ主観なので&amp;hellip;&lt;/p&gt;
+      <description>&lt;p&gt;釣りっぽいタイトルにしてしまったけどまぁ主観なので&amp;hellip;&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/peco-s3.zsh&#34;&gt;yuya-takeyama/peco-s3.zsh&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;これがどんなものなのかはこのスクリーンキャストを見てもらうのが一番良いでしょう。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/peco-s3.zsh/screenshot.gif&#34; alt=&#34;Screenshot&#34; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;機能&#34;&gt;機能&lt;/h2&gt;
-
-&lt;h3 id=&#34;バケットの一覧化&#34;&gt;バケットの一覧化&lt;/h3&gt;
-
-&lt;p&gt;このスクリーンキャストではバケット名を指定してその中身を一覧化していますが、引数を省略した場合はバケットの一覧が表示され、選択することでさらにその中のファイルを一覧化することができます。&lt;/p&gt;
-
-&lt;h3 id=&#34;元の一覧に戻る&#34;&gt;元の一覧に戻る&lt;/h3&gt;
-
-&lt;p&gt;バケット・ディレクトリの中に移動したあとで Esc を押すと元のディレクトリに戻ることができます。&lt;/p&gt;
-
-&lt;h3 id=&#34;peco-によるフィルタ&#34;&gt;peco によるフィルタ&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/peco/peco&#34;&gt;peco&lt;/a&gt; をベースとしているので、文字列で対象をフィルタしながらファイル・ディレクトリを選択することができます。&lt;/p&gt;
-
-&lt;h3 id=&#34;s3cat-コマンドの生成&#34;&gt;s3cat コマンドの生成&lt;/h3&gt;
-
-&lt;p&gt;ファイルを選択すると、そのファイルを出力するための &lt;code&gt;s3cat&lt;/code&gt; コマンドがプロンプトに出力されます。&lt;/p&gt;
-
-&lt;p&gt;そのまま実行すればファイルを出力できますし、パイプでつないで別のコマンドに繋げていくこともできます。&lt;/p&gt;
-
-&lt;h3 id=&#34;ファイルの再帰的な一覧化&#34;&gt;ファイルの再帰的な一覧化&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;--recursive&lt;/code&gt; (&lt;code&gt;-r&lt;/code&gt;) オプションを使うことで、ディレクトリ以下のファイルも再帰的に取得し、全て一覧化することができます。&lt;/p&gt;
-
-&lt;h2 id=&#34;使い方-インストール手順&#34;&gt;使い方・インストール手順&lt;/h2&gt;
-
-&lt;p&gt;GitHub の &lt;code&gt;README.md&lt;/code&gt; を参照してください。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/peco-s3.zsh&#34;&gt;yuya-takeyama/peco-s3.zsh&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;終わりに&#34;&gt;終わりに&lt;/h2&gt;
-
-&lt;p&gt;zsh というかシェルスクリプトはあんまり得意じゃないので、コード的には結構拙い感じだと思います。&lt;br /&gt;
-良ければ Pull Request ください。&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -72,54 +32,11 @@
       <pubDate>Thu, 13 Apr 2017 01:14:30 +0900</pubDate>
       
       <guid>https://blog.yuyat.jp/post/automatic-mass-assignment-detection-for-mongomapper/</guid>
-      <description>
-
-&lt;p&gt;GitHub が &lt;a href=&#34;https://www.infoq.com/jp/news/2012/03/GitHub-Compromised&#34;&gt;Mass Assignment 脆弱性を突かれて&lt;/a&gt;からもう 5 年も経っているんですね。&lt;/p&gt;
+      <description>&lt;p&gt;GitHub が &lt;a href=&#34;https://www.infoq.com/jp/news/2012/03/GitHub-Compromised&#34;&gt;Mass Assignment 脆弱性を突かれて&lt;/a&gt;からもう 5 年も経っているんですね。&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;ActiveRecord&lt;/code&gt; (というか &lt;code&gt;ActiveModel&lt;/code&gt;) では適切に &lt;code&gt;.permit&lt;/code&gt; したパラメータ以外は &lt;code&gt;ActiveModel::ForbiddenAttributesError&lt;/code&gt; が発生するようになっていますが、&lt;code&gt;MongoMapper&lt;/code&gt; ではそうなってなかったので対応させてみました。&lt;/p&gt;
 
-&lt;h2 id=&#34;プラグインの実装&#34;&gt;プラグインの実装&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;ActiveModel&lt;/code&gt; の &lt;a href=&#34;https://apidock.com/rails/ActiveModel/ForbiddenAttributesProtection&#34;&gt;&lt;code&gt;ForbiddenAttributesProtection&lt;/code&gt;&lt;/a&gt; をそのまま利用します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;module MongoMapper
-  module Plugins
-    module ForbiddenAttributesProtection
-      extend ActiveSupport::Concern
-
-      included do
-        include ::ActiveModel::ForbiddenAttributesProtection
-      end
-
-      def attributes=(attrs = {})
-        super sanitize_for_mass_assignment(attrs)
-      end
-    end
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;利用する&#34;&gt;利用する&lt;/h2&gt;
-
-&lt;p&gt;とりあえず &lt;code&gt;MongoMapper::Document&lt;/code&gt; を &lt;code&gt;include&lt;/code&gt; した全てのクラスに適用するには以下を呼ぶ。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;MongoMapper::Document.plugin(MongoMapper::Plugins::ForbiddenAttributesProtection)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ただし、各クラスが &lt;code&gt;MongoMapper::Document&lt;/code&gt; を &lt;code&gt;include&lt;/code&gt; するのより先に実行されている必要があると思います。&lt;/p&gt;
-
-&lt;p&gt;もしくは個別のクラスに適用する場合は普通に &lt;code&gt;include&lt;/code&gt; でも良いです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;class User
-  include MongoMapper::Document
-  include MongoMapper::Plugins::ForbiddenAttributesProtection
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これで、適切に &lt;code&gt;.permit&lt;/code&gt; していない &lt;code&gt;ActionController::Parameters&lt;/code&gt; をセットしたりしようとすると &lt;code&gt;ActiveModel::ForbiddenAttributesError&lt;/code&gt; が発生するようになります。&lt;/p&gt;
-
-&lt;p&gt;もちろん雑に &lt;code&gt;.to_h&lt;/code&gt; したりしたものを渡したりするとそれは検出できないので、そういうのは人間が気づく必要があります。&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -128,222 +45,11 @@ end
       <pubDate>Mon, 10 Apr 2017 02:02:59 +0900</pubDate>
       
       <guid>https://blog.yuyat.jp/post/graceful-shutdown-resque-in-heroku/</guid>
-      <description>
-
-&lt;p&gt;Heroku で Resque を動かす場合、何も考えないでセットアップすると、デプロイによるプロセスの再起動時や、Dyno のスケールダウン時に Worker プロセスが強制終了され、&lt;code&gt;Resque::DirtyExit&lt;/code&gt; としてエラーになってしまいます。&lt;/p&gt;
+      <description>&lt;p&gt;Heroku で Resque を動かす場合、何も考えないでセットアップすると、デプロイによるプロセスの再起動時や、Dyno のスケールダウン時に Worker プロセスが強制終了され、&lt;code&gt;Resque::DirtyExit&lt;/code&gt; としてエラーになってしまいます。&lt;/p&gt;
 
 &lt;p&gt;これを避けるために正しく &lt;strong&gt;Graceful Shutdown&lt;/strong&gt; する方法について調べてみました。&lt;/p&gt;
 
-&lt;h2 id=&#34;前提とするバージョン&#34;&gt;前提とするバージョン&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Ruby 2.4.1&lt;/li&gt;
-&lt;li&gt;Rails 5.0.2&lt;/li&gt;
-&lt;li&gt;Resque 1.27.2&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;graceful-shutdown-とは-この記事における定義&#34;&gt;Graceful Shutdown とは (この記事における定義)&lt;/h2&gt;
-
-&lt;p&gt;厳密な定義を知っているわけではないですが、この記事では以下のような定義で話を進めます。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Graceful Shutdown: 中途半端なデータが残らないよう、行儀よくプロセスを終了する&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;さらにこれを細分化して、この記事では以下のように呼ぶことにします。これらは私の造語で、全く一般的でない呼び方です。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Halfway Graceful Shutdown: やりかけの処理に完了処理を行ってから全体の途中で処理を終了する&lt;/li&gt;
-&lt;li&gt;Entire Graceful Shutdown: すべての処理が完了してから終了する&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;例えば、100 件のデータを処理する Worker があり、50 件目を行っている途中で終了のシグナルを受け取った場合、その 50 件目まで正しくやりきったタイミングで終了するのが &lt;strong&gt;Halfway Graceful Shutdown&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;そして、50 件目の段階で終了のシグナルを受け取っても、100 件すべてをやりきった上で終了するのが &lt;strong&gt;Entire Graceful Shutdown&lt;/strong&gt; となります。&lt;/p&gt;
-
-&lt;p&gt;これに対して、いきなり終了してしまうことをここでは &lt;strong&gt;Immediate Shutdown&lt;/strong&gt; と呼ぶことにします。
-これも一般的な用語なのかはわからないですが、検索した感じではこういう用語を使っているドキュメントもいくつか見つかりました。&lt;/p&gt;
-
-&lt;h2 id=&#34;resque-における-graceful-shutdown&#34;&gt;Resque における Graceful Shutdown&lt;/h2&gt;
-
-&lt;p&gt;Resque では Graceful Shutdown を行う方法として、QUIT シグナルによる方法が提供されています。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/resque/resque#signals&#34;&gt;resque/resque: Signals&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;つまり Resque のプロセス ID に対して以下のようなコマンドを実行すれば良いことになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ kill -QUIT PID
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;なお、&lt;code&gt;QUIT&lt;/code&gt; を受け取った時の挙動は、この記事の定義で言えば Entire Graceful Shutdown です。&lt;/p&gt;
-
-&lt;h2 id=&#34;heroku-で-graceful-shutdown-を行う際の問題点&#34;&gt;Heroku で Graceful Shutdown を行う際の問題点&lt;/h2&gt;
-
-&lt;p&gt;Heroku のような PaaS では任意の UNIX プロセスに対して任意のシグナルを送ることはできないことが一般的でしょう。 (少なくとも Heorku ではできません)&lt;/p&gt;
-
-&lt;p&gt;それでいて、以下のような場合は &lt;code&gt;TERM&lt;/code&gt; シグナルが送信されます。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;デプロイの実行による Dyno の再起動&lt;/li&gt;
-&lt;li&gt;Dyno のスケールダウン&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Heroku ではこれらの場合、まずは &lt;code&gt;TERM&lt;/code&gt; シグナルが送られ、それでもプロセスが残っている場合は 30 秒後に &lt;code&gt;KILL&lt;/code&gt; シグナルが送られて強制終了となります。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://devcenter.heroku.com/articles/error-codes#r12-exit-timeout&#34;&gt;Heroku Error Codes: R12 - Exit Timeout&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;そして &lt;code&gt;TERM&lt;/code&gt; が送られた場合の Resque のデフォルトの挙動は Immediate Shutdown です。&lt;/p&gt;
-
-&lt;h2 id=&#34;heroku-で-resque-を-graceful-shutdown-する&#34;&gt;Heroku で Resque を Graceful Shutdown する&lt;/h2&gt;
-
-&lt;p&gt;実は &lt;a href=&#34;https://github.com/resque/resque#resque&#34;&gt;Resque の README&lt;/a&gt; や &lt;a href=&#34;https://devcenter.heroku.com/articles/queuing-ruby-resque#process-options&#34;&gt;Heroku のドキュメント&lt;/a&gt;にもいろいろ説明はあるんですが、以下のような理由で、一読しただけ正しく理解するのは難しいと思いました。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Resque の &lt;code&gt;master&lt;/code&gt; ブランチの README に書いてある内容の一部は現状の最新版 (&lt;code&gt;v1.27.2&lt;/code&gt;) では使えないのでややこしい
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/resque/resque/pull/1514&#34;&gt;&lt;code&gt;RESQUE_PRE_SHUTDOWN_TIMEOUT&lt;/code&gt;&lt;/a&gt; というオプションはまだリリースされていない&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Resque のドキュメントには記載されていないが有用なオプションがある
-
-&lt;ul&gt;
-&lt;li&gt;Entire Gracful Shutdown を行う上で必要な &lt;a href=&#34;https://github.com/resque/resque/pull/1007&#34;&gt;GRACEFUL_TERM&lt;/a&gt; というオプション&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Heroku のドキュメントは Resque に関する情報が一部古いか間違っている
-
-&lt;ul&gt;
-&lt;li&gt;少なくとも Rails 5.0.2 では &lt;code&gt;rake resque:work&lt;/code&gt; ではなく &lt;code&gt;rake environment resque:work&lt;/code&gt; としないとエラーで Worker が起動できない&lt;/li&gt;
-&lt;li&gt;SIGTERM から 10 秒後に SIGKILL、と言う説明があるが正しくは 30 秒&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Resque の &lt;code&gt;GRACEFUL_TERM&lt;/code&gt; についてはプルリクエストを送ればいいとして、Heroku のドキュメントの問題についてはどこに報告すべきかよくわからないので知ってる人は教えてください。&lt;/p&gt;
-
-&lt;h3 id=&#34;halfway-graceful-shutdown&#34;&gt;Halfway Graceful Shutdown&lt;/h3&gt;
-
-&lt;p&gt;これは実は以下の記事でほぼ説明されています。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://webtech-walker.com/archive/2012/09/resque_heroku.html&#34;&gt;HerokuでResqueを使うときに優雅に再起動する&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;ただしこれも 4 年半ほど前の記事なので、現時点では以下のようにする必要があるでしょう。&lt;/p&gt;
-
-&lt;h4 id=&#34;worker-の実装&#34;&gt;Worker の実装&lt;/h4&gt;
-
-&lt;p&gt;&lt;code&gt;perform&lt;/code&gt; メソッドの中で &lt;code&gt;Resque::TermException&lt;/code&gt; を &lt;code&gt;rescue&lt;/code&gt; し、完了処理を実装します。&lt;/p&gt;
-
-&lt;p&gt;これについては上記の記事通りで問題ありません。&lt;/p&gt;
-
-&lt;h4 id=&#34;procfile&#34;&gt;Procfile&lt;/h4&gt;
-
-&lt;p&gt;以下のようにします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;resque: QUEUE=* TERM_CHILD=1 RESQUE_TERM_TIMEOUT=30 bundle exec rake environment resque:work
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;現在のバージョンでは &lt;code&gt;QUEUE&lt;/code&gt; の指定が必須です。 (もちろん必要に応じて変更する)&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;TERM_CHILD&lt;/code&gt; をセットすると &lt;code&gt;TERM&lt;/code&gt; シグナルを受け取った時の挙動が変わります。&lt;/p&gt;
-
-&lt;p&gt;デフォルトでは &lt;code&gt;TERM&lt;/code&gt; を受け取ると容赦なく Worker である子プロセスに &lt;code&gt;KILL&lt;/code&gt; を送り Immediate Shutdown となります。&lt;/p&gt;
-
-&lt;p&gt;これに対して &lt;code&gt;TERM_CHILD&lt;/code&gt; をセットした場合は以下のような流れになります。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Worker である子プロセスに対して &lt;code&gt;TERM&lt;/code&gt; を送る
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;Resque::TermException&lt;/code&gt; が &lt;code&gt;raise&lt;/code&gt; される&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;TERM_TIMEOUT&lt;/code&gt; に指定した秒数の間、子プロセスが終了するのを待つ&lt;/li&gt;
-&lt;li&gt;それでも子プロセスが残っていれば今度は &lt;code&gt;KILL&lt;/code&gt; を送って強制終了する&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;前述の Heroku の制限のため、&lt;code&gt;RESQUE_TERM_TIMEOUT&lt;/code&gt; は 30 秒以下にする必要があります。 (それ以上を指定しても結局 Heroku から &lt;code&gt;KILL&lt;/code&gt; される)&lt;/p&gt;
-
-&lt;h3 id=&#34;resque-pre-shutdown-timeout-について&#34;&gt;&lt;code&gt;RESQUE_PRE_SHUTDOWN_TIMEOUT&lt;/code&gt; について&lt;/h3&gt;
-
-&lt;p&gt;前述の通り未リリースではあるものの、&lt;code&gt;master&lt;/code&gt; ブランチに入っていてそのうち使えるようになると思われるこのオプションについても調べてみました。&lt;/p&gt;
-
-&lt;p&gt;これは &lt;code&gt;TERM_CHILD&lt;/code&gt; をセットしている場合のみに有効なオプションで、子プロセスに &lt;code&gt;TERM&lt;/code&gt; を送る前の待ち時間を秒数で指定することができます。&lt;/p&gt;
-
-&lt;p&gt;つまりこれは &lt;code&gt;Halfway Graceful Shutdown&lt;/code&gt; と &lt;code&gt;Entire Graceful Shutdown&lt;/code&gt; 複合です。&lt;/p&gt;
-
-&lt;p&gt;例えば &lt;code&gt;Procfile&lt;/code&gt; を以下のようにした場合、&lt;code&gt;TERM&lt;/code&gt; を受け取った後の挙動は以下のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;resque: QUEUE=* TERM_CHILD=1 RESQUE_PRE_SHUTDOWN_TIMEOUT=20 RESQUE_TERM_TIMEOUT=10 bundle exec rake environment resque:work
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;子プロセスの処理が完了するまで 20 秒間待つ
-
-&lt;ul&gt;
-&lt;li&gt;この 20 秒間に処理が全て完了すれば Entire Graceful Shutdown&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;子プロセスに &lt;code&gt;TERM&lt;/code&gt; を送る
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;Resque::TermException&lt;/code&gt; が &lt;code&gt;raise&lt;/code&gt; される&lt;/li&gt;
-&lt;li&gt;この場合は Halfway Graceful Shutdown&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;子プロセスが終了するまでさらに 10 秒間待つ&lt;/li&gt;
-&lt;li&gt;それでも子プロセスが残っていれば今度は &lt;code&gt;KILL&lt;/code&gt; を送って強制終了する&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;具体的な秒数については実際に動いている Worker の実行時間を元にチューニングするのが良いでしょう。&lt;/p&gt;
-
-&lt;p&gt;いずれにせよ &lt;code&gt;RESQUE_PRE_SHUTDOWN_TIMEOUT&lt;/code&gt; と &lt;code&gt;RESQUE_TERM_TIMEOUT&lt;/code&gt; の合計は 30 以下にする必要があります。&lt;/p&gt;
-
-&lt;h3 id=&#34;entire-graceful-shutdown&#34;&gt;Entire Graceful Shutdown&lt;/h3&gt;
-
-&lt;p&gt;これについては説明されている記事が見つけられなかったので、自分で実際に Heroku で動かしながらわかったことを元に書きます。&lt;/p&gt;
-
-&lt;h4 id=&#34;worker-の実装-1&#34;&gt;Worker の実装&lt;/h4&gt;
-
-&lt;p&gt;Halfway Graceful Shutdown を行わないのであれば、&lt;code&gt;Resque::TermException&lt;/code&gt; の &lt;code&gt;rescue&lt;/code&gt; は不要です。&lt;/p&gt;
-
-&lt;h4 id=&#34;procfile-1&#34;&gt;Procfile&lt;/h4&gt;
-
-&lt;p&gt;以下のようにします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;resque: QUEUE=* GRACEFUL_TERM=1 bundle exec rake environment resque:work
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;この場合は &lt;code&gt;TERM_CHILD&lt;/code&gt; を指定してはいけません。指定した場合、&lt;code&gt;GRACEFUL_TERM&lt;/code&gt; の設定が&lt;a href=&#34;https://github.com/resque/resque/blob/v1.27.2/lib/resque/worker.rb#L866&#34;&gt;無効果されます&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h4 id=&#34;graceful-term-とは&#34;&gt;&lt;code&gt;GRACEFUL_TERM&lt;/code&gt; とは&lt;/h4&gt;
-
-&lt;p&gt;これは &lt;code&gt;TERM&lt;/code&gt; を受け取った時の処理を (Entire) Graceful Shutdown にするというものです。&lt;/p&gt;
-
-&lt;p&gt;前述の通り今の所ドキュメント化されていないようです。&lt;/p&gt;
-
-&lt;h2 id=&#34;どちらの方法を選ぶべきか&#34;&gt;どちらの方法を選ぶべきか&lt;/h2&gt;
-
-&lt;p&gt;基本的には Halfway Graceful Shutdown を選ぶべきでしょう。&lt;/p&gt;
-
-&lt;p&gt;Heroku では 30 秒制限がある以上、Entire Graceful Shutdown を選ぶとしても、Worker は全て 30 秒で完了できなくてはなりません。通常 1 分かかる処理があったとして、20 秒時点で &lt;code&gt;TERM&lt;/code&gt; を受け取った場合、Entire Graceful Shutdown では最後の 10 秒分の処理を残して強制終了されてしまうからです。&lt;/p&gt;
-
-&lt;p&gt;30 秒間に全てを終えることはできなくても、今やりかけの分だけ綺麗に完了させることはできるかもしれません。&lt;/p&gt;
-
-&lt;p&gt;ただし、Halfway Graceful Shutdown を行うには、前述の通り &lt;code&gt;Resque::TermException&lt;/code&gt; を正しく &lt;code&gt;rescue&lt;/code&gt; するような実装を行わなければなりません。&lt;/p&gt;
-
-&lt;p&gt;全ての Worker が 30 秒もかからないような場合であれば、その実装をサボって Entire Graceful Shutdown で妥協するのも良いでしょう。&lt;/p&gt;
-
-&lt;h2 id=&#34;関連するソースの読み方&#34;&gt;関連するソースの読み方&lt;/h2&gt;
-
-&lt;p&gt;ここに書いてあることは基本的には &lt;code&gt;Resque::Worker&lt;/code&gt; だけ読めば全て書いてあります。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/resque/resque/blob/master/lib/resque/worker.rb&#34;&gt;resque/lib/resque/worker.rb&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Resque は想像していたよりは意外と重厚な感じではなく、比較的読みやすい分量だと思いました。UNIX プロセスについての勉強としても面白いと思うのでオススメです。&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -352,83 +58,13 @@ end
       <pubDate>Wed, 29 Mar 2017 02:21:11 +0900</pubDate>
       
       <guid>https://blog.yuyat.jp/post/supress-stack-trace/</guid>
-      <description>
-
-&lt;p&gt;最近仕事で React/Redux で構築されたアプリを触っていて、&lt;a href=&#34;https://mochajs.org/&#34;&gt;mocha&lt;/a&gt; でテストがコケたときのスタックトレースがうるさい感じだったので &lt;code&gt;node_modules&lt;/code&gt; 内のエラーを除外するためのものを作ってみた。&lt;/p&gt;
+      <description>&lt;p&gt;最近仕事で React/Redux で構築されたアプリを触っていて、&lt;a href=&#34;https://mochajs.org/&#34;&gt;mocha&lt;/a&gt; でテストがコケたときのスタックトレースがうるさい感じだったので &lt;code&gt;node_modules&lt;/code&gt; 内のエラーを除外するためのものを作ってみた。&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/supress-stack-trace&#34;&gt;yuya-takeyama/supress-stack-trace&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
-
-&lt;p&gt;まだ npm には登録してないのでとりあえず GitHub から直接インストールする必要があります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ yarn add -D yuya-takeyama/supress-stack-trace
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;使い方は読み込むだけで OK&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;require(&#39;supress-stack-trace&#39;)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;mocha の場合は &lt;code&gt;mocha.opts&lt;/code&gt; に &lt;code&gt;--require supress-stack-trace&lt;/code&gt; とかしてあげるだけでいいと思います。&lt;/p&gt;
-
-&lt;p&gt;今の仕事では &lt;a href=&#34;https://www.npmjs.com/package/mocha-webpack&#34;&gt;mocha-webpack&lt;/a&gt; を使っていて、&lt;code&gt;mocha-webpack.opts&lt;/code&gt; に同じ感じに指定すればうまくできました。&lt;/p&gt;
-
-&lt;p&gt;なお、&lt;a href=&#34;https://github.com/evanw/node-source-map-support&#34;&gt;source-map-support&lt;/a&gt; のように &lt;code&gt;Error.prepareStackTrace&lt;/code&gt; をオーバーライドするライブラリを既に使っている場合は、そのあとで読み込むのが良いと思います。ライブラリの組み合わせによっては動かないこともあると思います。&lt;/p&gt;
-
-&lt;h2 id=&#34;使用感&#34;&gt;使用感&lt;/h2&gt;
-
-&lt;p&gt;このようにすっきりします。&lt;/p&gt;
-
-&lt;h3 id=&#34;before&#34;&gt;Before&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;     Error: error
-      at app/components/foo/Foo.jsx:18:11
-      at Object.LinkedValueUtils.executeOnChange (node_modules/react-dom/lib/LinkedValueUtils.js:129:1)
-      at ReactDOMComponent._handleChange (node_modules/react-dom/lib/ReactDOMInput.js:232:1)
-      at Object.invokeGuardedCallback [as invokeGuardedCallbackWithCatch] (node_modules/react-dom/lib/ReactErrorUtils.js:26:1)
-      at executeDispatch (node_modules/react-dom/lib/EventPluginUtils.js:83:1)
-      at Object.executeDispatchesInOrder (node_modules/react-dom/lib/EventPluginUtils.js:108:1)
-      at executeDispatchesAndRelease (node_modules/react-dom/lib/EventPluginHub.js:43:1)
-      at executeDispatchesAndReleaseSimulated (node_modules/react-dom/lib/EventPluginHub.js:51:1)
-      at forEachAccumulated (node_modules/react-dom/lib/forEachAccumulated.js:26:1)
-      at Object.EventPluginHub.processEventQueue (node_modules/react-dom/lib/EventPluginHub.js:255:1)
-      at node_modules/react-dom/lib/ReactTestUtils.js:340:1
-      at ReactDefaultBatchingStrategyTransaction.TransactionImpl.perform (node_modules/react-dom/lib/Transaction.js:140:1)
-      at Object.ReactDefaultBatchingStrategy.batchedUpdates (node_modules/react-dom/lib/ReactDefaultBatchingStrategy.js:62:1)
-      at Object.batchedUpdates (node_modules/react-dom/lib/ReactUpdates.js:97:1)
-      at node_modules/react-dom/lib/ReactTestUtils.js:338:1
-      at ReactWrapper.&amp;lt;anonymous&amp;gt; (node_modules/enzyme/build/ReactWrapper.js:776:1)
-      at ReactWrapper.single (node_modules/enzyme/build/ReactWrapper.js:1421:1)
-      at ReactWrapper.simulate (node_modules/enzyme/build/ReactWrapper.js:769:1)
-      at Context.&amp;lt;anonymous&amp;gt; (test/components/foo/Foo-test.js:168:20)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;after&#34;&gt;After&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;     Error: error
-      at app/components/foo/Foo.jsx:18:11
-      at Context.&amp;lt;anonymous&amp;gt; (test/components/foo/Foo-test.js:168:20)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;仕組み&#34;&gt;仕組み&lt;/h2&gt;
-
-&lt;p&gt;V8 には &lt;a href=&#34;https://github.com/v8/v8/wiki/Stack-Trace-API&#34;&gt;Stack Trace API&lt;/a&gt; というものがあって、&lt;code&gt;Error.prepareStackTrace&lt;/code&gt; という関数をセットすることでスタックトレースの出力をいじることができます。&lt;/p&gt;
-
-&lt;p&gt;ただこれは API 的にはあまりイケてなくて、エラーとスタックトレースを受け取って文字列を返す関数なので、チェインすることはちょっと難しい感じです。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;source-map-support&lt;/code&gt; も &lt;code&gt;Error.prepareStackTrace&lt;/code&gt; をセットしているので、既にセットされた関数があった場合は、その出力の文字列から &lt;code&gt;node_modules/&lt;/code&gt; と含まれた行だけ消す、みたいなことをしています。&lt;/p&gt;
-
-&lt;p&gt;なので例えばエラーメッセージに &lt;code&gt;node_modules/&lt;/code&gt; と含まれていた場合はそこまで省略されてしまいます。 (気が向いたらなおす)&lt;/p&gt;
-
-&lt;h2 id=&#34;その他&#34;&gt;その他&lt;/h2&gt;
-
-&lt;p&gt;あとはやっぱり環境変数で supress しないモードとかもあったらいいと思うんですが、いい名前が思いつかないのでとりあえず後回し。&lt;/p&gt;
-
-&lt;p&gt;思いついたら npm に公開しようと思います。&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -437,62 +73,13 @@ end
       <pubDate>Mon, 09 Jan 2017 03:02:40 +0900</pubDate>
       
       <guid>https://blog.yuyat.jp/post/activeweek/</guid>
-      <description>
-
-&lt;p&gt;仕事で必要があって作ったものから仕事固有の事情とかを取り除いた形で作り直してみた。&lt;/p&gt;
+      <description>&lt;p&gt;仕事で必要があって作ったものから仕事固有の事情とかを取り除いた形で作り直してみた。&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/activeweek&#34;&gt;yuya-takeyama/activeweek&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;インストール&#34;&gt;インストール&lt;/h2&gt;
-
-&lt;p&gt;名前が強すぎるので一旦 RubyGems.org への publish はしていない。&lt;br /&gt;
-いろんな人に見てもらって良さそうならする予定。&lt;/p&gt;
-
-&lt;p&gt;なので &lt;code&gt;Gemfile&lt;/code&gt; では GitHub から直接インストール指定するようにする。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;gem &#39;activeweek&#39;, git: &#39;https://github.com/yuya-takeyama/activeweek.git&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/activeweek#activeweek&#34;&gt;README.md&lt;/a&gt; を訳しただけだけど以下のような感じ。&lt;/p&gt;
-
-&lt;p&gt;API がキモのライブラリだと思うので、Ruby ライブラリの API に一家言ある方は&lt;a href=&#34;https://twitter.com/yuya_takeyama&#34;&gt;是非お願いします&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h3 id=&#34;現在の週を取得&#34;&gt;現在の週を取得&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;require &#39;activeweek&#39;
-
-week = ActiveWeek::Week.current
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;特定のタイムゾーンにおける現在の週を取得&#34;&gt;特定のタイムゾーンにおける現在の週を取得&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;week = Time.use_zone(&#39;Asia/Tokyo&#39;) { ActiveWeek::Week.current }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;週の中の日付を-date-オブジェクトとして列挙する&#34;&gt;週の中の日付を &lt;code&gt;Date&lt;/code&gt; オブジェクトとして列挙する&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;week.each_day { |date| p date }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;前後の週を取得する&#34;&gt;前後の週を取得する&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;next_week = week.next_week
-prev_week = week.prev_week
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ruby-2-4-rails-2-2-について&#34;&gt;Ruby 2.4/Rails 2.2 について&lt;/h2&gt;
-
-&lt;p&gt;現状 Ruby 2.4/Rails 2.2 の組み合わせにおいては、Rails が依存する &lt;code&gt;json&lt;/code&gt; gem の問題でインストールすることができない。&lt;br /&gt;
-Rails 2.2.8 がリリースされれば動くようになる予定。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/rails/rails/pull/26334&#34;&gt;Removed json dependency from ActiveSupport&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -501,384 +88,11 @@ Rails 2.2.8 がリリースされれば動くようになる予定。&lt;/p&gt;
       <pubDate>Sat, 31 Dec 2016 19:49:41 +0900</pubDate>
       
       <guid>https://blog.yuyat.jp/post/best-buys-2016/</guid>
-      <description>
-
-&lt;p&gt;去年 1 番のイベントは&lt;a href=&#34;http://blog.yuyat.jp/archives/2631&#34;&gt;転職&lt;/a&gt;でしたが、今年は引越・同棲というのが一大イベントでした。&lt;/p&gt;
+      <description>&lt;p&gt;去年 1 番のイベントは&lt;a href=&#34;http://blog.yuyat.jp/archives/2631&#34;&gt;転職&lt;/a&gt;でしたが、今年は引越・同棲というのが一大イベントでした。&lt;/p&gt;
 
 &lt;p&gt;丸 7 年住んだ埼玉から浅草に引越したことで京橋の職場への出勤時間が半分の 30 分に縮まったのも良かったですが、生活環境が変わったのを機に家具も色々と買い、QoL も大幅に向上したので、それを振り返ってみるという体でアフィブログを書きます。&lt;/p&gt;
 
-&lt;h2 id=&#34;生活編&#34;&gt;生活編&lt;/h2&gt;
-
-&lt;h3 id=&#34;東芝ドラム式洗濯機-tw-117x3l-ww-http-kakaku-com-item-k0000821187&#34;&gt;&lt;a href=&#34;http://kakaku.com/item/K0000821187/&#34;&gt;東芝ドラム式洗濯機 TW-117X3L(WW)&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;MVP は明らかにこれです。&lt;/p&gt;
-
-&lt;p&gt;埼玉に住んでいた 7 年間は洗濯機外置きという洗濯機もあってドラム式の大きいのは無理だったんですが、ようやく室内に置ける部屋に引っ越せたので奮発して買いました。&lt;/p&gt;
-
-&lt;p&gt;乾燥機付きでもドラム式とタテ型で迷いました。ドラム式について事前に調べた中で特に気になったのが臭いの問題でしたが、以下に気をつけたところ、購入から 7 ヶ月経つ今の所臭い問題は起きていません。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://amzn.to/2inXgv9&#34;&gt;ドラム式へに対応した抗菌洗剤&lt;/a&gt; を使う
-
-&lt;ul&gt;
-&lt;li&gt;臭いの原因になるのは雑菌と、ドラム式に合わない洗剤が洗濯に残ってしまうこと、ということだったのでその点に注意した&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;2 ヶ月に 1 回は&lt;a href=&#34;http://amzn.to/2iPRG7N&#34;&gt;洗濯槽カビキラー&lt;/a&gt;で洗う&lt;/li&gt;
-&lt;li&gt;乾燥なしの洗濯だけで終わらせない
-
-&lt;ul&gt;
-&lt;li&gt;乾燥機を使えない洗濯があっても、そのあとに乾燥機を使う洗濯物を別途洗うことで、洗濯槽を濡れたまま放置しないようにした&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;洗濯機を使わない間はなるべくフタを開けておいて換気した&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://amzn.to/2inYLJF&#34;&gt;排水エルボ&lt;/a&gt; を買う
-
-&lt;ul&gt;
-&lt;li&gt;洗濯物の臭いとは関係ないけど下水から臭いが上がってこないようにするのに必要&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;thule-paramount-29l-backpack-http-amzn-to-2iqf4lb&#34;&gt;&lt;a href=&#34;http://amzn.to/2iQf4lB&#34;&gt;Thule Paramount 29L Backpack&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00MHNPQ16&amp;linkId=d8e4803f20e116f2e5a7bdd1b7dcd771&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;これは自分で買ったのではなくて誕生日に買ってもらいました。&lt;/p&gt;
-
-&lt;p&gt;長年 &lt;a href=&#34;http://product.rakuten.co.jp/product/-/1e3e477d3b4232eb70c2a0aeee7c5d85/?sc2id=gmc_502240_1e3e477d3b4232eb70c2a0aeee7c5d85&amp;amp;scid=s_kwa_pla&#34;&gt;Chrome の斜めがけメッセンジャーバッグ&lt;/a&gt;を使っていましたが、以下のまとめを見てからずっとバックパックが欲しいと思っていました。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://togetter.com/li/613904&#34;&gt;重い鞄の斜めがけで椎間板ダメージ疑惑とバックパックのススメ&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;具体的になんらかの症状が出ていたわけではなかったものの、単純に片方だけに重さがかかるのは辛かったので、バックパックに変えて良かったです。&lt;br /&gt;
-肩のところも程よく厚みがあるので、多少重い荷物も苦になりません。&lt;/p&gt;
-
-&lt;p&gt;ポケットが多くて荷物はいろいろ入りますし、背中の部分は厚みのある素材が使われているので、ラップトップも安心して入れておけます。&lt;/p&gt;
-
-&lt;h3 id=&#34;コクヨ-ホワイトボード-ピタボ-http-amzn-to-2hza5vu&#34;&gt;&lt;a href=&#34;http://amzn.to/2hzA5vU&#34;&gt;コクヨ ホワイトボード ピタボ&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B001MSQWMO&amp;linkId=6743009de3c04122f9243f4322af2e16&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;壁に貼れるホワイトボードですが、貼り直しがしやすく、かつ壁紙にもダメージがないので使いやすいです。&lt;/p&gt;
-
-&lt;p&gt;自分の机の横に貼ってあるので、開発の時の頭の整理や設計メモに使ったり、あとは家事とかの細かい TODO のうち、Trello に記入するのも煩わしいやつとかメモしています。&lt;/p&gt;
-
-&lt;p&gt;アプリで写真を取ると綺麗に取り込めるのも便利です。&lt;/p&gt;
-
-&lt;p&gt;近々もっと大きいのを別途買おうかなと思ってます。&lt;/p&gt;
-
-&lt;h3 id=&#34;平和工業-ゴミ箱-ペダルペール-40l-http-amzn-to-2iqnnvd&#34;&gt;&lt;a href=&#34;http://amzn.to/2iQnNVd&#34;&gt;平和工業 ゴミ箱 ペダルペール 40L&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00SSRNN2E&amp;linkId=9c76c50fa82f530d763c9c042225fcb3&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00SSROVUW&amp;linkId=f3647109a8d2247bffefa69d49706a19&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;キッチン用に買いました。&lt;/p&gt;
-
-&lt;p&gt;特に夏場は虫が来ないようにフタ付きなのが良いのと、料理中とかで手がふさがっている状態でも使えるようペダル付きのものを探していました。&lt;/p&gt;
-
-&lt;p&gt;割としっかりしているので、壁際に置いておけばルンバがガンガン当たっても全然問題ないのも良いです。&lt;/p&gt;
-
-&lt;h3 id=&#34;ねこのロールペーパーホルダー-クロ-http-amzn-to-2iprixe&#34;&gt;&lt;a href=&#34;http://amzn.to/2iPriXE&#34;&gt;ねこのロールペーパーホルダー クロ&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00E37ADOE&amp;linkId=2565e50707b82a8ffe9e6d1d105f42b3&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;特に便利とかではないですが、猫がトイレットペーパーを抱えているみたいになって可愛いので気に入ってます。&lt;/p&gt;
-
-&lt;h2 id=&#34;料理編&#34;&gt;料理編&lt;/h2&gt;
-
-&lt;h3 id=&#34;ツインバード-タイマー付きスロークッカー-ぜっぴん亭-http-amzn-to-2ipe25q&#34;&gt;&lt;a href=&#34;http://amzn.to/2iPe25q&#34;&gt;ツインバード　タイマー付きスロークッカー　ぜっぴん亭&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00HWLI8SQ&amp;linkId=937e09917b9002ad4f62235fd3f8dbaf&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;引越す前はコンロのついていない部屋だったので、ずっと一口の IH で料理を作っていましたが、引越先はガスコンロが 3 口になったので料理がしやすくなりました。&lt;/p&gt;
-
-&lt;p&gt;まぁそれは良かったんですが、IH と違ってタイマーでの調理はできないので、例えばポトフとかを作る時に放置しておくのが難しくなってしまいました。&lt;/p&gt;
-
-&lt;p&gt;そこで他の種類の調理器具も検討しましたが、結果スロークカーを選びました。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://amzn.to/2is1eWe&#34;&gt;シャトルシェフ&lt;/a&gt;
-
-&lt;ul&gt;
-&lt;li&gt;放置できる点は良かったものの、火力が必要な調理はできなさそうだったので見送り&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;圧力鍋
-
-&lt;ul&gt;
-&lt;li&gt;時短調理ができるという意味では別アプローチからの良さはあるものの、これも放置はしにくいので見送り&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;スロークッカーは電気だけなので放置しやすいですし、基本的には材料を詰め込んでタイマーをセットするだけなので調理の再現性が高いのも良いです。&lt;/p&gt;
-
-&lt;p&gt;ツインバード社からは同等のスペックで別カラーのものも出ていますが、このオレンジのものはスロークッカー用のレシピブックが付いている点でもオススメです。&lt;/p&gt;
-
-&lt;p&gt;個人的にお気に入りのレシピは以下です。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://damndelicious.net/2013/11/02/slow-cooker-crockpot-honey-sesame-chicken/&#34;&gt;SLOW COOKER HONEY SESAME CHICKEN&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://allrecipes.com/recipe/16066/awesome-slow-cooker-pot-roast/&#34;&gt;Awesome Slow Cooker Pot Roast&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.lecremedelacrumb.com/slow-cooker-broccoli-beef/&#34;&gt;SLOW COOKER BROCCOLI BEEF&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;まぁ一番よく作ったのは適当に野菜やら何やらを切って適当に加熱しただけのポトフなんですが。&lt;/p&gt;
-
-&lt;p&gt;スロークッカーを購入する上で、以下の記事から受けた触発された部分は大きかったので、この場でお礼申し上げます。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://rimuru.lunanet.gr.jp/notes/post/bought-a-slow-cooker/&#34;&gt;スロークッカーを買って2週間が経った&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;デカめの肉を調理する上ではアメリカっぽい横長のものも便利そうなので、そのうち買うかもしれません。&lt;/p&gt;
-
-&lt;h3 id=&#34;tanica-ヨーグルティア-http-amzn-to-2hctfnj&#34;&gt;&lt;a href=&#34;http://amzn.to/2hCTfnJ&#34;&gt;TANICA ヨーグルティア&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B002SV0BL2&amp;linkId=0b59c6fbd9441f6088319afc4001ee4d&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;いわゆるヨーグルトメーカーですが、ヨーグルトではなく肉をはじめとした食材の真空低温調理に使用しました。&lt;br /&gt;
-要は Poor man&amp;rsquo;s &lt;a href=&#34;http://amzn.to/2iQ5NtT&#34;&gt;Anova&lt;/a&gt; ですね。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://long-reviews.hatenablog.com/entry/2016/01/18/230017&#34;&gt;【ヨーグルティアで低温調理】失敗知らずのローストビーフ&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://everyday.iroiro7.com/?p=1303&#34;&gt;ヨーグルティアでの鳥ハムの作り方｜鳥胸肉もしっとり　塩麹or塩で&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://magazine.shokuikuclub.jp/kitchen/20140818_050008/&#34;&gt;サーモンは低温でコンフィをすると滑らかな食感に&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;ローストビーフはかなり作りましたし、鳥はむは 1g 1 円程度の安い肉でもちゃんとおいしくなるので楽しいです。&lt;br /&gt;
-同居人がサーモンアレルギーなのであまり作りませんでしたが、一番美味しかったのはサーモンのコンフィでした。これは家に来た友人をもてなした時にも喜ばれました。&lt;/p&gt;
-
-&lt;p&gt;最初はヨーグルトも作っていましたが、種になるヨーグルトを 400g 買って、そのうち 100g から 1kg のヨーグルトを作っては食べ、というサイクルだと、元のヨーグルトの賞味期限が切れてしまい、うまく食べきれないことが多かったのでやめてしまいました。&lt;/p&gt;
-
-&lt;p&gt;ヨーグルティアの購入・運用にあたっては以下の記事が大変参考になったのでお礼申し上げます。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.kwappa.net/blog/archives/1995&#34;&gt;まだアクチンの熱変性で消耗してるの？ – 低温調理による革命的肉食のすすめ – #ヨーグルティア肉&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://portal.nifty.com/kiji/150203192686_1.htm&#34;&gt;ヨーグルトメーカーで肉を煮る&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;もちろん小林銅蟲さんの&lt;a href=&#34;http://negineesan.hatenablog.com/&#34;&gt;ブログ&lt;/a&gt;・漫画にも大いに触発れました。&lt;/p&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B01N8Q8DA7&amp;linkId=bbd088ef5aa8cd3e4fef081a17bc496d&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;そして以下の書籍も読みました。&lt;/p&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=4873115094&amp;linkId=71b460407075c773d819b230f0323b76&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=4903063577&amp;linkId=81b2b29eb7920d68d53250627b0ac8d2&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://amzn.to/2iQ6gfw&#34;&gt;Cooking for Geeks は第二版の日本語版&lt;/a&gt;もつい最近出たようなのでそのうち買いなおそうと思います。&lt;/p&gt;
-
-&lt;h3 id=&#34;タニタ-スティック温度計-http-amzn-to-2iplq0b&#34;&gt;&lt;a href=&#34;http://amzn.to/2iPlq0B&#34;&gt;タニタ スティック温度計&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B0017TCOEI&amp;linkId=1d2fbe9a9b16bf5267fe61b125b3b228&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;低温調理は迂闊にやるときわどい感じになってしまうので、温度に気をつける必要があって買いました。&lt;/p&gt;
-
-&lt;p&gt;ヨーグルティアを使えば温度の維持は勝手にやってくれますが、それでも立ち上がりの温度に気をつける必要があります。&lt;br /&gt;
-特に鶏肉・豚肉・生魚の時なんかは、水から初めてしまうと菌が繁殖しやすい温度の中で時間が経過してしまい、大変危険です。&lt;br /&gt;
-あらかじめ目的の温度に上げたお湯を用意しておく必要があります。&lt;/p&gt;
-
-&lt;p&gt;あとはステーキなんかを焼く時にもよく使いました。&lt;br /&gt;
-肉の種類・部位や大きさなどにもよりますが、中心温度が 45 度ぐらいまで上がればあとは余熱で上昇していくので、アクチンが熱変性する 65 ℃ を超えないようにうまく調整するのに使いました。&lt;/p&gt;
-
-&lt;p&gt;温度計はいろいろありますが、この安さで必要な仕事をちゃんとやってくれるところが気に入っています。&lt;/p&gt;
-
-&lt;h3 id=&#34;タニタ-デジタルクッキングスケール-http-amzn-to-2hzkgvy&#34;&gt;&lt;a href=&#34;http://amzn.to/2hzkGvy&#34;&gt;タニタ デジタルクッキングスケール&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B007JP7E6C&amp;linkId=d55eceaf72e2be01f7e3aa0fab895500&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;肉ばっかり食べてる感じになってしまいましたが、それ以上に野菜を意識的に食べた 1 年でした。&lt;br /&gt;
-たまに意識の低下した日を除けば、基本的に毎日 350g の野菜を食べ続けたと思います。&lt;/p&gt;
-
-&lt;p&gt;平日は時間がないので野菜・きのこ・肉を適当に蒸しただけの料理とは言えないような代物を作ることも多かったですが、ちゃんと図って作りました。&lt;/p&gt;
-
-&lt;h3 id=&#34;k-a-みじん切り器-ぶんぶんチョッパー-http-amzn-to-2iqlgas&#34;&gt;&lt;a href=&#34;http://amzn.to/2iQlGAs&#34;&gt;K&amp;amp;A みじん切り器 ぶんぶんチョッパー&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00WDZYLT6&amp;linkId=a0d50b5dbf80bef14462b0bd93c2bf33&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;これは小物ですが、とても良かったです。&lt;br /&gt;
-中に玉ねぎとかニンニクとかを入れて、紐を引っ張るだけで電気もなしにみじん切りが出来上がります。&lt;/p&gt;
-
-&lt;p&gt;先日 &lt;a href=&#34;https://connpass.com/event/45509/&#34;&gt;Recruit.rb #0&lt;/a&gt; という Ruby 勉強会でも、&lt;a href=&#34;https://twitter.com/remore&#34;&gt;@remore&lt;/a&gt; さんとスロークッカーの話とともに盛り上がりました。 (Ruby 関係ない)&lt;/p&gt;
-
-&lt;p&gt;これについては映像で見てもらうのが一番わかりやすいと思います。&lt;/p&gt;
-
-&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/572m44-cFgY&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
-
-&lt;p&gt;唯一困るのは洗うときです。&lt;br /&gt;
-中の紐の部分が濡れてしまうと、乾かすのが大変 (巻き戻ってしまう) なので、容器とフタの間にサランラップを挟んで、汚れないようにして使っています。&lt;/p&gt;
-
-&lt;h2 id=&#34;健康編&#34;&gt;健康編&lt;/h2&gt;
-
-&lt;h3 id=&#34;フィリップス-電動歯ブラシ-ソニッケアー-ダイヤモンドクリーン-http-amzn-to-2iiwof4&#34;&gt;&lt;a href=&#34;http://amzn.to/2iiwOF4&#34;&gt;フィリップス 電動歯ブラシ ソニッケアー ダイヤモンドクリーン&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00NXEYMB8&amp;linkId=bd56f8f4c02238a1de1f52cba54ade48&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;歯医者さんに勧められて買いました。&lt;/p&gt;
-
-&lt;p&gt;長年手動で歯磨きしてきましたが、もう戻れないと思います。かなりスッキリします。&lt;/p&gt;
-
-&lt;p&gt;Amazon レビューとかでよく、すぐ壊れてしまった、という人がいるんですが、ボタンのところから水が入って壊れることが多いようなのでそれだけ気をつけて使っています。&lt;/p&gt;
-
-&lt;h3 id=&#34;フッ素付きデンタルフロス-http-amzn-to-2hcrxcw&#34;&gt;&lt;a href=&#34;http://amzn.to/2hCRxCW&#34;&gt;フッ素付きデンタルフロス&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B009UPW1G2&amp;linkId=db1006db78e1e4a4216cba266a60c0e3&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;これは同じ歯医者で歯石除去をしてもらった後に、歯科衛生士の方に勧められて買いました。&lt;/p&gt;
-
-&lt;p&gt;これまでこういうのを使ったことがなかったので最初は面倒だったんですが、毎日結構な汚れが取れるので、やらねばという感じが出ています。&lt;/p&gt;
-
-&lt;h3 id=&#34;withings-スマート体重計-smart-body-analyzer-http-amzn-to-2hzkqgc&#34;&gt;&lt;a href=&#34;http://amzn.to/2hzkqgc&#34;&gt;Withings スマート体重計 Smart Body Analyzer&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00V35HEIC&amp;linkId=503a07067ee510f28b25b237be0e2dc3&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;去年末から今年の始めにかけては忙しかったこともあって食生活が破滅しかけており、健康診断の結果も悪く、お腹の周りにも明らかに余計な肉がついてしまっていました。&lt;/p&gt;
-
-&lt;p&gt;そこで買ったのがこれです。&lt;br /&gt;
-当時は 15000 円ぐらいで買い増したが、今は&lt;a href=&#34;http://amzn.to/2iism9z&#34;&gt;新しいモデル&lt;/a&gt;が出ていることもあってさらに安くなっているようです。&lt;/p&gt;
-
-&lt;p&gt;タニタのやつなんかも検討しましたが、体重等のデータが API から取得できる、ということもあって Withings を選びました。&lt;br /&gt;
-(結局アプリがしっかりしているので API は使っていませんが)&lt;/p&gt;
-
-&lt;p&gt;これを買ってからは徐々に体重も落ち着いて行き、元の体重で安定するようになり、お腹の周りの余計な肉も消え去っています。&lt;/p&gt;
-
-&lt;p&gt;以下は Withings のアプリで見られるグラフです。&lt;br /&gt;
-まぁ身長 180cm でこれは軽すぎなので、来年は体脂肪を維持しつつ筋肉で体重を増やしていくのが目標です。&lt;/p&gt;
-
-&lt;h4 id=&#34;体重&#34;&gt;体重&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/best-buys-2016/weight.png&#34; width=&#34;963&#34; height=&#34;558&#34;&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;体脂肪率&#34;&gt;体脂肪率&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/best-buys-2016/fatmass.png&#34; width=&#34;963&#34; height=&#34;558&#34;&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;bmi&#34;&gt;BMI&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/best-buys-2016/bmi.png&#34; width=&#34;960&#34; height=&#34;556&#34;&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;withings-スマートウォッチ-activité-pop-http-amzn-to-2isr4js&#34;&gt;&lt;a href=&#34;http://amzn.to/2isr4Js&#34;&gt;Withings スマートウォッチ Activité Pop&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B010UV1M6O&amp;linkId=530407bb2025a37761aaed694083858e&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;Withings の体重計を買ってしばらくして買いました。&lt;/p&gt;
-
-&lt;p&gt;Apple Watch 以降スマートウォッチは気になっていたものの、充電が持たないものは辛かったので、スルーし続けていました。&lt;br /&gt;
-その点この Activité シリースが良いのは、充電できない代わりに、ボタン電池で 8 ヶ月持つところです。&lt;br /&gt;
-充電に関するストレスが一切ないのは大きいと思います。&lt;/p&gt;
-
-&lt;p&gt;機能的には歩数・睡眠時間を勝手にトラッキングしてくれるものです。&lt;/p&gt;
-
-&lt;p&gt;歩数はそんなに制度は高くないと思いますが、まぁ目標の歩数を超えるように意識するようになるだけでも良いと思います。&lt;br /&gt;
-睡眠に関しても同様で、精度的にはもっと良いものがあるんじゃないかとは思います。&lt;/p&gt;
-
-&lt;p&gt;防水で水泳もトラッキングしてくれますが、つけたまま風呂に入ると中が曇ってしまうので、風呂の時だけ外してそれ以外は文字通り 1 日中つけていました。&lt;/p&gt;
-
-&lt;p&gt;というわけで体験としてはとても良かったんですが、残念なことについ先日同期ができなくなってしまいました&amp;hellip;&lt;/p&gt;
-
-&lt;p&gt;上位モデルの &lt;a href=&#34;http://amzn.to/2isskfD&#34;&gt;Activité Steel&lt;/a&gt; を買おうとも思っていますが、壊れやすさについてはもうちょっと調べて考え中です。&lt;/p&gt;
-
-&lt;p&gt;ところで Withings に関しては今年 1 年でファンになったんですが、今年&lt;a href=&#34;http://wired.jp/2016/04/28/nokia-buys-withings/&#34;&gt;ノキアに買収されてしまって&lt;/a&gt;、今後どうなってしまうのか気になるところです (悪い意味で)。&lt;/p&gt;
-
-&lt;h2 id=&#34;エンタメ編&#34;&gt;エンタメ編&lt;/h2&gt;
-
-&lt;h3 id=&#34;playstation3-http-amzn-to-2iqpadl&#34;&gt;&lt;a href=&#34;http://amzn.to/2iQpaDl&#34;&gt;PlayStation3&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00MGDX5CO&amp;linkId=c1e1c55408bb540f08ef652f5b58d04b&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;PS4 も出て久しい今なぜ PS3 を買ったかというと、ブルーレイが見たかったからです。&lt;br /&gt;
-なおかつ PS3 は北米版のものでも再生できるということで Mercari で買いました。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://amzn.to/2iAh0eV&#34;&gt;ゆゆ式：コンプリート・コレクション 北米版&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://amzn.to/2iiuUo3&#34;&gt;TARI TARI：コンプリート・コレクション 北米版&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;特にゆゆ式はディスク交換なしで全話一気に見られるのも良いエクスペリエンスでした。&lt;/p&gt;
-
-&lt;h3 id=&#34;shirobako-初回生産限定板-dvd-全巻-http-amzn-to-2iapcf0&#34;&gt;&lt;a href=&#34;http://amzn.to/2iApcf0&#34;&gt;SHIROBAKO 初回生産限定板 DVD 全巻&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00OJXVWIS&amp;linkId=ecac6082002cef1289084831d027882d&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00OJXVTZY&amp;linkId=4dc50f19798c301cce534f46b19f408f&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00OJXVWN8&amp;linkId=3f3bea985f1d8cb22a3f64e431065f58&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00OJXVVDO&amp;linkId=6f5daede1b02fbb4289e5e20a668ac7c&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00OJXVXSM&amp;linkId=7903613462f69afa2729223c31850edd&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00OJXVVBG&amp;linkId=acac1f0ea18332c41705ca76f60dc4b0&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00OJXVWK6&amp;linkId=6c369f8fe839c502503888fcdb55f947&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00OJXVTZ4&amp;linkId=4846eed6d283328fa1c23f9d13185dc3&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;PS3 を買う前だったので DVD で買いました。&lt;/p&gt;
-
-&lt;p&gt;リアルタイムでも見ましたし、その後もテレビやニコニコの一挙放送なんかで見たと思いましたが、結局買ってしまいました。 (ちょうどテレビの一挙放送がきっかけで買った気がする)&lt;/p&gt;
-
-&lt;p&gt;杉江 3 日伝説について菅野さんが熱弁するところは何度見てもニヤニヤが止まりませんし、小笠原さんにバッティングセンターに連れて行かれる話のネタの細かさも好きです。&lt;/p&gt;
-
-&lt;h3 id=&#34;patech-bluetooth-3-0-ワイヤレススピーカー-http-amzn-to-2iqlcrc&#34;&gt;&lt;a href=&#34;http://amzn.to/2iQlCRc&#34;&gt;Patech　Bluetooth 3.0　ワイヤレススピーカー&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00NFGTRNC&amp;linkId=9a3710935f6e248be2782f6031e655e8&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;風呂で Podcast を聞くのに使いました。&lt;/p&gt;
-
-&lt;p&gt;防水なので安心して風呂に持ち込めますし、ペアリングも簡単で、かつ値段も安いのでオススメです。&lt;/p&gt;
-
-&lt;h2 id=&#34;スマートフォン編&#34;&gt;スマートフォン編&lt;/h2&gt;
-
-&lt;h3 id=&#34;iphone-se-http-amzn-to-2hzps2u&#34;&gt;&lt;a href=&#34;http://amzn.to/2hzpS2u&#34;&gt;iPhone SE&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B01GC5DYXG&amp;linkId=61dff948ba67c324c038ed47099a5cb7&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;iPhone 5 を 3 年ぐらい使い続けていましたが、ようやく買い換えました。&lt;/p&gt;
-
-&lt;p&gt;iPhone 6 のデカさに二の足を踏んでいましたが、今となっては待って良かったと思います。 (やや妥協感はあるものの)&lt;/p&gt;
-
-&lt;h3 id=&#34;iphone-se-iphone5-5s-icカード-スロットイン-収納-ケース-http-amzn-to-2iqlh7z&#34;&gt;&lt;a href=&#34;http://amzn.to/2iQlH7z&#34;&gt;iPhone SE / iPhone5/5S ICカード スロットイン 収納 ケース&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00AK4OXUE&amp;linkId=91421700b5d3ed3785c577853fe19b49&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;iPhone SE と一緒に買いました。&lt;/p&gt;
-
-&lt;p&gt;長年 iPhone とガラケーの二台持ちで、ガラケーでモバイル Suica を使い続けていたんですが、通勤が銀座線オンリーになったことで、モバイル Suica の定期券が買えなくなってしまいました。&lt;/p&gt;
-
-&lt;p&gt;モバイル Suica は本当に便利だったので残念でしたが、しょうがないので PASMO をこのケースに入れて通勤するようになりました。&lt;br /&gt;
-移動中の電車の中でチャージしたり定期の更新ができなくなったのは辛いですが、定期は半年分買って、チャージも少し多めにしておけばたまにするだけで良いので、まぁ満足しています。&lt;/p&gt;
-
-&lt;h2 id=&#34;その他小物編&#34;&gt;その他小物編&lt;/h2&gt;
-
-&lt;h3 id=&#34;anker-powerport-4-40w-4ポートusb急速充電器-http-amzn-to-2iidief&#34;&gt;&lt;a href=&#34;http://amzn.to/2iiDiEf&#34;&gt;Anker PowerPort 4 (40W 4ポートUSB急速充電器)&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00VTJS58U&amp;linkId=85511f7be0e0adbca821a5b6b39449b7&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;今年はこれを合計 3 つ買って、自宅のリビングと寝室、そしてオフィスの机の上で使っています。&lt;/p&gt;
-
-&lt;p&gt;充電を使い切ることがほぼないので急速充電のメリットは特に感じていませんが、4 ポートあると安心感があって良いです。&lt;/p&gt;
-
-&lt;p&gt;Anker の同様の製品の中にはポートが死にやすいものがあったり、品質面に不安はありましたが、事前に調べた段階でこの 4 ポートのものは不具合の報告が少なく、実際使ってみてもトラブルなく使えています。&lt;/p&gt;
-
-&lt;h3 id=&#34;コクヨ-ペンケース-ネオクリッツフラット-http-amzn-to-2ippkgk&#34;&gt;&lt;a href=&#34;http://amzn.to/2iPpkGK&#34;&gt;コクヨ ペンケース ネオクリッツフラット&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B01AHDWS90&amp;linkId=21b2d7a22c2e292567c2e3c0408d03c4&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;就職して以降筆記用具はほとんど使わなくなりましたが、それでも必要な時はどうしてもあるので常に持っています。&lt;/p&gt;
-
-&lt;p&gt;これはペン立てにもなるのが面白くて好きです。&lt;/p&gt;
-
-&lt;h2 id=&#34;番外編&#34;&gt;番外編&lt;/h2&gt;
-
-&lt;h3 id=&#34;パナソニック-食器洗い乾燥機-np-tcr3-w-http-amzn-to-2hzvroa&#34;&gt;&lt;a href=&#34;http://amzn.to/2hzvRoa&#34;&gt;パナソニック 食器洗い乾燥機 NP-TCR3-W&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B014IIKWR0&amp;linkId=97bb93f0daf197e8bd4c2f657bfb7419&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;今日届きました！&lt;br /&gt;
-買って良かったかどうかは書き用がないですが、これからの活躍が期待されます。&lt;/p&gt;
-
-&lt;p&gt;見積もりの時点で「水道が古すぎてダメかもしれない」と言われていたので、ダメだった場合は水道工事に関して管理会社と交渉が必要そうな状況でしたが、なんとか無事に設置が完了し、安心して年を越せます。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;今年は主に生活を楽にする家電をいろいろ買いました。&lt;/p&gt;
-
-&lt;p&gt;生活への投資という方向性は今後も継続していきたいですが、2017 年は家電のスマート化とかにもチャレンジして行って、ブログネタにしていきたいです。&lt;/p&gt;
-
-&lt;p&gt;あとは自宅のプログラミング環境についてはあまり投資ができずに終わってしまったので、その辺もなんとかしていきたいですね。&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -887,64 +101,9 @@ Rails 2.2.8 がリリースされれば動くようになる予定。&lt;/p&gt;
       <pubDate>Sun, 25 Dec 2016 04:29:36 +0900</pubDate>
       
       <guid>https://blog.yuyat.jp/post/defining-singleton-methods-with-instance_eval/</guid>
-      <description>
+      <description>&lt;p&gt;最近 &lt;a href=&#34;https://github.com/yuya-takeyama/flagship&#34;&gt;Flagship&lt;/a&gt; という機能フラグを Ruby の言語内 DSL で定義する gem を作っていて、その中で出てきた DSL 定義パターンっぽいものをメモ。&lt;/p&gt;
 
-&lt;p&gt;最近 &lt;a href=&#34;https://github.com/yuya-takeyama/flagship&#34;&gt;Flagship&lt;/a&gt; という機能フラグを Ruby の言語内 DSL で定義する gem を作っていて、その中で出てきた DSL 定義パターンっぽいものをメモ。&lt;/p&gt;
-
-&lt;h2 id=&#34;特異メソッド&#34;&gt;特異メソッド&lt;/h2&gt;
-
-&lt;p&gt;特異メソッドというのはインスタンスメソッドとは違って特定のオブジェクト固有のメソッドです。&lt;/p&gt;
-
-&lt;p&gt;普通は以下のように定義します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;class Foo
-end
-
-foo = Foo.new
-
-# Foo オブジェクトに定義
-def foo.bar
-  puts &amp;quot;bar!&amp;quot;
-end
-
-foo.bar
-# =&amp;gt; bar!
-
-# Foo クラスの Class オブジェクトに定義
-def Foo.baz
-  puts &amp;quot;baz!&amp;quot;
-end
-
-Foo.baz
-# =&amp;gt; baz!
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;特異メソッドを-instance-eval-で&#34;&gt;特異メソッドを instance_eval で&lt;/h2&gt;
-
-&lt;p&gt;で、本題ですが、これを &lt;code&gt;instance_eval&lt;/code&gt; でも定義できることに気づいたという話。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;class Foo
-end
-
-foo = Foo.new
-foo.instance_eval do
-  def bar
-    puts &amp;quot;bar!&amp;quot;
-  end
-end
-
-foo.bar
-# =&amp;gt; bar!
-
-foo2 = Foo.new
-foo2.bar
-# =&amp;gt; NoMethodError
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;このように最初の &lt;code&gt;foo&lt;/code&gt; では &lt;code&gt;#bar&lt;/code&gt; を呼び出すことはできましたが、別オブジェクトである &lt;code&gt;foo2&lt;/code&gt; に対しては呼び出せないので、&lt;code&gt;Foo&lt;/code&gt; クラスのインスタンスメソッドではなく &lt;code&gt;foo&lt;/code&gt; の特異メソッドであることがわかります。&lt;/p&gt;
-
-&lt;h2 id=&#34;dsl-に応用する&#34;&gt;DSL に応用する&lt;/h2&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -956,38 +115,7 @@ foo2.bar
       <description>&lt;p&gt;要は Legacy SQL モード で &lt;code&gt;FROM (TABLE_DATE_RANGE(dataset.table_, TIMESTAMP(&#39;2016-01-01&#39;), TIMESTAMP(&#39;2016-01-14&#39;)))&lt;/code&gt; とか書いていたのを標準 SQL でどう書くか、という話です。&lt;br /&gt;
 すぐ忘れるのでメモ。&lt;/p&gt;
 
-&lt;p&gt;テーブルは以下のような名前になっている前提です。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;table_20160101&lt;/li&gt;
-&lt;li&gt;table_20160102&lt;/li&gt;
-&lt;li&gt;table_20160103&lt;/li&gt;
-&lt;li&gt;&amp;hellip;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;これで例えば直近 14 日分のテーブルを対象にしたい場合はこんな感じ。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;SELECT time
-FROM `dataset.table_*`
-WHERE _TABLE_SUFFIX &amp;gt;= FORMAT_DATE(&#39;%Y%m%d&#39;, DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;テーブル名はワイルドカードで指定しつつ、&lt;code&gt;_TABLE_SUFFIX&lt;/code&gt; という擬似カラムに対して日付の条件を指定する。&lt;/p&gt;
-
-&lt;p&gt;詳細は以下の公式ドキュメントを参考にしましょう。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://cloud.google.com/bigquery/docs/wildcard-tables#wildcard_table_syntax&#34;&gt;Wildcard table syntax&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;よく使うパターンですが、覚えていられない、という人で普段 &lt;a href=&#34;https://redash.io/&#34;&gt;Re:dash&lt;/a&gt; でクエリを書いている、という人は &lt;a href=&#34;https://github.com/getredash/redash/blob/master/CHANGELOG.md#v0120---2016-11-20&#34;&gt;v0.12.0&lt;/a&gt; で追加された Query Snippets という機能を使うと、こんな感じにキーワード補完されるようになって便利です。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/filtering-tables-in-bigquery-standard-sql/query_snippets.gif&#34; alt=&#34;query snippets&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;設定としては以下のようにしておけば &lt;code&gt;_TABLE_SUFFIX&lt;/code&gt; というキーワードをトリガーに補完されます。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/filtering-tables-in-bigquery-standard-sql/setting.png&#34; width=&#34;658&#34; height=&#34;257&#34;&gt;&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -996,48 +124,13 @@ WHERE _TABLE_SUFFIX &amp;gt;= FORMAT_DATE(&#39;%Y%m%d&#39;, DATE_SUB(CURRENT_DAT
       <pubDate>Sun, 27 Nov 2016 02:43:58 +0900</pubDate>
       
       <guid>https://blog.yuyat.jp/post/ghissue-a-command-to-create-github-issues/</guid>
-      <description>
-
-&lt;p&gt;作りました。&lt;/p&gt;
+      <description>&lt;p&gt;作りました。&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/ghissue&#34;&gt;yuya-takeyama/ghissue&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;なぜ作ったか&#34;&gt;なぜ作ったか&lt;/h2&gt;
-
-&lt;p&gt;いろいろな自動化スクリプトを書く中で、&lt;a href=&#34;https://octokit.github.io/&#34;&gt;Octokit&lt;/a&gt; とかで毎回実装するのは面倒だったので、標準入力だけ食わせればいい感じにやってくれるものが欲しいな、と思って作りました。&lt;/p&gt;
-
-&lt;p&gt;タイトル・本文だけを標準出力に書き出すスクリプトだけ書けば、それをパイプで繋げるだけで ghissue が Issue を立ててくれます。&lt;br /&gt;
-タイトル・本文だけうまく組み立てることに集中すればよくなり、テストも楽になるでしょう。&lt;/p&gt;
-
-&lt;p&gt;類似ツールとしては &lt;a href=&#34;https://github.com/stephencelis/ghi&#34;&gt;ghi&lt;/a&gt; というツールがありますが、これは標準入力からタイトル・本文を指定することができないので、他のコマンドと組み合わせて使うのはやや面倒です。&lt;br /&gt;
-また、ghi が Ruby なのに対して、ghissue は Go で実装されていてコンパイル済みのバイナリも GitHub からダウンロードできます。&lt;/p&gt;
-
-&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
-
-&lt;h3 id=&#34;アクセストークンの指定&#34;&gt;アクセストークンの指定&lt;/h3&gt;
-
-&lt;p&gt;GitHub のアクセストークンを &lt;code&gt;GITHUB_ACCESS_TOKEN&lt;/code&gt; という環境変数で指定します。&lt;/p&gt;
-
-&lt;h3 id=&#34;issue-を作る&#34;&gt;Issue を作る&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;$ some_command | ghissue yuya-takeyama/test --labels Bug,Major --assignees yuya-takeyama
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;some_command&lt;/code&gt; は Issue のタイトル・本文を生成するためのコマンドです。&lt;br /&gt;
-1 行目がタイトルになり、残りは本文になります。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;--labels&lt;/code&gt; (&lt;code&gt;-l&lt;/code&gt;) ではラベルを指定します。カンマ区切りで複数指定可能です。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;--assignees&lt;/code&gt; (&lt;code&gt;-a&lt;/code&gt;) では assignee を指定します。これもカンマ区切りで複数指定可能です。&lt;/p&gt;
-
-&lt;h2 id=&#34;その他&#34;&gt;その他&lt;/h2&gt;
-
-&lt;p&gt;Issue を編集する機能・コメントを記入するための機能もあっていいだろうと思うものの、今のところ個人的には必要としてないので、まぁそのうち。&lt;/p&gt;
-
-&lt;p&gt;よければご利用ください。&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -1046,32 +139,12 @@ WHERE _TABLE_SUFFIX &amp;gt;= FORMAT_DATE(&#39;%Y%m%d&#39;, DATE_SUB(CURRENT_DAT
       <pubDate>Sun, 23 Oct 2016 16:39:29 +0900</pubDate>
       
       <guid>https://blog.yuyat.jp/post/make-sure-loading-order-to-be-consistent/</guid>
-      <description>&lt;p&gt;以下のように特定のディレクトリ配下のファイルを雑に &lt;code&gt;require&lt;/code&gt; することがあるとする。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;Dir.glob(&#39;./lib/**/*.rb&#39;).each {|f| require f }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これだと読み込み順が一定でないので、場合によっては A というクラスが依存している B というクラスを読み込む前に参照しようとして &lt;code&gt;NameError&lt;/code&gt; にったりする。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;# a.rb
-class A &amp;lt; B
-end
-
-# b.rb
-class B
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;もちろん、これは &lt;code&gt;a.rb&lt;/code&gt; の先頭で &lt;code&gt;require &#39;b.rb&#39;&lt;/code&gt; すればいい話ではある。&lt;br /&gt;
-だが問題は、テスト中はたまたま問題なくいっていたものが本番で急にエラーになったりすることである。&lt;/p&gt;
-
-&lt;p&gt;そのため事前に &lt;code&gt;sort&lt;/code&gt; しておくと良い。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;Dir.glob(&#39;./lib/**/*.rb&#39;).each.sort {|f| require f }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これならファイルの読み込み順序は一定になる、はず。 (OS やファイルシステムによって違う可能性もあり得る?)&lt;/p&gt;
-</description>
+      <description>以下のように特定のディレクトリ配下のファイルを雑に require することがあるとする。
+Dir.glob(&#39;./lib/**/*.rb&#39;).each {|f| require f }  これだと読み込み順が一定でないので、場合によっては A というクラスが依存している B というクラスを読み込む前に参照しようとして NameError にったりする。
+# a.rb class A &amp;lt; B end # b.rb class B end  もちろん、これは a.rb の先頭で require &#39;b.rb&#39; すればいい話ではある。
+だが問題は、テスト中はたまたま問題なくいっていたものが本番で急にエラーになったりすることである。
+そのため事前に sort しておくと良い。
+Dir.glob(&#39;./lib/**/*.rb&#39;).each.sort {|f| require f }  これならファイルの読み込み順序は一定になる、はず。 (OS やファイルシステムによって違う可能性もあり得る?)</description>
     </item>
     
     <item>
@@ -1080,9 +153,7 @@ end
       <pubDate>Tue, 11 Oct 2016 21:29:41 +0900</pubDate>
       
       <guid>https://blog.yuyat.jp/post/run-docker-container-in-digitalocean/</guid>
-      <description>
-
-&lt;h2 id=&#34;やりたいこと&#34;&gt;やりたいこと&lt;/h2&gt;
+      <description>&lt;h2 id=&#34;やりたいこと&#34;&gt;やりたいこと&lt;/h2&gt;
 
 &lt;ul&gt;
 &lt;li&gt;任意のアプリの Docker コンテナをサクッと立ち上げたい&lt;/li&gt;
@@ -1091,88 +162,7 @@ end
 
 &lt;p&gt;より具体的には、今回は &lt;code&gt;mitmproxy&lt;/code&gt; をインターネット上で動かして iPhone 等のスマートフォン端末からつなぎたかった、という感じです。&lt;/p&gt;
 
-&lt;h2 id=&#34;手順&#34;&gt;手順&lt;/h2&gt;
-
-&lt;h3 id=&#34;digitalocean-のアカウントを作成する&#34;&gt;DigitalOcean のアカウントを作成する&lt;/h3&gt;
-
-&lt;p&gt;ここは割愛。&lt;/p&gt;
-
-&lt;h3 id=&#34;digitalocean-のアクセストークンを作成&#34;&gt;DigitalOcean のアクセストークンを作成&lt;/h3&gt;
-
-&lt;p&gt;API -&amp;gt; Tokens -&amp;gt; Generate New Token から適当に名前をつけて作ります。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/run-docker-container-in-digitalocean/generate-new-token.png&#34; width=&#34;608&#34; height=&#34;424&#34;&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;docker-machine-で-docker-環境を作る&#34;&gt;docker-machine で Docker 環境を作る&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;docker-machine&lt;/code&gt; のインストール手順については割愛。&lt;br /&gt;
-Mac だと Homebrew でもインストールできるので適当にやっておく。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ docker-machine create --driver digitalocean --digitalocean-access-token=ACCESS_TOKEN --digitalocean-region=sgp1 mitmproxy
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;--digitalocean-access-token&lt;/code&gt; には前の手順で作ったアクセストークンを指定。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;--digitalocean-region&lt;/code&gt; にはリージョンの slug を指定します。&lt;br /&gt;
-省略すると New York にできてレイテンシが辛いので、日本からだとシンガポールでも指定しておくのがいいでしょう。&lt;/p&gt;
-
-&lt;p&gt;リージョンの slug 一覧はこんな感じに最新版を取得できます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ curl -H &amp;quot;Content-Type: application/json&amp;quot; -H &amp;quot;Authorization: Bearer ACCESS_TOKEN&amp;quot; &amp;quot;https://api.digitalocean.com/v2/regions&amp;quot; -s | jq &#39;.regions[] | &amp;quot;\(.slug)\t\(.name)&amp;quot;&#39; -r | sort
-ams2    Amsterdam 2
-ams3    Amsterdam 3
-blr1    Bangalore 1
-fra1    Frankfurt 1
-lon1    London 1
-nyc1    New York 1
-nyc2    New York 2
-nyc3    New York 3
-sfo1    San Francisco 1
-sfo2    San Francisco 2
-sgp1    Singapore 1
-tor1    Toronto 1
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;末尾の &lt;code&gt;mitmproxy&lt;/code&gt; という部分は Docker 環境に任意の名前をつけるだけなので適当に。&lt;/p&gt;
-
-&lt;p&gt;数分かかりますがトイレ行ってコーヒーでも淹れて来たりすれば終わっているでしょう。&lt;/p&gt;
-
-&lt;h3 id=&#34;docker-コンテナの起動&#34;&gt;Docker コンテナの起動&lt;/h3&gt;
-
-&lt;p&gt;Dockerfile を拾ってこれるような場合は Docker Hub のページ見ながら適当に。&lt;br /&gt;
-信頼していい Dockerfile なのかは注意する。&lt;/p&gt;
-
-&lt;p&gt;今回は &lt;a href=&#34;https://hub.docker.com/r/mitmproxy/mitmproxy/&#34;&gt;mitmproxy/mitmproxy&lt;/a&gt; のイメージを使いました。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# Docker への接続情報をターミナルのセッションに読み込む
-$ eval $(docker-machine env mitmproxy)
-
-# Docker コンテナの起動
-$ docker run --rm -it -p 8080:8080 mitmproxy/mitmproxy
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;ip-アドレスの確認&#34;&gt;IP アドレスの確認&lt;/h3&gt;
-
-&lt;p&gt;今回は外部から接続する前提なので。&lt;br /&gt;
-DigitalOcean の Droplets の一覧から見てもいいです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ docker-machine ip mitmproxy
-128.199.***.***
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;docker-環境を削除する&#34;&gt;Docker 環境を削除する&lt;/h3&gt;
-
-&lt;p&gt;使い捨て前提なので削除しておきます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ docker-machine rm mitmproxy
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;アクセストークンも DigitalOcean のページ上から削除しておくとより安心でしょう。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;こういうシュッとサーバなりコンテナなり必要なとき DigitalOcean は便利なのでアカウントを持っていない人は&lt;a href=&#34;https://m.do.co/c/645fac0c10f9&#34;&gt;作っておきましょう。 (アフィリエイトリンク)&lt;/a&gt;&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -1181,135 +171,14 @@ DigitalOcean の Droplets の一覧から見てもいいです。&lt;/p&gt;
       <pubDate>Sun, 02 Oct 2016 14:56:46 +0900</pubDate>
       
       <guid>https://blog.yuyat.jp/post/visualize-docker-metrics-with-redash/</guid>
-      <description>
-
-&lt;p&gt;しばらく前から &lt;a href=&#34;http://dokku.viewdocs.io/dokku/&#34;&gt;Dokku&lt;/a&gt; という Docker ベースの Heroku ライクな PaaS 基盤を趣味で運用していて、その中で旧ブログの WordPress や 自分用のツールなんかを動かしたりしている。&lt;/p&gt;
+      <description>&lt;p&gt;しばらく前から &lt;a href=&#34;http://dokku.viewdocs.io/dokku/&#34;&gt;Dokku&lt;/a&gt; という Docker ベースの Heroku ライクな PaaS 基盤を趣味で運用していて、その中で旧ブログの WordPress や 自分用のツールなんかを動かしたりしている。&lt;/p&gt;
 
 &lt;p&gt;サーバのメトリクス収集には &lt;a href=&#34;https://mackerel.io/&#34;&gt;Mackerel&lt;/a&gt; を利用しているが、Docker コンテナ単位での計測は行っていなかった。&lt;br /&gt;
 Mackerel はホスト数に応じた課金を行っていて、5 ホストまでは無料だが、コンテナまで追加してしまうとすぐにその枠を溢れてしまう。&lt;/p&gt;
 
 &lt;p&gt;というわけで簡単な仕組みを自分で用意いてみた。&lt;/p&gt;
 
-&lt;h2 id=&#34;できたもの&#34;&gt;できたもの&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/chart.png&#34; width=&#34;414&#34; height=&#34;319&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/stack-chart.png&#34; width=&#34;416&#34; height=&#34;342&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;どちらもメモリ使用量 (MB) をコンテナ名ごとにグラフ化したもので、どちらもデータは同じものを使っている。&lt;br /&gt;
-後者はグラフを積み上げることでコンテナ全体で使用しているメモリの使用量もわかるようになっている。&lt;/p&gt;
-
-&lt;p&gt;今のところ Docker のリソースに関して困っているのはメモリだけなので、とりあえずはこれだけ。&lt;/p&gt;
-
-&lt;p&gt;なお、Dokku ではコンテナ名が &lt;code&gt;アプリ名.プロセス名.プロセス番号&lt;/code&gt; という感じになる (例えば &lt;code&gt;blog.web.1&lt;/code&gt; といった具合) になるので、アプリを再起動してコンテナ ID が変わっても連続的にモニタリングできる。&lt;br /&gt;
-グラフ中異常値っぽいのが出ているところはまさにアプリを再起動したりしているところ。&lt;/p&gt;
-
-&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-
-&lt;p&gt;以下のような流れでこのグラフを作り出している。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/kiyoto/fluent-plugin-docker-metrics&#34;&gt;fluent-plugin-docker-metrics&lt;/a&gt; で Docker のメトリクスを td-agent に収集&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/kaizenplatform/fluent-plugin-bigquery&#34;&gt;fluent-plugin-bigquery&lt;/a&gt; でメトリクスを BigQuery に送信&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://redash.io/&#34;&gt;Re:dash&lt;/a&gt; で BigQuery 上のデータをグラフ化&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;手順&#34;&gt;手順&lt;/h2&gt;
-
-&lt;h3 id=&#34;fluent-plugin-docker-metrics-のセットアップ&#34;&gt;fluent-plugin-docker-metrics のセットアップ&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;td-agent.conf&lt;/code&gt; の設定はこんな感じ。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;source&amp;gt;
-  @type docker_metrics
-  stats_interval 1m
-  tag_prefix docker.metrics
-&amp;lt;/source&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;tag_prefix&lt;/code&gt; はデフォルトだと &lt;code&gt;docker&lt;/code&gt; だが、別の機会で Docker の何かを収集することもあるかもしれないので &lt;code&gt;docker.metrics&lt;/code&gt; としてみた。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;stats_interval&lt;/code&gt; はとりあえず 1 分ごとにしているが、すべてのコンテナの値を収集するとデータ量がそこそこ多くなるので 5 分ごととかに減らしてもいいかもしれない。&lt;/p&gt;
-
-&lt;p&gt;これでこんな感じのデータが収集できる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;20161002T062409+0000	docker.metrics.memory.stat	{&amp;quot;key&amp;quot;:&amp;quot;memory_stat_cache&amp;quot;,&amp;quot;value&amp;quot;:9039872,&amp;quot;type&amp;quot;:&amp;quot;gauge&amp;quot;,&amp;quot;hostname&amp;quot;:&amp;quot;HOSTNAME&amp;quot;,&amp;quot;id&amp;quot;:&amp;quot;6008f80ef7f6c6747edf01019846074d27e29a7d217c6e3f3301fcdb435cef73&amp;quot;,&amp;quot;name&amp;quot;:&amp;quot;/blog-legacy.web.1&amp;quot;}
-20161002T062409+0000	docker.metrics.memory.stat	{&amp;quot;key&amp;quot;:&amp;quot;memory_stat_rss&amp;quot;,&amp;quot;value&amp;quot;:14028800,&amp;quot;type&amp;quot;:&amp;quot;gauge&amp;quot;,&amp;quot;hostname&amp;quot;:&amp;quot;HOSTNAME&amp;quot;,&amp;quot;id&amp;quot;:&amp;quot;6008f80ef7f6c6747edf01019846074d27e29a7d217c6e3f3301fcdb435cef73&amp;quot;,&amp;quot;name&amp;quot;:&amp;quot;/blog-legacy.web.1&amp;quot;}
-20161002T062409+0000	docker.metrics.memory.stat	{&amp;quot;key&amp;quot;:&amp;quot;memory_stat_rss_huge&amp;quot;,&amp;quot;value&amp;quot;:0,&amp;quot;type&amp;quot;:&amp;quot;gauge&amp;quot;,&amp;quot;hostname&amp;quot;:&amp;quot;HOSTNAME&amp;quot;,&amp;quot;id&amp;quot;:&amp;quot;6008f80ef7f6c6747edf01019846074d27e29a7d217c6e3f3301fcdb435cef73&amp;quot;,&amp;quot;name&amp;quot;:&amp;quot;/blog-legacy.web.1&amp;quot;}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;コンテナ ID とコンテナ名の両方が記録されるので、どちらでもグループ化して集計することが可能である。&lt;/p&gt;
-
-&lt;h3 id=&#34;fluent-plugin-bigquery-のセットアップ&#34;&gt;fluent-plugin-bigquery のセットアップ&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;match docker.metrics.**&amp;gt;
-  @type bigquery
-
-  auth_method json_key
-  email ***@PROJECT.iam.gserviceaccount.com
-  json_key /etc/td-agent/bigquery/key.json
-
-  project PROJECT
-  dataset docker
-  table   metrics_%Y%m%d
-  ignore_unknown_values true
-  auto_create_table true
-
-  time_format %s
-  time_field time
-
-  field_timestamp time
-  field_integer   value
-  field_string    key,type,hostname,id,name
-&amp;lt;/match&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;日別にテーブルに保存されるよう、&lt;code&gt;table&lt;/code&gt; は &lt;code&gt;metrics_%Y%m%d&lt;/code&gt; としている。&lt;/p&gt;
-
-&lt;p&gt;また、テーブルは自動で作られるが、データセットはあらかじめ作っておく必要があるらしい。&lt;/p&gt;
-
-&lt;h3 id=&#34;re-dash-でグラフ化&#34;&gt;Re:dash でグラフ化&lt;/h3&gt;
-
-&lt;p&gt;Re:dash 自体のセットアップについては割愛するが、個人的にはこれを Dokku で動かしていて、その手順については以前 Qiita に書いている。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://qiita.com/yuya_takeyama/items/9915f5ae3953a9c2c14b&#34;&gt;Dokku に Re:dash をインストールする&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;クエリはこんな感じ。&lt;br /&gt;
-Standard SQL を使っている。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;SELECT
-  time,
-  name,
-  value / 1024 / 1024 AS size
-FROM
-  `PROJECT.docker.metrics_*`
-WHERE
-  key = &#39;memory_stat_rss&#39;
-ORDER BY
-  name,
-  time
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;とりあえず全データを対象にしているが、データ量が増えてきたらテーブル名を日付で絞ったほうが良いかもしれない。&lt;/p&gt;
-
-&lt;p&gt;あとは適当に Visualize の設定を行う。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/chart-setting.png&#34; width=&#34;531&#34; height=&#34;608&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/stack-setting.png&#34; width=&#34;526&#34; height=&#34;607&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;これで先に載せた感じのグラフが出来上がる。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/chart.png&#34; width=&#34;414&#34; height=&#34;319&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/stack-chart.png&#34; width=&#34;416&#34; height=&#34;342&#34;&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;グラフ化した結果、メモリを一番使っているのは Re:dash の Worker だということがわかった。&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -1320,21 +189,7 @@ ORDER BY
       <guid>https://blog.yuyat.jp/post/rmp-quipper-food-and-drink-meetup/</guid>
       <description>&lt;p&gt;Quipper とその親会社であるところのリクルートマーケティングパートナーズ (RMP) とでの&lt;a href=&#34;http://rmp-quipper.connpass.com/event/39082/&#34;&gt;合同イベント&lt;/a&gt; (平たくいうと採用イベント) があって、LT の発表枠が空いていたので発表してきた。&lt;/p&gt;
 
-&lt;p&gt;スライドは Qiita のスライド機能を初めて使ってみた。&lt;br /&gt;
-スクリーンに写すと文字が結構小さかったので、事前のチェックが大事だと思った。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://qiita.com/yuya_takeyama/items/6b0fe4bc7d501f69e081&#34;&gt;curl でサッとベンチマークをとる (スライド版)&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;内容的には以前同じく &lt;a href=&#34;http://qiita.com/yuya_takeyama/items/baf48a3f643e743a46b4&#34;&gt;Qiita に書いた記事&lt;/a&gt; を加筆・再編集した程度のものなので、準備にはあまり時間がかかっていない。&lt;/p&gt;
-
-&lt;p&gt;Google Chrome の Developer Tools からリクエストを curl コマンドとしてコピーする機能について知らない人が意外と多かったので、その点が一番バリュー高かったのかもしれない。&lt;/p&gt;
-
-&lt;p&gt;あとは見つけた時に超クールだと思った &lt;a href=&#34;https://github.com/winebarrel/hyst&#34;&gt;hyst&lt;/a&gt; というツールについても軽く紹介した。&lt;br /&gt;
-hyst を作っている &lt;a href=&#34;https://github.com/winebarrel&#34;&gt;@winebarrel&lt;/a&gt; さんには &lt;a href=&#34;https://github.com/winebarrel/miam&#34;&gt;miam&lt;/a&gt; や &lt;a href=&#34;https://github.com/winebarrel/roadworker&#34;&gt;roadworker&lt;/a&gt; でもお世話になっています。&lt;br /&gt;
-あと &lt;a href=&#34;http://hakobera.hatenablog.com/entry/2016/03/02/084204&#34;&gt;Quipper でも使われているみたい&lt;/a&gt;です。&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -1345,16 +200,7 @@ hyst を作っている &lt;a href=&#34;https://github.com/winebarrel&#34;&gt;@w
       <guid>https://blog.yuyat.jp/post/stuff-to-get-response-time-with-curl/</guid>
       <description>&lt;p&gt;以前 Qiita に&lt;a href=&#34;http://qiita.com/yuya_takeyama/items/baf48a3f643e743a46b4&#34;&gt;curl でサッと HTTP ベンチマーク&lt;/a&gt;と書いたが、それをもうちょい簡単にやるために以下のようなコマンドを用意してみた。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-sh&#34;&gt;#!/bin/sh
-curl -s -o /dev/null -w &#39;%{time_starttransfer}\n&#39; &amp;quot;$@&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これを &lt;code&gt;curlb&lt;/code&gt; という名前で &lt;code&gt;$PATH&lt;/code&gt; の通ったところに置いておくと以下のようにできる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ curlb https://blog.yuyat.jp/
-0.067
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -1363,63 +209,61 @@ curl -s -o /dev/null -w &#39;%{time_starttransfer}\n&#39; &amp;quot;$@&amp;quot;
       <pubDate>Mon, 26 Sep 2016 01:00:24 +0900</pubDate>
       
       <guid>https://blog.yuyat.jp/post/tee2err/</guid>
-      <description>
-
-&lt;p&gt;GNU tee でも BSD tee でもできないので作りました。&lt;/p&gt;
+      <description>&lt;p&gt;GNU tee でも BSD tee でもできないので作りました。&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/tee2err&#34;&gt;yuya-takeyama/tee2err&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h2 id=&#34;これは何か&#34;&gt;これは何か&lt;/h2&gt;
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>GitHub Pages を nginx のリバースプロキシ越しに配信する</title>
+      <link>https://blog.yuyat.jp/post/serving-github-pages-through-reverse-proxy/</link>
+      <pubDate>Sun, 25 Sep 2016 17:57:40 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/serving-github-pages-through-reverse-proxy/</guid>
+      <description>&lt;p&gt;このブログは&lt;a href=&#34;https://blog.yuyat.jp/post/auto-deploy-hugo-to-github-pages-with-circleci/&#34;&gt;以前の記事&lt;/a&gt;にも書いた通り、&lt;a href=&#34;https://pages.github.com/&#34;&gt;GitHub Pages&lt;/a&gt; から配信しています。&lt;/p&gt;
 
-&lt;p&gt;標準入力を食わせると、標準出力と標準エラー出力に同じものを出力するだけのコマンドです。&lt;/p&gt;
+&lt;p&gt;そしてさらに、前段に nginx のリバースプロキシを置いた構成になってます。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ echo foo | tee2err
-foo
-foo
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Let&#39;s Encrypt の証明書を Ansible と certbot で Nginx にインストール &amp; 自動更新</title>
+      <link>https://blog.yuyat.jp/post/auto-renew-letsencrypt-cert-keys-with-ansible-and-certbot/</link>
+      <pubDate>Mon, 19 Sep 2016 14:12:38 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/auto-renew-letsencrypt-cert-keys-with-ansible-and-certbot/</guid>
+      <description>&lt;p&gt;これも&lt;a href=&#34;https://blog.yuyat.jp/post/brand-new-blog/&#34;&gt;リニューアル&lt;/a&gt;ネタです。&lt;/p&gt;
 
-&lt;p&gt;foo と 2 回出力されていますが、一方は標準出力に、もう一方は標準エラー出力に出力されています。&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Hugo で作ったサイトを CircleCI で GitHub Pages に自動デプロイ</title>
+      <link>https://blog.yuyat.jp/post/auto-deploy-hugo-to-github-pages-with-circleci/</link>
+      <pubDate>Mon, 19 Sep 2016 10:30:35 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/auto-deploy-hugo-to-github-pages-with-circleci/</guid>
+      <description>&lt;p&gt;Hugo は Jekyll と違って、GitHub Pages に push しても勝手にページ生成はされません。&lt;br /&gt;
+どうにかして自分で Hugo を実行し、それで生成されたファイルを push する必要があります。&lt;br /&gt;
+このブログを構築するにあたって、CircleCI でビルドして自動デプロイする手順がまとまったので公開します。&lt;/p&gt;
 
-&lt;h2 id=&#34;どういう時に使うか&#34;&gt;どういう時に使うか&lt;/h2&gt;
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>ブログを Hugo でリニューアルした</title>
+      <link>https://blog.yuyat.jp/post/brand-new-blog/</link>
+      <pubDate>Mon, 19 Sep 2016 02:39:31 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/brand-new-blog/</guid>
+      <description>&lt;p&gt;長年 Wordpress を使ってきたけどいい加減辛くなってきたので &lt;a href=&#34;https://gohugo.io/&#34;&gt;Hugo&lt;/a&gt; に移行しました。&lt;/p&gt;
 
-&lt;p&gt;標準入力からストリームを食わせるとなんらかの終端操作を行うようなツールと一緒に使います。&lt;/p&gt;
-
-&lt;p&gt;例えば 1 から 10 までの数列の総和を求める場合。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ seq 10 | perl -ane &#39;$i+=$_; END { print &amp;quot;SUM: $i\n&amp;quot;; }&#39;
-SUM: 55
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これはこれで特に問題ないですが、これに &lt;code&gt;tee2err&lt;/code&gt; を組み合わせるとこのようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ seq 10 | tee2err | perl -ane &#39;$i+=$_; END { print &amp;quot;SUM: $i\n&amp;quot;; }&#39;
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-SUM: 55
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;seq 10&lt;/code&gt; の出力を見ながら計算結果を待つことができます。&lt;br /&gt;
-1 ~ 10 の数値は標準エラー出力への出力なので、&lt;code&gt;perl&lt;/code&gt; での計算に影響は及ぼしません。&lt;/p&gt;
-
-&lt;p&gt;この例であればいずれにせよ一瞬で終わるので特に問題にならないですが、以前 Qiita に書いた &lt;a href=&#34;http://qiita.com/yuya_takeyama/items/baf48a3f643e743a46b4&#34;&gt;&lt;code&gt;curl&lt;/code&gt; コマンドでベンチマークを実行するような場合&lt;/a&gt;だとそれなりに待たされるので、ターミナルに何も出力されないまま待ち続けるのは少しストレスだったりするので作りました。&lt;/p&gt;
-
-&lt;h2 id=&#34;インストール&#34;&gt;インストール&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code&gt;$ go get github.com/yuya-takeyama/tee2err
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;または &lt;a href=&#34;https://github.com/yuya-takeyama/tee2err/releases&#34;&gt;releases&lt;/a&gt; にビルド済みバイナリも置いてます。&lt;/p&gt;
-</description>
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>

@@ -23,7 +23,12 @@
     <meta property="fb:admins" content="100000987494966" />
 <meta property="fb:app_id" content="285547814816502" />
 <meta property="og:title" content="Ruby で Dir.glob して require するときは sort してからにする" />
-<meta property="og:description" content="以下のように特定のディレクトリ配下のファイルを雑に require することがあるとする。 Dir.glob(&#39;./lib/**/*.rb&#39;).each {|f| require f } これだと読み込み順が一定でないので、場合によっては A というクラスが依存している B というクラスを読み込む前に参照しようとして NameError にったりする。 # a.rb class A &lt; B end # b.rb class B end もちろん、これは a.rb の先頭で require &#39;b.rb&#39; すればいい話ではある。 だが問題は、テスト中はたまたま問題なくいっていたものが本番で急にエラーになったりすることである。 そのため事前に sort しておくと良い。 Dir.glob(&#39;./lib/**/*.rb&#39;).each.sort {|f| require f } これならファイルの読み込み順序は一定になる、はず。 (OS やファイルシステムによって違う可能性もあり得る?)" />
+<meta property="og:description" content="以下のように特定のディレクトリ配下のファイルを雑に require することがあるとする。
+Dir.glob(&#39;./lib/**/*.rb&#39;).each {|f| require f }  これだと読み込み順が一定でないので、場合によっては A というクラスが依存している B というクラスを読み込む前に参照しようとして NameError にったりする。
+# a.rb class A &lt; B end # b.rb class B end  もちろん、これは a.rb の先頭で require &#39;b.rb&#39; すればいい話ではある。
+だが問題は、テスト中はたまたま問題なくいっていたものが本番で急にエラーになったりすることである。
+そのため事前に sort しておくと良い。
+Dir.glob(&#39;./lib/**/*.rb&#39;).each.sort {|f| require f }  これならファイルの読み込み順序は一定になる、はず。 (OS やファイルシステムによって違う可能性もあり得る?)" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.yuyat.jp/post/make-sure-loading-order-to-be-consistent/" />
 
@@ -113,7 +118,7 @@ end
 
     </div>
     <div class="post-footer">
-      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 19 Articles →</a>
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 20 Articles →</a>
 
     </div>
     
@@ -163,7 +168,7 @@ end
           <footer>
 
 &copy; 2015.
-Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+Built with <a href="http://gohugo.io/">Hugo</a> (0.31.1) and
 <a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
 
 </footer>

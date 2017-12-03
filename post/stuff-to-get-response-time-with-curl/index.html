@@ -24,6 +24,7 @@
 <meta property="fb:app_id" content="285547814816502" />
 <meta property="og:title" content="curl でレスポンスタイムをシュッと取るヤツ" />
 <meta property="og:description" content="以前 Qiita にcurl でサッと HTTP ベンチマークと書いたが、それをもうちょい簡単にやるために以下のようなコマンドを用意してみた。
+
 " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.yuyat.jp/post/stuff-to-get-response-time-with-curl/" />
@@ -88,6 +89,8 @@
     <div class="post-content">
       <p>以前 Qiita に<a href="http://qiita.com/yuya_takeyama/items/baf48a3f643e743a46b4">curl でサッと HTTP ベンチマーク</a>と書いたが、それをもうちょい簡単にやるために以下のようなコマンドを用意してみた。</p>
 
+<p></p>
+
 <pre><code class="language-sh">#!/bin/sh
 curl -s -o /dev/null -w '%{time_starttransfer}\n' &quot;$@&quot;
 </code></pre>
@@ -97,10 +100,9 @@ curl -s -o /dev/null -w '%{time_starttransfer}\n' &quot;$@&quot;
 <pre><code>$ curlb https://blog.yuyat.jp/
 0.067
 </code></pre>
-
     </div>
     <div class="post-footer">
-      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 19 Articles →</a>
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 20 Articles →</a>
 
     </div>
     
@@ -150,7 +152,7 @@ curl -s -o /dev/null -w '%{time_starttransfer}\n' &quot;$@&quot;
           <footer>
 
 &copy; 2015.
-Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+Built with <a href="http://gohugo.io/">Hugo</a> (0.31.1) and
 <a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
 
 </footer>

@@ -25,6 +25,7 @@
 <meta property="og:title" content="BigQuery の標準 SQL モードで日付テーブルのフィルタリング、または Re:dash の Query Snippets を活用する話" />
 <meta property="og:description" content="要は Legacy SQL モード で FROM (TABLE_DATE_RANGE(dataset.table_, TIMESTAMP(&#39;2016-01-01&#39;), TIMESTAMP(&#39;2016-01-14&#39;))) とか書いていたのを標準 SQL でどう書くか、という話です。
 すぐ忘れるのでメモ。
+
 " />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.yuyat.jp/post/filtering-tables-in-bigquery-standard-sql/" />
@@ -92,6 +93,8 @@
       <p>要は Legacy SQL モード で <code>FROM (TABLE_DATE_RANGE(dataset.table_, TIMESTAMP('2016-01-01'), TIMESTAMP('2016-01-14')))</code> とか書いていたのを標準 SQL でどう書くか、という話です。<br />
 すぐ忘れるのでメモ。</p>
 
+<p></p>
+
 <p>テーブルは以下のような名前になっている前提です。</p>
 
 <ul>
@@ -123,10 +126,9 @@ WHERE _TABLE_SUFFIX &gt;= FORMAT_DATE('%Y%m%d', DATE_SUB(CURRENT_DATE(), INTERVA
 <p>設定としては以下のようにしておけば <code>_TABLE_SUFFIX</code> というキーワードをトリガーに補完されます。</p>
 
 <p><img src="/images/filtering-tables-in-bigquery-standard-sql/setting.png" width="658" height="257"></p>
-
     </div>
     <div class="post-footer">
-      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 19 Articles →</a>
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 20 Articles →</a>
 
     </div>
     
@@ -176,7 +178,7 @@ WHERE _TABLE_SUFFIX &gt;= FORMAT_DATE('%Y%m%d', DATE_SUB(CURRENT_DATE(), INTERVA
           <footer>
 
 &copy; 2015.
-Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+Built with <a href="http://gohugo.io/">Hugo</a> (0.31.1) and
 <a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
 
 </footer>
