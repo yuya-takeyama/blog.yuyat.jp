@@ -1,7 +1,7 @@
 dependencies:
   pre:
-  - wget https://github.com/spf13/hugo/releases/download/v0.16/hugo_0.16-1_amd64.deb
-  - sudo dpkg -i hugo_0.16-1_amd64.deb
+  - wget https://github.com/gohugoio/hugo/releases/download/v0.31.1/hugo_0.31.1_Linux-64bit.deb
+  - sudo dpkg -i hugo_0.31.1_Linux-64bit.deb
 
 test:
   override:
