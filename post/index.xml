@@ -36,6 +36,8 @@
 
 &lt;p&gt;なお、データについては&lt;a href=&#34;http://www.keyakizaka46.com/&#34;&gt;欅坂46公式サイト&lt;/a&gt;から勝手にスクレイピングしているので、公式のストア (?) には登録していないですしそのつもりもありません。ベータテスト機能で自分をテスターとして登録しています。&lt;/p&gt;
 
+&lt;p&gt;自分でデプロイできる人はそれでやってみてもいいですし、ちょっと使ってみたい、という方は &lt;a href=&#34;https://twitter.com/yuya_takeyama&#34;&gt;Twitter&lt;/a&gt; に声かけてもらえればベータテスターとして招待することもできます。&lt;/p&gt;
+
 &lt;h2 id=&#34;ソースコード&#34;&gt;ソースコード&lt;/h2&gt;
 
 &lt;p&gt;GitHub に MIT License で公開しています。&lt;/p&gt;
