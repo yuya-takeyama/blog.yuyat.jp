@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>https://blog.yuyat.jp/</loc>
+    <lastmod>2017-05-12T00:46:00+09:00</lastmod>
+  </url>
   
   <url>
     <loc>https://blog.yuyat.jp/post/peco-s3.zsh/</loc>
@@ -95,28 +99,6 @@
   <url>
     <loc>https://blog.yuyat.jp/post/brand-new-blog/</loc>
     <lastmod>2016-09-19T02:39:31+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.yuyat.jp/</loc>
-    <lastmod>2017-05-12T00:46:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.yuyat.jp/categories/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.yuyat.jp/post/</loc>
-    <lastmod>2017-05-12T00:46:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://blog.yuyat.jp/tags/</loc>
-    <priority>0</priority>
   </url>
   
 </urlset>

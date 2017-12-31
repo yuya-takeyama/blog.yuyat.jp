@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja-jp">
   <head>
-	<meta name="generator" content="Hugo 0.31.1" />
+	<meta name="generator" content="Hugo 0.16" />
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script>
       (adsbygoogle = window.adsbygoogle || []).push({
@@ -76,12 +76,6 @@
   <div class="col-sm-8">
     
       
-        
-      
-    
-      
-    
-      
         <div class="post-header-home">
   <h1 class="post-title-home">
     <a href="https://blog.yuyat.jp/post/peco-s3.zsh/">peco で S3 のバケット・ファイル一覧を見るやつを作ったらめちゃくちゃ便利なのができた</a>
@@ -96,7 +90,6 @@
 <li><a href="https://github.com/yuya-takeyama/peco-s3.zsh">yuya-takeyama/peco-s3.zsh</a></li>
 </ul>
 
-<p></p>
   
   <p class="text-right"><a href="https://blog.yuyat.jp/post/peco-s3.zsh/">Continue Reading &rarr;</a></p>
   
@@ -117,7 +110,6 @@
 
 <p><code>ActiveRecord</code> (というか <code>ActiveModel</code>) では適切に <code>.permit</code> したパラメータ以外は <code>ActiveModel::ForbiddenAttributesError</code> が発生するようになっていますが、<code>MongoMapper</code> ではそうなってなかったので対応させてみました。</p>
 
-<p></p>
   
   <p class="text-right"><a href="https://blog.yuyat.jp/post/automatic-mass-assignment-detection-for-mongomapper/">Continue Reading &rarr;</a></p>
   
@@ -138,7 +130,6 @@
 
 <p>これを避けるために正しく <strong>Graceful Shutdown</strong> する方法について調べてみました。</p>
 
-<p></p>
   
   <p class="text-right"><a href="https://blog.yuyat.jp/post/graceful-shutdown-resque-in-heroku/">Continue Reading &rarr;</a></p>
   
@@ -161,7 +152,6 @@
 <li><a href="https://github.com/yuya-takeyama/supress-stack-trace">yuya-takeyama/supress-stack-trace</a></li>
 </ul>
 
-<p></p>
   
   <p class="text-right"><a href="https://blog.yuyat.jp/post/supress-stack-trace/">Continue Reading &rarr;</a></p>
   
@@ -184,7 +174,6 @@
 <li><a href="https://github.com/yuya-takeyama/activeweek">yuya-takeyama/activeweek</a></li>
 </ul>
 
-<p></p>
   
   <p class="text-right"><a href="https://blog.yuyat.jp/post/activeweek/">Continue Reading &rarr;</a></p>
   
@@ -205,7 +194,6 @@
 
 <p>丸 7 年住んだ埼玉から浅草に引越したことで京橋の職場への出勤時間が半分の 30 分に縮まったのも良かったですが、生活環境が変わったのを機に家具も色々と買い、QoL も大幅に向上したので、それを振り返ってみるという体でアフィブログを書きます。</p>
 
-<p></p>
   
   <p class="text-right"><a href="https://blog.yuyat.jp/post/best-buys-2016/">Continue Reading &rarr;</a></p>
   
@@ -224,7 +212,6 @@
 <div class="post-excerpt-home">
   <p>最近 <a href="https://github.com/yuya-takeyama/flagship">Flagship</a> という機能フラグを Ruby の言語内 DSL で定義する gem を作っていて、その中で出てきた DSL 定義パターンっぽいものをメモ。</p>
 
-<p></p>
   
   <p class="text-right"><a href="https://blog.yuyat.jp/post/defining-singleton-methods-with-instance_eval/">Continue Reading &rarr;</a></p>
   
@@ -244,7 +231,6 @@
   <p>要は Legacy SQL モード で <code>FROM (TABLE_DATE_RANGE(dataset.table_, TIMESTAMP('2016-01-01'), TIMESTAMP('2016-01-14')))</code> とか書いていたのを標準 SQL でどう書くか、という話です。<br />
 すぐ忘れるのでメモ。</p>
 
-<p></p>
   
   <p class="text-right"><a href="https://blog.yuyat.jp/post/filtering-tables-in-bigquery-standard-sql/">Continue Reading &rarr;</a></p>
   
@@ -252,9 +238,46 @@
 
       
     
+      
+        <div class="post-header-home">
+  <h1 class="post-title-home">
+    <a href="https://blog.yuyat.jp/post/ghissue-a-command-to-create-github-issues/">GitHub の Issue を作るコマンド ghissue を作った</a>
+  </h1>
+  <p class="text-muted">Nov 27, 2016</p>
+
+</div>
+<div class="post-excerpt-home">
+  <p>作りました。</p>
+
+<ul>
+<li><a href="https://github.com/yuya-takeyama/ghissue">yuya-takeyama/ghissue</a></li>
+</ul>
+
+  
+  <p class="text-right"><a href="https://blog.yuyat.jp/post/ghissue-a-command-to-create-github-issues/">Continue Reading &rarr;</a></p>
+  
+</div>
+
+      
+    
+      
+        <div class="post-header-home">
+  <h1 class="post-title-home">
+    <a href="https://blog.yuyat.jp/post/make-sure-loading-order-to-be-consistent/">Ruby で Dir.glob して require するときは sort してからにする</a>
+  </h1>
+  <p class="text-muted">Oct 23, 2016</p>
+
+</div>
+<div class="post-excerpt-home">
+  以下のように特定のディレクトリ配下のファイルを雑に require することがあるとする。 Dir.glob('./lib/**/*.rb').each {|f| require f } これだと読み込み順が一定でないので、場合によっては A というクラスが依存している B というクラスを読み込む前に参照しようとして NameError にったりする。 # a.rb class A &lt; B end # b.rb class B end もちろん、これは a.rb の先頭で require 'b.rb' すればいい話ではある。 だが問題は、テスト中はたまたま問題なくいっていたものが本番で急にエラーになったりすることである。 そのため事前に sort しておくと良い。 Dir.glob('./lib/**/*.rb').each.sort {|f| require f } これならファイルの読み込み順序は一定になる、はず。 (OS やファイルシステムによって違う可能性もあり得る?)
+  
+</div>
+
+      
+    
     <hr>
     <div class="home-read-more">
-      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 20 Articles →</a>
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 19 Articles →</a>
     </div>
   </div>
   <div class="col-sm-4">
@@ -302,7 +325,7 @@
           <footer>
 
 &copy; 2015.
-Built with <a href="http://gohugo.io/">Hugo</a> (0.31.1) and
+Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
 <a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
 
 </footer>
