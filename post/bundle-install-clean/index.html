@@ -100,7 +100,7 @@ bundle install を --clean オプション付きで実行することで、も�
 
 <h2 id="前提">前提</h2>
 
-<p>この記事では Circle CI 2.0 において、<code>store_cache</code> と <code>restore_cache</code> を使</p>
+<p>この記事では Circle CI 2.0 において、<code>store_cache</code> と <code>restore_cache</code> を使って、Bundler の gem をキャッシュしているプロジェクトを対象としています。</p>
 
 <h2 id="キャッシュの-restore-が遅い">キャッシュの restore が遅い！！</h2>
 
@@ -218,6 +218,10 @@ drwxr-xr-x  6 yuya  staff  204 Apr 16 23:13 concurrent-ruby-1.0.5
 <p>Ruby/Bundler ではこのようになっていましたが、他のパッケージマネージャーでも同様の問題には気をつけた方が良いでしょう。</p>
 
 <p>JavaScript における <code>yarn</code> はデフォルトで同じような挙動になるので、気にする必要はないと思います。</p>
+
+<p><code>--path</code> を指定している場合は基本的に思考停止で <code>--clean</code> を指定するのが良いでしょう。</p>
+
+<p>逆に <code>--path</code> を指定せずに、グローバルに gem を共有している場合はおそらく <code>--clean</code> を使わない方が良いと思います。意図せず別プロジェクトではまだ使っている gem を消しちゃうので。</p>
 
     </div>
     <div class="post-footer">

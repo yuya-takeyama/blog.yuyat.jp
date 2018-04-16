@@ -25,7 +25,7 @@
 
 &lt;h2 id=&#34;前提&#34;&gt;前提&lt;/h2&gt;
 
-&lt;p&gt;この記事では Circle CI 2.0 において、&lt;code&gt;store_cache&lt;/code&gt; と &lt;code&gt;restore_cache&lt;/code&gt; を使&lt;/p&gt;
+&lt;p&gt;この記事では Circle CI 2.0 において、&lt;code&gt;store_cache&lt;/code&gt; と &lt;code&gt;restore_cache&lt;/code&gt; を使って、Bundler の gem をキャッシュしているプロジェクトを対象としています。&lt;/p&gt;
 
 &lt;h2 id=&#34;キャッシュの-restore-が遅い&#34;&gt;キャッシュの restore が遅い！！&lt;/h2&gt;
 
@@ -143,6 +143,10 @@ drwxr-xr-x  6 yuya  staff  204 Apr 16 23:13 concurrent-ruby-1.0.5
 &lt;p&gt;Ruby/Bundler ではこのようになっていましたが、他のパッケージマネージャーでも同様の問題には気をつけた方が良いでしょう。&lt;/p&gt;
 
 &lt;p&gt;JavaScript における &lt;code&gt;yarn&lt;/code&gt; はデフォルトで同じような挙動になるので、気にする必要はないと思います。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;--path&lt;/code&gt; を指定している場合は基本的に思考停止で &lt;code&gt;--clean&lt;/code&gt; を指定するのが良いでしょう。&lt;/p&gt;
+
+&lt;p&gt;逆に &lt;code&gt;--path&lt;/code&gt; を指定せずに、グローバルに gem を共有している場合はおそらく &lt;code&gt;--clean&lt;/code&gt; を使わない方が良いと思います。意図せず別プロジェクトではまだ使っている gem を消しちゃうので。&lt;/p&gt;
 </description>
     </item>
     
