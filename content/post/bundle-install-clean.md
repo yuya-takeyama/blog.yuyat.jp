@@ -13,7 +13,7 @@ date: 2018-04-16T21:28:11+09:00
 
 ## 前提
 
-この記事では Circle CI 2.0 において、`store_cache` と `restore_cache` を使
+この記事では Circle CI 2.0 において、`store_cache` と `restore_cache` を使って、Bundler の gem をキャッシュしているプロジェクトを対象としています。
 
 ## キャッシュの restore が遅い！！
 
