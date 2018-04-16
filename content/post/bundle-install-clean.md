@@ -7,7 +7,7 @@ date: 2018-04-16T21:28:11+09:00
 
 `bundle install` を `--clean` オプション付きで実行することで、もう使っていない gem や古いバージョンの gem が削除されます。
 
-さもないと、Circle CI 上に置ける Bundler のキャッシュの restore はどんどん遅くなります。
+さもないと、Circle CI 上における Bundler のキャッシュの restore はどんどん遅くなります。
 
 <!--more-->
 
