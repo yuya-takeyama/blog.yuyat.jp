@@ -21,7 +21,7 @@
 
 &lt;p&gt;&lt;code&gt;bundle install&lt;/code&gt; を &lt;code&gt;--clean&lt;/code&gt; オプション付きで実行することで、もう使っていない gem や古いバージョンの gem が削除されます。&lt;/p&gt;
 
-&lt;p&gt;さもないと、Circle CI 上に置ける Bundler のキャッシュの restore はどんどん遅くなります。&lt;/p&gt;
+&lt;p&gt;さもないと、Circle CI 上における Bundler のキャッシュの restore はどんどん遅くなります。&lt;/p&gt;
 
 &lt;h2 id=&#34;前提&#34;&gt;前提&lt;/h2&gt;
 
