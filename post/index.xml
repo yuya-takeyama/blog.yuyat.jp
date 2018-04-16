@@ -6,8 +6,145 @@
     <description>Recent content in Posts on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 01 Jan 2018 06:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 16 Apr 2018 21:28:11 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>bundle install には --clean を指定する (特に Circle CI では)</title>
+      <link>https://blog.yuyat.jp/post/bundle-install-clean/</link>
+      <pubDate>Mon, 16 Apr 2018 21:28:11 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/bundle-install-clean/</guid>
+      <description>
+
+&lt;h2 id=&#34;tl-dr&#34;&gt;TL;DR&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;bundle install&lt;/code&gt; を &lt;code&gt;--clean&lt;/code&gt; オプション付きで実行することで、もう使っていない gem や古いバージョンの gem が削除されます。&lt;/p&gt;
+
+&lt;p&gt;さもないと、Circle CI 上に置ける Bundler のキャッシュの restore はどんどん遅くなります。&lt;/p&gt;
+
+&lt;h2 id=&#34;前提&#34;&gt;前提&lt;/h2&gt;
+
+&lt;p&gt;この記事では Circle CI 2.0 において、&lt;code&gt;store_cache&lt;/code&gt; と &lt;code&gt;restore_cache&lt;/code&gt; を使&lt;/p&gt;
+
+&lt;h2 id=&#34;キャッシュの-restore-が遅い&#34;&gt;キャッシュの restore が遅い！！&lt;/h2&gt;
+
+&lt;p&gt;ある日ふと、Circle CI におけるキャッシュの restore にすごく時間がかかっていることに気づきました。&lt;/p&gt;
+
+&lt;p&gt;その時のプロジェクトにおいては Bundler のキャッシュだけでなんと &lt;strong&gt;1.2 GB&lt;/strong&gt;、時間にして &lt;strong&gt;2 分&lt;/strong&gt; もかかっていました。
+そのプロジェクトは Workflow が三段階になっていたので、全体で 2 x 3 = &lt;strong&gt;6 分&lt;/strong&gt; もキャッシュの restore にかかっていることになります。&lt;/p&gt;
+
+&lt;p&gt;素の状態から &lt;code&gt;bundle install&lt;/code&gt; はもっともっと時間がかかるので、これでも意味なくはないけど、もっと速くしたいですね。&lt;/p&gt;
+
+&lt;h2 id=&#34;起きていた問題&#34;&gt;起きていた問題&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;bundle install&lt;/code&gt; では、&lt;code&gt;Gemfile&lt;/code&gt; から削除された gem であったり、バージョンアップ前の古い gem を削除することなく、ディレクトリ中に保持します。&lt;/p&gt;
+
+&lt;p&gt;そのため、プロジェクトを続けていると、主に gem をアップデートするごとに、もう使っていない gem がどんどん増えて行くことになります。&lt;/p&gt;
+
+&lt;p&gt;Circle CI の場合、ディレクトリ内を丸ごとキャッシュするので、gem のアップデート時にも古いバージョンが残ったまま、また新たにキャッシュを store し直すことになるため、キャッシュが時間を追うごとに肥大化します。&lt;/p&gt;
+
+&lt;h2 id=&#34;キャッシュをクリアしてみる&#34;&gt;キャッシュをクリアしてみる&lt;/h2&gt;
+
+&lt;p&gt;とりあえずキャッシュキーを変更することで、丸ごとキャッシュをクリアしてみました。&lt;/p&gt;
+
+&lt;p&gt;キャッシュの設定は以下のようになっていました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-api-bundle-{{ arch }}-{{ checksum &amp;quot;Gemfile.lock&amp;quot; }}
+            - v1-api-bundle-
+      - run: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
+      - save_cache:
+          key: v1-api-bundle-{{ arch }}-{{ checksum &amp;quot;Gemfile.lock&amp;quot; }}
+          paths:
+            - ~/api/vendor/bundle
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;キーの prefix の &lt;code&gt;v1-&lt;/code&gt; を &lt;code&gt;v2-&lt;/code&gt; に変更することで、キャッシュがヒットしなくなるので、とりあえずキャッシュがクリアされました。&lt;/p&gt;
+
+&lt;p&gt;一度キャッシュをゼロから再生成した後、&lt;code&gt;restore_cache&lt;/code&gt; を確認したところ、ファイルサイズが &lt;strong&gt;154MB&lt;/strong&gt;、restore にかかる時間は &lt;strong&gt;11 秒&lt;/strong&gt; と、大幅に改善されました。&lt;/p&gt;
+
+&lt;h2 id=&#34;別の方法を検討してみる&#34;&gt;別の方法を検討してみる&lt;/h2&gt;
+
+&lt;p&gt;とりあえずキャッシュをクリアすることで restore の時間を大幅に改善することはわかりましたが、いつのまにか遅くなっていって、気づいた頃に手動でクリアする、というのはダルいですね。&lt;/p&gt;
+
+&lt;p&gt;というわけでいいオプションが Bundler にないものかと &lt;code&gt;bundle install --help&lt;/code&gt; したところ、良さそうななオプションが見つかりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;--clean
+       On finishing the installation Bundler is going to remove any gems not present in the current Gemfile(5). Don&#39;t worry, gems currently in use will not be removed.
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こちらが意図している通りの挙動なのか、試してみましょう。&lt;/p&gt;
+
+&lt;p&gt;まずは以下のような &lt;code&gt;Gemfile&lt;/code&gt; を用意します。あとでアップデートするために、あえて現時点でやや古いバージョンを指定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;source &#39;https://rubygems.org&#39;
+
+gem &#39;concurrent-ruby&#39;, &#39;1.0.0&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この状態で &lt;code&gt;bundle install --path=vendor/bundle&lt;/code&gt; し、ディレクトリ内をチェックします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ bundle install --path=vendor/bundle
+Fetching gem metadata from https://rubygems.org/..
+Resolving dependencies...
+Using bundler 1.16.1
+Fetching concurrent-ruby 1.0.0
+Installing concurrent-ruby 1.0.0
+Bundle complete! 1 Gemfile dependency, 2 gems now installed.
+Bundled gems are installed into `./vendor/bundle`
+
+$ ls -l vendor/bundle/ruby/2.5.0/gems/
+total 0
+drwxr-xr-x  6 yuya  staff  204 Apr 16 21:24 concurrent-ruby-1.0.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ここまではいいですが、ここで &lt;code&gt;Gemfile&lt;/code&gt; 中のバージョンを &lt;code&gt;&#39;1.0.5&#39;&lt;/code&gt; に変えてもう一度 &lt;code&gt;bundle install&lt;/code&gt; し、もう一度ディレクトリの中身を確認してみましょう。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ bundle install --path=vendor/bundle
+Fetching gem metadata from https://rubygems.org/..
+Resolving dependencies...
+Using bundler 1.16.1
+Using concurrent-ruby 1.0.5 (was 1.0.0)
+Bundle complete! 1 Gemfile dependency, 2 gems now installed.
+Bundled gems are installed into `./vendor/bundle`
+
+$ ls -l vendor/bundle/ruby/2.5.0/gems/
+total 0
+drwxr-xr-x  6 yuya  staff  204 Apr 16 23:10 concurrent-ruby-1.0.0
+drwxr-xr-x  6 yuya  staff  204 Apr 16 23:09 concurrent-ruby-1.0.5
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;やはりバージョン違いの同一 gem が重複してしまいました。&lt;/p&gt;
+
+&lt;p&gt;ここで &lt;code&gt;--clean&lt;/code&gt; オプション付きでやってみます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ bundle install --path=vendor/bundle --clean
+Using bundler 1.16.1
+Using concurrent-ruby 1.0.5
+Bundle complete! 1 Gemfile dependency, 2 gems now installed.
+Bundled gems are installed into `./vendor/bundle`
+Removing concurrent-ruby (1.0.0)
+
+$ ls -l vendor/bundle/ruby/2.5.0/gems/
+total 0
+drwxr-xr-x  6 yuya  staff  204 Apr 16 23:13 concurrent-ruby-1.0.5
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;古いバージョンが消えました！&lt;/p&gt;
+
+&lt;p&gt;なお、一度 &lt;code&gt;--clean&lt;/code&gt; で実行すると、設定が &lt;code&gt;.bundle/config&lt;/code&gt; に保存され、次回以降は &lt;code&gt;--clean&lt;/code&gt; なしでも同じ挙動になるようです。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;Ruby/Bundler ではこのようになっていましたが、他のパッケージマネージャーでも同様の問題には気をつけた方が良いでしょう。&lt;/p&gt;
+
+&lt;p&gt;JavaScript における &lt;code&gt;yarn&lt;/code&gt; はデフォルトで同じような挙動になるので、気にする必要はないと思います。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>プログラマが 2017 年に買って良かったもの</title>
@@ -1652,31 +1789,6 @@ ORDER BY
 &lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 
 &lt;p&gt;グラフ化した結果、メモリを一番使っているのは Re:dash の Worker だということがわかった。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>【RMP×Quipper】Food&amp;Drink meetup #3 で発表した</title>
-      <link>https://blog.yuyat.jp/post/rmp-quipper-food-and-drink-meetup/</link>
-      <pubDate>Sat, 01 Oct 2016 16:41:07 +0900</pubDate>
-      
-      <guid>https://blog.yuyat.jp/post/rmp-quipper-food-and-drink-meetup/</guid>
-      <description>&lt;p&gt;Quipper とその親会社であるところのリクルートマーケティングパートナーズ (RMP) とでの&lt;a href=&#34;http://rmp-quipper.connpass.com/event/39082/&#34;&gt;合同イベント&lt;/a&gt; (平たくいうと採用イベント) があって、LT の発表枠が空いていたので発表してきた。&lt;/p&gt;
-
-&lt;p&gt;スライドは Qiita のスライド機能を初めて使ってみた。&lt;br /&gt;
-スクリーンに写すと文字が結構小さかったので、事前のチェックが大事だと思った。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://qiita.com/yuya_takeyama/items/6b0fe4bc7d501f69e081&#34;&gt;curl でサッとベンチマークをとる (スライド版)&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;内容的には以前同じく &lt;a href=&#34;http://qiita.com/yuya_takeyama/items/baf48a3f643e743a46b4&#34;&gt;Qiita に書いた記事&lt;/a&gt; を加筆・再編集した程度のものなので、準備にはあまり時間がかかっていない。&lt;/p&gt;
-
-&lt;p&gt;Google Chrome の Developer Tools からリクエストを curl コマンドとしてコピーする機能について知らない人が意外と多かったので、その点が一番バリュー高かったのかもしれない。&lt;/p&gt;
-
-&lt;p&gt;あとは見つけた時に超クールだと思った &lt;a href=&#34;https://github.com/winebarrel/hyst&#34;&gt;hyst&lt;/a&gt; というツールについても軽く紹介した。&lt;br /&gt;
-hyst を作っている &lt;a href=&#34;https://github.com/winebarrel&#34;&gt;@winebarrel&lt;/a&gt; さんには &lt;a href=&#34;https://github.com/winebarrel/miam&#34;&gt;miam&lt;/a&gt; や &lt;a href=&#34;https://github.com/winebarrel/roadworker&#34;&gt;roadworker&lt;/a&gt; でもお世話になっています。&lt;br /&gt;
-あと &lt;a href=&#34;http://hakobera.hatenablog.com/entry/2016/03/02/084204&#34;&gt;Quipper でも使われているみたい&lt;/a&gt;です。&lt;/p&gt;
 </description>
     </item>
     
