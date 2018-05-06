@@ -6,8 +6,110 @@
     <description>Recent content in Posts on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 16 Apr 2018 21:28:11 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 07 May 2018 04:30:00 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Oculus Go で Kindle の電子書籍を寝ながら読む</title>
+      <link>https://blog.yuyat.jp/post/oculus-go-kindle/</link>
+      <pubDate>Mon, 07 May 2018 04:30:00 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/oculus-go-kindle/</guid>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;https://www.oculus.com/go/&#34;&gt;Oculus Go&lt;/a&gt; を買いました。64GB のものが 29,800 円税込送料なしという圧倒的格安なので、VR に興味のある方は是非買いましょう。Amazon で売られている転売品はくれぐれも買わないように。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://www.moguravr.com/netflix-oculus-go/&#34;&gt;寝転んでNetflixを大画面で観る方法（Oculus Goユーザー必見）&lt;/a&gt;という記事を読んで、寝ながらの Netflix の体験がとにかく良かったので、Kindle の書籍も同じように読めないかやってみました。&lt;/p&gt;
+
+&lt;h2 id=&#34;tl-dr&#34;&gt;TL;DR&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Oculus Go 標準のブラウザで &lt;a href=&#34;https://read.amazon.co.jp/&#34;&gt;Kindle Cloud Reader&lt;/a&gt; を Request desktop mode で開く&lt;/li&gt;
+&lt;li&gt;日本語の書籍は基本的に Kindle Cloud Reader 自体の制約で開けない&lt;/li&gt;
+&lt;li&gt;漫画は開けるが、読み込みが遅かったり、画面サイズの都合で見開き表示ができなかったりと体験が良くない&lt;/li&gt;
+&lt;li&gt;洋書であれば割と普通に読める&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;寝ながら本が読みたい&#34;&gt;寝ながら本が読みたい&lt;/h2&gt;
+
+&lt;p&gt;前から常々寝ながら Kindle 書籍が読みたいと思っていて、去年はそのために iPad 用のアームを買っていました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://blog.yuyat.jp/post/best-buys-2017/&#34;&gt;プログラマが 2017 年に買って良かったもの&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;読むこと自体は寝ながらできるものの、ページをめくる時には手を上に伸ばさないといけないのが煩わしく、リモコンでの操作も難しそうなので、諦めていました。&lt;/p&gt;
+
+&lt;p&gt;が、そこで Oculus Go です。&lt;/p&gt;
+
+&lt;h2 id=&#34;oculus-go-のブラウザで-kindle-cloud-reader-を開く&#34;&gt;Oculus Go のブラウザで Kindle Cloud Reader を開く&lt;/h2&gt;
+
+&lt;p&gt;Kindle Cloud Reader はブラウザで Kindle の電子書籍を読める Web アプリです。&lt;/p&gt;
+
+&lt;p&gt;Oculus Go のブラウザそのままで開くと、非対応ということで Android アプリのダウンロードを促されますが、Oculus Go では Android アプリを動かすことはできません。&lt;/p&gt;
+
+&lt;p&gt;標準ブラウザのブラウジングウィンドウ右上にある Request desktop mode ボタンを有効にした上で &lt;a href=&#34;https://read.amazon.co.jp/&#34;&gt;Kindle Cloud Reader&lt;/a&gt; を開くことで、うまくアクセスできます。&lt;/p&gt;
+
+&lt;p&gt;ただし、キャッシュか何かの都合？でうまく開けないことがあり、そういうときは &lt;code&gt;?foo&lt;/code&gt; といったクエリを URL 末尾に付加すると開けたり開けなかったりします。&lt;/p&gt;
+
+&lt;p&gt;また、ブラウザを開いた状態で寝そべって、コントローラーを上に向けて Oculus ボタンを長押しすれば天井にブラウザを表示することができます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/oculus-go-kindle/kindle.png&#34; width=&#34;672&#34; height=&#34;670&#34;&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;制約&#34;&gt;制約&lt;/h2&gt;
+
+&lt;h3 id=&#34;日本語書籍が読めない&#34;&gt;日本語書籍が読めない&lt;/h3&gt;
+
+&lt;p&gt;日本語の書籍は基本的には読めません。全てが全て読めないというわけではなさそうですが、手元で試した限りは読めるものはありませんでした。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://mogi2fruits.net/blog/webservice-application/kindle/2826/&#34;&gt;Kindle Cloud Reader でコミック・雑誌以外の”和書”が読めないわけでもない！試してみる価値あり！&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;offline-download-ができない&#34;&gt;Offline download ができない&lt;/h3&gt;
+
+&lt;p&gt;Kindle Cloud Reader にはダウンロードしておくことで、オフラインでも書籍を読める機能があります。ざっと調べた感じ Application Cache API で実装しているようです。&lt;/p&gt;
+
+&lt;p&gt;ですが、Oculus Go 標準のブラウザでは Application Cache API が使えないのか、ダウンロードがうまくいかないようです。&lt;/p&gt;
+
+&lt;p&gt;それで何が問題かというと、漫画を読むときは読み込み時間がかなりかかることになり、ネットワーク環境にもよるかもしれませんが、快適に読むことが難しくなります。&lt;/p&gt;
+
+&lt;h3 id=&#34;見開き表示ができない&#34;&gt;見開き表示ができない&lt;/h3&gt;
+
+&lt;p&gt;これはブラウザの画面サイズの問題だと思うのですが、漫画の見開き表示ができませんでした。Mac のブラウザで試した感じでは画面サイズを十分に広げさえすれば見開き表示になるようです。&lt;/p&gt;
+
+&lt;p&gt;Oculus Go 標準のブラウザでは画面サイズは幅を 3 段階に切り替えられますが、任意のサイズに変更することはできないようです。選択できる最大の幅を選択しても見開き表示にならないので、どうやら難しそうです。&lt;/p&gt;
+
+&lt;h2 id=&#34;結論としてはほぼ洋書専用&#34;&gt;結論としてはほぼ洋書専用&lt;/h2&gt;
+
+&lt;p&gt;とういわけでまともに読めるのは活字の洋書だけということになりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;その他にも試してみた&#34;&gt;その他にも試してみた&lt;/h2&gt;
+
+&lt;h3 id=&#34;青空文庫&#34;&gt;青空文庫&lt;/h3&gt;
+
+&lt;p&gt;ブラウザ上で読む書籍といえばやはり青空文庫でしょう。&lt;/p&gt;
+
+&lt;p&gt;こちらはいわゆる電子書籍のような UI はないものの、普通に読むことができました。やはり正しくマークアップされた HTML はこういうとき強いですね。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/oculus-go-kindle/aozora.png&#34; width=&#34;670&#34; height=&#34;666&#34;&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;amazon-prime-video&#34;&gt;Amazon Prime Video&lt;/h3&gt;
+
+&lt;p&gt;書籍ではないですが、同じ Amazon ということで Amazon Prime Video も試してみましたが、これは普通に視聴できました。&lt;/p&gt;
+
+&lt;p&gt;アプリではなくとも、再生さえできれば Netflix アプリと同じく最高の体験が得られます。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;Kindle は割と残念な感じでしたが、ブラウザベースの電子書籍サービスは試してみる価値が大いにあるでしょう。&lt;/p&gt;
+
+&lt;p&gt;自分では試せてないですが、Windows 機を持っているのであれば、&lt;a href=&#34;https://bigscreenvr.com/&#34;&gt;Bigscreen&lt;/a&gt; 上で &lt;a href=&#34;https://www.amazon.co.jp/dp/B011UEHYWQ&#34;&gt;Kindle for Windows&lt;/a&gt; を開いてみるというのもいいかもしれません。&lt;/p&gt;
+
+&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B078MQQJPZ&amp;linkId=3c1b7ebb75d985e65a7231323224f485&#34;&gt;&lt;/iframe&gt;
+&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B0184N7WWS&amp;linkId=1bf535dc833fa92a3a33c2a213f3bdb2&#34;&gt;&lt;/iframe&gt;
+</description>
+    </item>
     
     <item>
       <title>bundle install には --clean を指定する (特に Circle CI では)</title>
@@ -1656,143 +1758,6 @@ DigitalOcean の Droplets の一覧から見てもいいです。&lt;/p&gt;
 &lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 
 &lt;p&gt;こういうシュッとサーバなりコンテナなり必要なとき DigitalOcean は便利なのでアカウントを持っていない人は&lt;a href=&#34;https://m.do.co/c/645fac0c10f9&#34;&gt;作っておきましょう。 (アフィリエイトリンク)&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Docker のメトリクスを Re:dash でビジュアライズ</title>
-      <link>https://blog.yuyat.jp/post/visualize-docker-metrics-with-redash/</link>
-      <pubDate>Sun, 02 Oct 2016 14:56:46 +0900</pubDate>
-      
-      <guid>https://blog.yuyat.jp/post/visualize-docker-metrics-with-redash/</guid>
-      <description>
-
-&lt;p&gt;しばらく前から &lt;a href=&#34;http://dokku.viewdocs.io/dokku/&#34;&gt;Dokku&lt;/a&gt; という Docker ベースの Heroku ライクな PaaS 基盤を趣味で運用していて、その中で旧ブログの WordPress や 自分用のツールなんかを動かしたりしている。&lt;/p&gt;
-
-&lt;p&gt;サーバのメトリクス収集には &lt;a href=&#34;https://mackerel.io/&#34;&gt;Mackerel&lt;/a&gt; を利用しているが、Docker コンテナ単位での計測は行っていなかった。&lt;br /&gt;
-Mackerel はホスト数に応じた課金を行っていて、5 ホストまでは無料だが、コンテナまで追加してしまうとすぐにその枠を溢れてしまう。&lt;/p&gt;
-
-&lt;p&gt;というわけで簡単な仕組みを自分で用意いてみた。&lt;/p&gt;
-
-&lt;h2 id=&#34;できたもの&#34;&gt;できたもの&lt;/h2&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/chart.png&#34; width=&#34;414&#34; height=&#34;319&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/stack-chart.png&#34; width=&#34;416&#34; height=&#34;342&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;どちらもメモリ使用量 (MB) をコンテナ名ごとにグラフ化したもので、どちらもデータは同じものを使っている。&lt;br /&gt;
-後者はグラフを積み上げることでコンテナ全体で使用しているメモリの使用量もわかるようになっている。&lt;/p&gt;
-
-&lt;p&gt;今のところ Docker のリソースに関して困っているのはメモリだけなので、とりあえずはこれだけ。&lt;/p&gt;
-
-&lt;p&gt;なお、Dokku ではコンテナ名が &lt;code&gt;アプリ名.プロセス名.プロセス番号&lt;/code&gt; という感じになる (例えば &lt;code&gt;blog.web.1&lt;/code&gt; といった具合) になるので、アプリを再起動してコンテナ ID が変わっても連続的にモニタリングできる。&lt;br /&gt;
-グラフ中異常値っぽいのが出ているところはまさにアプリを再起動したりしているところ。&lt;/p&gt;
-
-&lt;h2 id=&#34;概要&#34;&gt;概要&lt;/h2&gt;
-
-&lt;p&gt;以下のような流れでこのグラフを作り出している。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/kiyoto/fluent-plugin-docker-metrics&#34;&gt;fluent-plugin-docker-metrics&lt;/a&gt; で Docker のメトリクスを td-agent に収集&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/kaizenplatform/fluent-plugin-bigquery&#34;&gt;fluent-plugin-bigquery&lt;/a&gt; でメトリクスを BigQuery に送信&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://redash.io/&#34;&gt;Re:dash&lt;/a&gt; で BigQuery 上のデータをグラフ化&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;手順&#34;&gt;手順&lt;/h2&gt;
-
-&lt;h3 id=&#34;fluent-plugin-docker-metrics-のセットアップ&#34;&gt;fluent-plugin-docker-metrics のセットアップ&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;td-agent.conf&lt;/code&gt; の設定はこんな感じ。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;source&amp;gt;
-  @type docker_metrics
-  stats_interval 1m
-  tag_prefix docker.metrics
-&amp;lt;/source&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;tag_prefix&lt;/code&gt; はデフォルトだと &lt;code&gt;docker&lt;/code&gt; だが、別の機会で Docker の何かを収集することもあるかもしれないので &lt;code&gt;docker.metrics&lt;/code&gt; としてみた。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;stats_interval&lt;/code&gt; はとりあえず 1 分ごとにしているが、すべてのコンテナの値を収集するとデータ量がそこそこ多くなるので 5 分ごととかに減らしてもいいかもしれない。&lt;/p&gt;
-
-&lt;p&gt;これでこんな感じのデータが収集できる。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;20161002T062409+0000	docker.metrics.memory.stat	{&amp;quot;key&amp;quot;:&amp;quot;memory_stat_cache&amp;quot;,&amp;quot;value&amp;quot;:9039872,&amp;quot;type&amp;quot;:&amp;quot;gauge&amp;quot;,&amp;quot;hostname&amp;quot;:&amp;quot;HOSTNAME&amp;quot;,&amp;quot;id&amp;quot;:&amp;quot;6008f80ef7f6c6747edf01019846074d27e29a7d217c6e3f3301fcdb435cef73&amp;quot;,&amp;quot;name&amp;quot;:&amp;quot;/blog-legacy.web.1&amp;quot;}
-20161002T062409+0000	docker.metrics.memory.stat	{&amp;quot;key&amp;quot;:&amp;quot;memory_stat_rss&amp;quot;,&amp;quot;value&amp;quot;:14028800,&amp;quot;type&amp;quot;:&amp;quot;gauge&amp;quot;,&amp;quot;hostname&amp;quot;:&amp;quot;HOSTNAME&amp;quot;,&amp;quot;id&amp;quot;:&amp;quot;6008f80ef7f6c6747edf01019846074d27e29a7d217c6e3f3301fcdb435cef73&amp;quot;,&amp;quot;name&amp;quot;:&amp;quot;/blog-legacy.web.1&amp;quot;}
-20161002T062409+0000	docker.metrics.memory.stat	{&amp;quot;key&amp;quot;:&amp;quot;memory_stat_rss_huge&amp;quot;,&amp;quot;value&amp;quot;:0,&amp;quot;type&amp;quot;:&amp;quot;gauge&amp;quot;,&amp;quot;hostname&amp;quot;:&amp;quot;HOSTNAME&amp;quot;,&amp;quot;id&amp;quot;:&amp;quot;6008f80ef7f6c6747edf01019846074d27e29a7d217c6e3f3301fcdb435cef73&amp;quot;,&amp;quot;name&amp;quot;:&amp;quot;/blog-legacy.web.1&amp;quot;}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;コンテナ ID とコンテナ名の両方が記録されるので、どちらでもグループ化して集計することが可能である。&lt;/p&gt;
-
-&lt;h3 id=&#34;fluent-plugin-bigquery-のセットアップ&#34;&gt;fluent-plugin-bigquery のセットアップ&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;&amp;lt;match docker.metrics.**&amp;gt;
-  @type bigquery
-
-  auth_method json_key
-  email ***@PROJECT.iam.gserviceaccount.com
-  json_key /etc/td-agent/bigquery/key.json
-
-  project PROJECT
-  dataset docker
-  table   metrics_%Y%m%d
-  ignore_unknown_values true
-  auto_create_table true
-
-  time_format %s
-  time_field time
-
-  field_timestamp time
-  field_integer   value
-  field_string    key,type,hostname,id,name
-&amp;lt;/match&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;日別にテーブルに保存されるよう、&lt;code&gt;table&lt;/code&gt; は &lt;code&gt;metrics_%Y%m%d&lt;/code&gt; としている。&lt;/p&gt;
-
-&lt;p&gt;また、テーブルは自動で作られるが、データセットはあらかじめ作っておく必要があるらしい。&lt;/p&gt;
-
-&lt;h3 id=&#34;re-dash-でグラフ化&#34;&gt;Re:dash でグラフ化&lt;/h3&gt;
-
-&lt;p&gt;Re:dash 自体のセットアップについては割愛するが、個人的にはこれを Dokku で動かしていて、その手順については以前 Qiita に書いている。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://qiita.com/yuya_takeyama/items/9915f5ae3953a9c2c14b&#34;&gt;Dokku に Re:dash をインストールする&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;クエリはこんな感じ。&lt;br /&gt;
-Standard SQL を使っている。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;SELECT
-  time,
-  name,
-  value / 1024 / 1024 AS size
-FROM
-  `PROJECT.docker.metrics_*`
-WHERE
-  key = &#39;memory_stat_rss&#39;
-ORDER BY
-  name,
-  time
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;とりあえず全データを対象にしているが、データ量が増えてきたらテーブル名を日付で絞ったほうが良いかもしれない。&lt;/p&gt;
-
-&lt;p&gt;あとは適当に Visualize の設定を行う。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/chart-setting.png&#34; width=&#34;531&#34; height=&#34;608&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/stack-setting.png&#34; width=&#34;526&#34; height=&#34;607&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;これで先に載せた感じのグラフが出来上がる。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/chart.png&#34; width=&#34;414&#34; height=&#34;319&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/visualize-docker-metrics-with-redash/stack-chart.png&#34; width=&#34;416&#34; height=&#34;342&#34;&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;グラフ化した結果、メモリを一番使っているのは Re:dash の Worker だということがわかった。&lt;/p&gt;
 </description>
     </item>
     
