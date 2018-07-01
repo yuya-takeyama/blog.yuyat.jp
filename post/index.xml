@@ -327,6 +327,12 @@ deployment &amp;quot;nginx&amp;quot; configured
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/kubernetes-sigs/kustomize/tree/730597b77e0a3a4d4c73668e5b1b414c13c76f5a/examples/helloWorld#how-this-works-with-kustomize&#34;&gt;https://github.com/kubernetes-sigs/kustomize/tree/730597b77e0a3a4d4c73668e5b1b414c13c76f5a/examples/helloWorld#how-this-works-with-kustomize&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;なお、Quipper では Kubernetes を使って最高の Microservices 基盤を作りたい SRE を大募集中です。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.quipper.com/career/Japan/&#34;&gt;https://www.quipper.com/career/Japan/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </description>
     </item>
     
