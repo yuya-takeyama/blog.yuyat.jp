@@ -1,5 +1,5 @@
 ---
-title: "Kubernetes ConfigMap を Immutable に管理する"
+title: "Kubernetes の ConfigMap を Immutable に管理する"
 date: 2018-07-01T21:00:00+09:00
 ---
 Quipper では Microservices 基盤として Kubernetes によるクラスタを構築し、もうすぐ本番環境にリリースしようとしています。本当は [Deis Workflow](https://deis.com/docs/workflow/) で使う Kubernetes クラスタを既に本番で運用していますが、Deis なしでの運用に変えようとしているのが最近の状況です。
