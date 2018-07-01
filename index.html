@@ -33,7 +33,7 @@
   
 
 
-  <meta property="og:updated_time" content="2018-05-07T04:30:00&#43;09:00"/>
+  <meta property="og:updated_time" content="2018-07-01T21:00:00&#43;09:00"/>
 
 
 
@@ -74,6 +74,23 @@
 
 <div class="row">
   <div class="col-sm-8">
+    
+      
+        <div class="post-header-home">
+  <h1 class="post-title-home">
+    <a href="https://blog.yuyat.jp/post/kubernetes-immutable-configmap/">Kubernetes ConfigMap を Immutable に管理する</a>
+  </h1>
+  <p class="text-muted">Jul 1, 2018</p>
+
+</div>
+<div class="post-excerpt-home">
+  Quipper では Microservices 基盤として Kubernetes によるクラスタを構築し、もうすぐ本番環境にリリースしようとしています。本当は Deis Workflow で使う Kubernetes クラスタを既に本番で運用していますが、Deis なしでの運用に変えようとしているのが最近の状況です。 そこら辺の背景は 2018/07/19 に行われる Quipper Product Meetup でお話しするとして、今は YAML の管理どうするかみたいなところから試行錯誤している状態で、基本的には Pull Request ベースでレビューしてマージされたらデプロイ、みたいなことをアプリでもクラスタでもやる感じになっています。 今日は、その中でも ConfigMap をどう扱うか、について Mutable/Immutable 2 つのアプローチについて実際に動く設定・スクリプト付きで紹介します。 設定・スクリプトは全て GitHub のリポジトリに置いています: yuya-takeyama/kubernetes-immutable-configmap-example 背景 Kubernetes における ConfigMap は設定値や設定ファイルを保持するためのリソースで、Deployment (Pod) からは環境変数として読み込んだり、ファイルとして Volume にマウントしたりして使用します。 ConfigMap を更新するだけでは、それを参照する Deployment (Pod) はロールアウトされず、環境変数等にも反映されません。ロールアウトするために何か工夫が必要です。 元ネタ 「ConfigMap を immutable にせよ」というのは GitHub/Stack Overflow はじめ様々なところで言及されています。 ですが、実際に動く例というものがなさそうなので、そういった言及を元に想像で作ってみたのが今回の例です。 実際に参考にしたのは以下のコメントです。 https://github.com/kubernetes/kubernetes/pull/31701#issuecomment-252110430 Kubernetes/GKE/CNCF のメンバーである Brian Grant によるコメント Mutable なアプローチ まずはより素朴なアプローチとして Mutable なアプローチです。大まかには以下のような仕組みです。 環境変数を保持する
+  
+  <p class="text-right"><a href="https://blog.yuyat.jp/post/kubernetes-immutable-configmap/">Continue Reading &rarr;</a></p>
+  
+</div>
+
+      
     
       
         <div class="post-header-home">
@@ -267,29 +284,9 @@
 
       
     
-      
-        <div class="post-header-home">
-  <h1 class="post-title-home">
-    <a href="https://blog.yuyat.jp/post/best-buys-2016/">引越・同棲 1 年目の 2016 年に買って良かったもの</a>
-  </h1>
-  <p class="text-muted">Dec 31, 2016</p>
-
-</div>
-<div class="post-excerpt-home">
-  <p>去年 1 番のイベントは<a href="http://blog.yuyat.jp/archives/2631">転職</a>でしたが、今年は引越・同棲というのが一大イベントでした。</p>
-
-<p>丸 7 年住んだ埼玉から浅草に引越したことで京橋の職場への出勤時間が半分の 30 分に縮まったのも良かったですが、生活環境が変わったのを機に家具も色々と買い、QoL も大幅に向上したので、それを振り返ってみるという体でアフィブログを書きます。</p>
-
-  
-  <p class="text-right"><a href="https://blog.yuyat.jp/post/best-buys-2016/">Continue Reading &rarr;</a></p>
-  
-</div>
-
-      
-    
     <hr>
     <div class="home-read-more">
-      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 23 Articles →</a>
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 24 Articles →</a>
     </div>
   </div>
   <div class="col-sm-4">

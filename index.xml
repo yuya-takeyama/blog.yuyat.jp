@@ -6,8 +6,329 @@
     <description>Recent content on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 07 May 2018 04:30:00 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 01 Jul 2018 21:00:00 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Kubernetes ConfigMap を Immutable に管理する</title>
+      <link>https://blog.yuyat.jp/post/kubernetes-immutable-configmap/</link>
+      <pubDate>Sun, 01 Jul 2018 21:00:00 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/kubernetes-immutable-configmap/</guid>
+      <description>
+
+&lt;p&gt;Quipper では Microservices 基盤として Kubernetes によるクラスタを構築し、もうすぐ本番環境にリリースしようとしています。本当は &lt;a href=&#34;https://deis.com/docs/workflow/&#34;&gt;Deis Workflow&lt;/a&gt; で使う Kubernetes クラスタを既に本番で運用していますが、Deis なしでの運用に変えようとしているのが最近の状況です。&lt;/p&gt;
+
+&lt;p&gt;そこら辺の背景は 2018/07/19 に行われる &lt;a href=&#34;https://techplay.jp/event/680406&#34;&gt;Quipper Product Meetup&lt;/a&gt; でお話しするとして、今は YAML の管理どうするかみたいなところから試行錯誤している状態で、基本的には Pull Request ベースでレビューしてマージされたらデプロイ、みたいなことをアプリでもクラスタでもやる感じになっています。&lt;/p&gt;
+
+&lt;p&gt;今日は、その中でも &lt;code&gt;ConfigMap&lt;/code&gt; をどう扱うか、について Mutable/Immutable 2 つのアプローチについて実際に動く設定・スクリプト付きで紹介します。&lt;/p&gt;
+
+&lt;p&gt;設定・スクリプトは全て GitHub のリポジトリに置いています: &lt;a href=&#34;https://github.com/yuya-takeyama/kubernetes-immutable-configmap-example&#34;&gt;yuya-takeyama/kubernetes-immutable-configmap-example&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;背景&#34;&gt;背景&lt;/h2&gt;
+
+&lt;p&gt;Kubernetes における &lt;code&gt;ConfigMap&lt;/code&gt; は設定値や設定ファイルを保持するためのリソースで、&lt;code&gt;Deployment&lt;/code&gt; (&lt;code&gt;Pod&lt;/code&gt;) からは環境変数として読み込んだり、ファイルとして Volume にマウントしたりして使用します。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ConfigMap&lt;/code&gt; を更新するだけでは、それを参照する &lt;code&gt;Deployment&lt;/code&gt; (&lt;code&gt;Pod&lt;/code&gt;) はロールアウトされず、環境変数等にも反映されません。ロールアウトするために何か工夫が必要です。&lt;/p&gt;
+
+&lt;h2 id=&#34;元ネタ&#34;&gt;元ネタ&lt;/h2&gt;
+
+&lt;p&gt;「&lt;code&gt;ConfigMap&lt;/code&gt; を immutable にせよ」というのは GitHub/Stack Overflow はじめ様々なところで言及されています。&lt;/p&gt;
+
+&lt;p&gt;ですが、実際に動く例というものがなさそうなので、そういった言及を元に想像で作ってみたのが今回の例です。&lt;/p&gt;
+
+&lt;p&gt;実際に参考にしたのは以下のコメントです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/kubernetes/kubernetes/pull/31701#issuecomment-252110430&#34;&gt;https://github.com/kubernetes/kubernetes/pull/31701#issuecomment-252110430&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Kubernetes/GKE/CNCF のメンバーである &lt;a href=&#34;https://github.com/bgrant0607&#34;&gt;Brian Grant&lt;/a&gt; によるコメント&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;mutable-なアプローチ&#34;&gt;Mutable なアプローチ&lt;/h2&gt;
+
+&lt;p&gt;まずはより素朴なアプローチとして Mutable なアプローチです。大まかには以下のような仕組みです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;環境変数を保持する &lt;code&gt;ConfigMap&lt;/code&gt; は常に同一のものを更新する&lt;/li&gt;
+&lt;li&gt;それを参照する &lt;code&gt;Pod&lt;/code&gt; には &lt;code&gt;annotations&lt;/code&gt; として &lt;code&gt;ConfigMap&lt;/code&gt; ファイルのチェックサムを保持する&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ConfigMap&lt;/code&gt; に変更があると &lt;code&gt;Pod&lt;/code&gt; が持つチェックサムも変更されるので、&lt;code&gt;kubectl apply&lt;/code&gt; 時にロールアウトが実行される&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;deployment&#34;&gt;Deployment&lt;/h3&gt;
+
+&lt;p&gt;注目すべきは以下の 2 点です。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;環境変数は &lt;code&gt;envFrom&lt;/code&gt; を使って &lt;code&gt;nginx-config&lt;/code&gt; という &lt;code&gt;ConfigMap&lt;/code&gt; を参照している&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Pod&lt;/code&gt; の &lt;code&gt;annotations&lt;/code&gt; にはチェックサムを保持するためのプレースホルダ &lt;code&gt;&amp;quot;${config_checksum}&amp;quot;&lt;/code&gt; を含む
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;envsubst&lt;/code&gt; で埋め込む前提&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: cm-deploy-mutable
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: nginx
+  template:
+    metadata:
+      labels:
+        run: nginx
+      annotations:
+        yuyat.jp/configmap.checksum.nginx-config: &amp;quot;${config_checksum}&amp;quot;
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: nginx-config
+        image: nginx:alpine
+        name: nginx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;configmap&#34;&gt;ConfigMap&lt;/h3&gt;
+
+&lt;p&gt;&lt;code&gt;ConfigMap&lt;/code&gt; は &lt;code&gt;APP_VERSION=1&lt;/code&gt; という値を保持するだけのプレーンな YAML なのでここでは割愛。&lt;/p&gt;
+
+&lt;h3 id=&#34;デプロイスクリプト&#34;&gt;デプロイスクリプト&lt;/h3&gt;
+
+&lt;p&gt;事前に &lt;code&gt;ConfigMap&lt;/code&gt; ファイルの SHA-1 チェックサムを取っておき、それを &lt;code&gt;envsubst&lt;/code&gt; を使って &lt;code&gt;Deployment&lt;/code&gt; に埋め込んでいます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/bin/bash
+config_checksum=$(shasum mutable/nginx-config.cm.yaml | awk &#39;{ print $1 }&#39;)
+
+kubectl apply --record -n cm-deploy-mutable \
+  -f mutable/cm-deploy-mutable.ns.yaml \
+  -f mutable/nginx-config.cm.yaml \
+  -f &amp;lt;(cat mutable/nginx.deploy.yaml.tpl | config_checksum=$config_checksum envsubst &#39;$config_checksum&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;デプロイしてみる&#34;&gt;デプロイしてみる&lt;/h3&gt;
+
+&lt;p&gt;初回はそれぞれのリソースが生成されます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ./mutable/deploy.sh
+namespace &amp;quot;cm-deploy-mutable&amp;quot; created
+configmap &amp;quot;nginx-config&amp;quot; created
+deployment &amp;quot;nginx&amp;quot; created
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この状態で環境変数 &lt;code&gt;APP_VERSION&lt;/code&gt; には &lt;code&gt;1&lt;/code&gt; がセットされています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ./mutable/version.sh
+1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;何も変更せずに再度デプロイしても、何も起こりません。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ./mutable/deploy.sh
+namespace &amp;quot;cm-deploy-mutable&amp;quot; configured
+configmap &amp;quot;nginx-config&amp;quot; unchanged
+deployment &amp;quot;nginx&amp;quot; unchanged
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;APP_VERSION&lt;/code&gt; を &lt;code&gt;2&lt;/code&gt; に変更してデプロイすると、ロールアウトが行われます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ./mutable/deploy.sh
+namespace &amp;quot;cm-deploy-mutable&amp;quot; configured
+configmap &amp;quot;nginx-config&amp;quot; configured
+deployment &amp;quot;nginx&amp;quot; configured
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コンテナ内の環境変数も正常に変更されました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ./mutable/version.sh
+2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;mutable-なアプローチの問題点&#34;&gt;Mutable なアプローチの問題点&lt;/h3&gt;
+
+&lt;p&gt;ここまでは上手くいっていますが、問題となるのはロールバックする時です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl rollout undo deploy/nginx -n cm-deploy-mutable
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この状態で環境変数を確認すると、&lt;code&gt;2&lt;/code&gt; のままで、元に戻っていないことがわかります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ./mutable/version.sh
+2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ロールバックされるのはあくまでも &lt;code&gt;Deployment&lt;/code&gt; なので、それにひもづく &lt;code&gt;ConfigMap&lt;/code&gt; が変わらない以上は当然の結果です。&lt;/p&gt;
+
+&lt;p&gt;ですが、環境変数等の設定値も含めてロールバックしたい場合には困りますね。&lt;/p&gt;
+
+&lt;h2 id=&#34;imuutable-なアプローチ&#34;&gt;Imuutable なアプローチ&lt;/h2&gt;
+
+&lt;p&gt;Mutable なアプローチの問題点を解決するための Immutable なアプローチは以下のようなものです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;環境変数を保持する &lt;code&gt;ConfigMap&lt;/code&gt; の name には suffix としてチェックサムを不可する
+
+&lt;ul&gt;
+&lt;li&gt;内容が変わると新しいチェックサムを持った &lt;code&gt;ConfigMap&lt;/code&gt; を毎回新しく作成する&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Pod&lt;/code&gt; からもそのチェックサム付きの名前で参照する&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ConfigMap&lt;/code&gt; に変更があると &lt;code&gt;Pod&lt;/code&gt; 参照する &lt;code&gt;ConfigMap&lt;/code&gt; が毎回変わるので、&lt;code&gt;kubectl apply&lt;/code&gt; 時にロールアウトが実行される&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;deployment-1&#34;&gt;Deployment&lt;/h3&gt;
+
+&lt;p&gt;Mutable なものとだいたい似ていますが、差分は以下の 2 点です。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;チェックサムを保持する &lt;code&gt;annotations&lt;/code&gt; を削除
+
+&lt;ul&gt;
+&lt;li&gt;これは敢えて持たせたままにするのもありだと思います&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;envFrom&lt;/code&gt; で参照する &lt;code&gt;ConfigMap&lt;/code&gt; の名前の suffix 部分がプレースホルダになっている
+
+&lt;ul&gt;
+&lt;li&gt;やはり &lt;code&gt;envsubst&lt;/code&gt; で値を埋め込む前提&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: cm-deploy-immutable
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: nginx
+  template:
+    metadata:
+      labels:
+        run: nginx
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: &amp;quot;nginx-config-${config_checksum}&amp;quot;
+        image: nginx:alpine
+        name: nginx
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;configmap-1&#34;&gt;ConfigMap&lt;/h3&gt;
+
+&lt;p&gt;Mutable なアプローチではプレーンな YAML でしたが、こちらでは &lt;code&gt;ConfigMap&lt;/code&gt; も &lt;code&gt;envsubst&lt;/code&gt; による値の埋め込みを行います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: v1
+data:
+  APP_VERSION: &amp;quot;1&amp;quot;
+kind: ConfigMap
+metadata:
+  name: nginx-config-${config_checksum}
+  namespace: cm-deploy-immutable
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;デプロイスクリプト-1&#34;&gt;デプロイスクリプト&lt;/h3&gt;
+
+&lt;p&gt;事前に &lt;code&gt;ConfigMap&lt;/code&gt; ファイル (テンプレート) のチェックサムを取るのは同じですが、&lt;code&gt;Deployment&lt;/code&gt; だけでなく &lt;code&gt;ConfigMap&lt;/code&gt; にも &lt;code&gt;envsubst&lt;/code&gt; での値の埋め込みを行います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/bin/bash
+config_checksum=$(shasum immutable/nginx-config.cm.yaml.tpl | awk &#39;{ print $1 }&#39;)
+
+kubectl apply --record -n cm-deploy-immutable \
+  -f immutable/cm-deploy-immutable.ns.yaml \
+  -f &amp;lt;(cat immutable/nginx-config.cm.yaml.tpl | config_checksum=$config_checksum envsubst &#39;$config_checksum&#39;) \
+  -f &amp;lt;(cat immutable/nginx.deploy.yaml.tpl | config_checksum=$config_checksum envsubst &#39;$config_checksum&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;デプロイしてみる-1&#34;&gt;デプロイしてみる&lt;/h3&gt;
+
+&lt;p&gt;初回はやはりそれぞれのリソースが生成されます。&lt;code&gt;ConfigMap&lt;/code&gt; の名前にチェックサムが含まれることがわかります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ./immutable/deploy.sh
+namespace &amp;quot;cm-deploy-immutable&amp;quot; created
+configmap &amp;quot;nginx-config-12db160438b100c95eb77c821899f524d6027405&amp;quot; created
+deployment &amp;quot;nginx&amp;quot; created
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;環境変数は当然ちゃんとセットされています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ./immutable/version.sh
+1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;ConfigMap&lt;/code&gt; に変更がない状態で再度適用しても、何も変更が起こらないのは Mutable なときと同じです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ./immutable/deploy.sh
+namespace &amp;quot;cm-deploy-immutable&amp;quot; configured
+configmap &amp;quot;nginx-config-12db160438b100c95eb77c821899f524d6027405&amp;quot; unchanged
+deployment &amp;quot;nginx&amp;quot; unchanged
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ここで &lt;code&gt;APP_VERSION&lt;/code&gt; を &lt;code&gt;2&lt;/code&gt; に変更してデプロイすると、今度はロールアウトが行われます。&lt;code&gt;ConfigMap&lt;/code&gt; は新しく作られていることがわかります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ./immutable/deploy.sh
+namespace &amp;quot;cm-deploy-immutable&amp;quot; configured
+configmap &amp;quot;nginx-config-b6fe7e2f2edca16c3778836541a399245ca2372e&amp;quot; created
+deployment &amp;quot;nginx&amp;quot; configured
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コンテナ内の環境変数も正常に変更されました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ./immutable/version.sh
+2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;ロールバックしてみる&#34;&gt;ロールバックしてみる&lt;/h3&gt;
+
+&lt;p&gt;Mutable なアプローチで問題になったロールバックをこちらでもやってみます。そちらではロールバックしたにもかかわらず、&lt;code&gt;APP_VERSION&lt;/code&gt; は &lt;code&gt;2&lt;/code&gt; のままで元に戻ってくれませんでした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ kubectl rollout undo deploy/nginx -n cm-deploy-immutable
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ここでコンテナ内の環境変数を確認すると、見事 &lt;code&gt;1&lt;/code&gt; に戻っています！&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ ./immutable/version.sh
+1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ロールバックすることで &lt;code&gt;Pod&lt;/code&gt; が参照する &lt;code&gt;ConfigMap&lt;/code&gt; が一つ前のものに書き換わり、その &lt;code&gt;ConfigMap&lt;/code&gt; には作成時のままの値が入っているので、今度は &lt;code&gt;ConfigMap&lt;/code&gt; ごとロールバックされました。&lt;/p&gt;
+
+&lt;p&gt;今回は &lt;code&gt;ConfigMap&lt;/code&gt; のみの変更でしたが、&lt;code&gt;Deployment&lt;/code&gt; に同時に変更を加えていた場合、その変更もアトミックになるのでロールバックも同様にアトミックに行われることになります。&lt;/p&gt;
+
+&lt;h3 id=&#34;immutable-なアプローチの問題点&#34;&gt;Immutable なアプローチの問題点&lt;/h3&gt;
+
+&lt;p&gt;Mutable なアプローチで問題になったロールバックも上手く行きましたが、こちらは &lt;code&gt;ConfigMap&lt;/code&gt; に変更があるごとに毎回新しく &lt;code&gt;ConfigMap&lt;/code&gt; が作られてしまいます。&lt;/p&gt;
+
+&lt;p&gt;気にせず放置、というのも一つのやり方だと思いますが、気になるのであれば以下のような手順で対処することが考えられます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;ConfigMap&lt;/code&gt; には &lt;code&gt;label&lt;/code&gt; で共通の値 (&lt;code&gt;nginx-config&lt;/code&gt; 等) を持たせておく&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;label&lt;/code&gt; に紐付く &lt;code&gt;ConfigMap&lt;/code&gt; を全て取得し、&lt;code&gt;metadata&lt;/code&gt; が持つ &lt;code&gt;creationTimestamp&lt;/code&gt; でソートし、新しいものいくつかを残して残りは全て削除する
+
+&lt;ul&gt;
+&lt;li&gt;ということを &lt;code&gt;CronJob&lt;/code&gt; とかでやると良いのかも&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;&lt;code&gt;Pod&lt;/code&gt; にとっての &lt;code&gt;ReplicaSet&lt;/code&gt; のようなものが &lt;code&gt;ConfigMap&lt;/code&gt; にも欲しいですね。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/kubernetes-sigs/kustomize&#34;&gt;kustomize&lt;/a&gt; で実現する方法もあるっぽいのでそれはまた今度調べてみます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/kubernetes-sigs/kustomize/tree/730597b77e0a3a4d4c73668e5b1b414c13c76f5a/examples/helloWorld#how-this-works-with-kustomize&#34;&gt;https://github.com/kubernetes-sigs/kustomize/tree/730597b77e0a3a4d4c73668e5b1b414c13c76f5a/examples/helloWorld#how-this-works-with-kustomize&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>Oculus Go で Kindle の電子書籍を寝ながら読む</title>
@@ -1657,107 +1978,6 @@ end
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;これならファイルの読み込み順序は一定になる、はず。 (OS やファイルシステムによって違う可能性もあり得る?)&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Docker コンテナを DigitalOcean 上でサクッと動かす</title>
-      <link>https://blog.yuyat.jp/post/run-docker-container-in-digitalocean/</link>
-      <pubDate>Tue, 11 Oct 2016 21:29:41 +0900</pubDate>
-      
-      <guid>https://blog.yuyat.jp/post/run-docker-container-in-digitalocean/</guid>
-      <description>
-
-&lt;h2 id=&#34;やりたいこと&#34;&gt;やりたいこと&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;任意のアプリの Docker コンテナをサクッと立ち上げたい&lt;/li&gt;
-&lt;li&gt;かつグローバル IP アドレスを割り当てて外から接続したい&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;より具体的には、今回は &lt;code&gt;mitmproxy&lt;/code&gt; をインターネット上で動かして iPhone 等のスマートフォン端末からつなぎたかった、という感じです。&lt;/p&gt;
-
-&lt;h2 id=&#34;手順&#34;&gt;手順&lt;/h2&gt;
-
-&lt;h3 id=&#34;digitalocean-のアカウントを作成する&#34;&gt;DigitalOcean のアカウントを作成する&lt;/h3&gt;
-
-&lt;p&gt;ここは割愛。&lt;/p&gt;
-
-&lt;h3 id=&#34;digitalocean-のアクセストークンを作成&#34;&gt;DigitalOcean のアクセストークンを作成&lt;/h3&gt;
-
-&lt;p&gt;API -&amp;gt; Tokens -&amp;gt; Generate New Token から適当に名前をつけて作ります。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/run-docker-container-in-digitalocean/generate-new-token.png&#34; width=&#34;608&#34; height=&#34;424&#34;&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;docker-machine-で-docker-環境を作る&#34;&gt;docker-machine で Docker 環境を作る&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;docker-machine&lt;/code&gt; のインストール手順については割愛。&lt;br /&gt;
-Mac だと Homebrew でもインストールできるので適当にやっておく。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ docker-machine create --driver digitalocean --digitalocean-access-token=ACCESS_TOKEN --digitalocean-region=sgp1 mitmproxy
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;--digitalocean-access-token&lt;/code&gt; には前の手順で作ったアクセストークンを指定。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;--digitalocean-region&lt;/code&gt; にはリージョンの slug を指定します。&lt;br /&gt;
-省略すると New York にできてレイテンシが辛いので、日本からだとシンガポールでも指定しておくのがいいでしょう。&lt;/p&gt;
-
-&lt;p&gt;リージョンの slug 一覧はこんな感じに最新版を取得できます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ curl -H &amp;quot;Content-Type: application/json&amp;quot; -H &amp;quot;Authorization: Bearer ACCESS_TOKEN&amp;quot; &amp;quot;https://api.digitalocean.com/v2/regions&amp;quot; -s | jq &#39;.regions[] | &amp;quot;\(.slug)\t\(.name)&amp;quot;&#39; -r | sort
-ams2    Amsterdam 2
-ams3    Amsterdam 3
-blr1    Bangalore 1
-fra1    Frankfurt 1
-lon1    London 1
-nyc1    New York 1
-nyc2    New York 2
-nyc3    New York 3
-sfo1    San Francisco 1
-sfo2    San Francisco 2
-sgp1    Singapore 1
-tor1    Toronto 1
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;末尾の &lt;code&gt;mitmproxy&lt;/code&gt; という部分は Docker 環境に任意の名前をつけるだけなので適当に。&lt;/p&gt;
-
-&lt;p&gt;数分かかりますがトイレ行ってコーヒーでも淹れて来たりすれば終わっているでしょう。&lt;/p&gt;
-
-&lt;h3 id=&#34;docker-コンテナの起動&#34;&gt;Docker コンテナの起動&lt;/h3&gt;
-
-&lt;p&gt;Dockerfile を拾ってこれるような場合は Docker Hub のページ見ながら適当に。&lt;br /&gt;
-信頼していい Dockerfile なのかは注意する。&lt;/p&gt;
-
-&lt;p&gt;今回は &lt;a href=&#34;https://hub.docker.com/r/mitmproxy/mitmproxy/&#34;&gt;mitmproxy/mitmproxy&lt;/a&gt; のイメージを使いました。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;# Docker への接続情報をターミナルのセッションに読み込む
-$ eval $(docker-machine env mitmproxy)
-
-# Docker コンテナの起動
-$ docker run --rm -it -p 8080:8080 mitmproxy/mitmproxy
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;ip-アドレスの確認&#34;&gt;IP アドレスの確認&lt;/h3&gt;
-
-&lt;p&gt;今回は外部から接続する前提なので。&lt;br /&gt;
-DigitalOcean の Droplets の一覧から見てもいいです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ docker-machine ip mitmproxy
-128.199.***.***
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;docker-環境を削除する&#34;&gt;Docker 環境を削除する&lt;/h3&gt;
-
-&lt;p&gt;使い捨て前提なので削除しておきます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ docker-machine rm mitmproxy
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;アクセストークンも DigitalOcean のページ上から削除しておくとより安心でしょう。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;こういうシュッとサーバなりコンテナなり必要なとき DigitalOcean は便利なのでアカウントを持っていない人は&lt;a href=&#34;https://m.do.co/c/645fac0c10f9&#34;&gt;作っておきましょう。 (アフィリエイトリンク)&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
