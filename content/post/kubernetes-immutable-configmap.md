@@ -301,3 +301,7 @@ Mutable なアプローチで問題になったロールバックも上手く行
 [kustomize](https://github.com/kubernetes-sigs/kustomize) で実現する方法もあるっぽいのでそれはまた今度調べてみます。
 
 * [https://github.com/kubernetes-sigs/kustomize/tree/730597b77e0a3a4d4c73668e5b1b414c13c76f5a/examples/helloWorld#how-this-works-with-kustomize](https://github.com/kubernetes-sigs/kustomize/tree/730597b77e0a3a4d4c73668e5b1b414c13c76f5a/examples/helloWorld#how-this-works-with-kustomize)
+
+なお、Quipper では Kubernetes を使って最高の Microservices 基盤を作りたい SRE を大募集中です。
+
+* [https://www.quipper.com/career/Japan/](https://www.quipper.com/career/Japan/)
