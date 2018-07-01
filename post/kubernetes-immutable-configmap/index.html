@@ -23,7 +23,12 @@
     <meta property="fb:admins" content="100000987494966" />
 <meta property="fb:app_id" content="285547814816502" />
 <meta property="og:title" content="Kubernetes ConfigMap を Immutable に管理する" />
-<meta property="og:description" content="Quipper では Microservices 基盤として Kubernetes によるクラスタを構築し、もうすぐ本番環境にリリースしようとしています。本当は Deis Workflow で使う Kubernetes クラスタを既に本番で運用していますが、Deis なしでの運用に変えようとしているのが最近の状況です。 そこら辺の背景は 2018/07/19 に行われる Quipper Product Meetup でお話しするとして、今は YAML の管理どうするかみたいなところから試行錯誤している状態で、基本的には Pull Request ベースでレビューしてマージされたらデプロイ、みたいなことをアプリでもクラスタでもやる感じになっています。 今日は、その中でも ConfigMap をどう扱うか、について Mutable/Immutable 2 つのアプローチについて実際に動く設定・スクリプト付きで紹介します。 設定・スクリプトは全て GitHub のリポジトリに置いています: yuya-takeyama/kubernetes-immutable-configmap-example 背景 Kubernetes における ConfigMap は設定値や設定ファイルを保持するためのリソースで、Deployment (Pod) からは環境変数として読み込んだり、ファイルとして Volume にマウントしたりして使用します。 ConfigMap を更新するだけでは、それを参照する Deployment (Pod) はロールアウトされず、環境変数等にも反映されません。ロールアウトするために何か工夫が必要です。 元ネタ 「ConfigMap を immutable にせよ」というのは GitHub/Stack Overflow はじめ様々なところで言及されています。 ですが、実際に動く例というものがなさそうなので、そういった言及を元に想像で作ってみたのが今回の例です。 実際に参考にしたのは以下のコメントです。 https://github.com/kubernetes/kubernetes/pull/31701#issuecomment-252110430 Kubernetes/GKE/CNCF のメンバーである Brian Grant によるコメント Mutable なアプローチ まずはより素朴なアプローチとして Mutable なアプローチです。大まかには以下のような仕組みです。 環境変数を保持する" />
+<meta property="og:description" content="Quipper では Microservices 基盤として Kubernetes によるクラスタを構築し、もうすぐ本番環境にリリースしようとしています。本当は Deis Workflow で使う Kubernetes クラスタを既に本番で運用していますが、Deis なしでの運用に変えようとしているのが最近の状況です。
+
+そこら辺の背景は 2018/07/19 に行われる Quipper Product Meetup でお話しするとして、今は YAML の管理どうするかみたいなところから試行錯誤している状態で、基本的には Pull Request ベースでレビューしてマージされたらデプロイ、みたいなことをアプリでもクラスタでもやる感じになっています。
+
+今日は、その中でも ConfigMap をどう扱うか、について Mutable/Immutable 2 つのアプローチについて実際に動く設定・スクリプト付きで紹介します。
+" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://blog.yuyat.jp/post/kubernetes-immutable-configmap/" />
 
