@@ -8,6 +8,8 @@ Quipper では Microservices 基盤として Kubernetes によるクラスタを
 
 今日は、その中でも `ConfigMap` をどう扱うか、について Mutable/Immutable 2 つのアプローチについて実際に動く設定・スクリプト付きで紹介します。
 
+<!--more-->
+
 設定・スクリプトは全て GitHub のリポジトリに置いています: [yuya-takeyama/kubernetes-immutable-configmap-example](https://github.com/yuya-takeyama/kubernetes-immutable-configmap-example)
 
 ## 背景
