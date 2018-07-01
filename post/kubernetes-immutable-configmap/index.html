@@ -17,12 +17,12 @@
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
     <link rel="canonical" href="https://blog.yuyat.jp/post/kubernetes-immutable-configmap/">
-    <title>Kubernetes ConfigMap を Immutable に管理する | Born Too Late</title>
+    <title>Kubernetes の ConfigMap を Immutable に管理する | Born Too Late</title>
     
 
     <meta property="fb:admins" content="100000987494966" />
 <meta property="fb:app_id" content="285547814816502" />
-<meta property="og:title" content="Kubernetes ConfigMap を Immutable に管理する" />
+<meta property="og:title" content="Kubernetes の ConfigMap を Immutable に管理する" />
 <meta property="og:description" content="Quipper では Microservices 基盤として Kubernetes によるクラスタを構築し、もうすぐ本番環境にリリースしようとしています。本当は Deis Workflow で使う Kubernetes クラスタを既に本番で運用していますが、Deis なしでの運用に変えようとしているのが最近の状況です。
 
 そこら辺の背景は 2018/07/19 に行われる Quipper Product Meetup でお話しするとして、今は YAML の管理どうするかみたいなところから試行錯誤している状態で、基本的には Pull Request ベースでレビューしてマージされたらデプロイ、みたいなことをアプリでもクラスタでもやる感じになっています。
@@ -79,11 +79,11 @@
 <div class="row">
   <div class="col-sm-8">
     <div class="post-header">
-      <h1 class="post-title-main">Kubernetes ConfigMap を Immutable に管理する</h1>
+      <h1 class="post-title-main">Kubernetes の ConfigMap を Immutable に管理する</h1>
       <p class="text-muted">Jul 1, 2018</p>
 
 <div>
-  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fkubernetes-immutable-configmap%2f&amp;text=Kubernetes%20ConfigMap%20%e3%82%92%20Immutable%20%e3%81%ab%e7%ae%a1%e7%90%86%e3%81%99%e3%82%8b&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fkubernetes-immutable-configmap%2f&amp;text=Kubernetes%20%e3%81%ae%20ConfigMap%20%e3%82%92%20Immutable%20%e3%81%ab%e7%ae%a1%e7%90%86%e3%81%99%e3%82%8b&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
   <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fkubernetes-immutable-configmap%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
   <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fkubernetes-immutable-configmap%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
 </div>
