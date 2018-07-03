@@ -167,7 +167,7 @@ deployment &amp;quot;nginx&amp;quot; configured
 
 &lt;p&gt;ですが、環境変数等の設定値も含めてロールバックしたい場合には困りますね。&lt;/p&gt;
 
-&lt;h2 id=&#34;imuutable-なアプローチ&#34;&gt;Imuutable なアプローチ&lt;/h2&gt;
+&lt;h2 id=&#34;immutable-なアプローチ&#34;&gt;Immutable なアプローチ&lt;/h2&gt;
 
 &lt;p&gt;Mutable なアプローチの問題点を解決するための Immutable なアプローチは以下のようなものです。&lt;/p&gt;
 
