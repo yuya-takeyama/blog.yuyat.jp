@@ -151,7 +151,7 @@ $ ./mutable/version.sh
 
 ですが、環境変数等の設定値も含めてロールバックしたい場合には困りますね。
 
-## Imuutable なアプローチ
+## Immutable なアプローチ
 
 Mutable なアプローチの問題点を解決するための Immutable なアプローチは以下のようなものです。
 
