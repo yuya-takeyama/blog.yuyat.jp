@@ -6,6 +6,7 @@ jobs:
     - image: yuyat/hugo
     steps:
     - checkout
+    - add_ssh_keys
     - run:
         name: Deploy
         command: ./scripts/deploy_production.sh
@@ -14,7 +15,7 @@ workflows:
   version: 2
   deploy:
     jobs:
-      - test:
+      - deploy:
           filters:
             branches:
               only:
