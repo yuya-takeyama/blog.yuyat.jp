@@ -6,8 +6,239 @@
     <description>Recent content on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 01 Jul 2018 21:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 09 Oct 2018 01:10:00 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>docker build 内の bundle install を最適化するために guruguru-cache というツールを作った</title>
+      <link>https://blog.yuyat.jp/post/guruguru-cache/</link>
+      <pubDate>Tue, 09 Oct 2018 01:10:00 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/guruguru-cache/</guid>
+      <description>
+
+&lt;p&gt;作りました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/guruguru-cache&#34;&gt;yuya-takeyama/guruguru-cache&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;解決したい問題&#34;&gt;解決したい問題&lt;/h2&gt;
+
+&lt;p&gt;Quipper では開発プラットフォームが Deis (OSS の Heroku クローン) から割と素な感じの Kubernetes へと変わったので、元々は Buildpack で行なっていたコンテナイメージのビルドはシェルスクリプト内で &lt;code&gt;docker build&lt;/code&gt; を直接実行して行うようになりました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://quipper.hatenablog.com/entry/future-with-kubernetes&#34;&gt;Kubernetes導入で実現したい世界とその先にあるMicroservices&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Monorepo なので、Pull Request を出したりマージすると変更のあったサービスの Docker Image のビルドが一気に走るのですが、並列とはいえキューがたまりがちになってきたので、実行時間が気になり始めました。&lt;/p&gt;
+
+&lt;h3 id=&#34;bundle-install-が長い&#34;&gt;&lt;code&gt;bundle install&lt;/code&gt; が長い&lt;/h3&gt;
+
+&lt;p&gt;特に気になるのがこれです。Quipper の場合 Ruby で書かれたアプリが多いので主に Bundler ですが、Node.js の Yarn 等でも同様の問題があります。&lt;/p&gt;
+
+&lt;p&gt;この問題に対するよく知られた対処として、「&lt;code&gt;Gemfile&lt;/code&gt;/&lt;code&gt;Gemfile.lock&lt;/code&gt; を先に &lt;code&gt;ADD&lt;/code&gt;/&lt;code&gt;COPY&lt;/code&gt; して &lt;code&gt;bundle install&lt;/code&gt; を実行したあとでアプリ全体を &lt;code&gt;ADD&lt;/code&gt;/&lt;code&gt;COPY&lt;/code&gt; する」というものがあります。
+(以前は Ruby のオフィシャルイメージの中の &lt;code&gt;onbuild&lt;/code&gt; タグがついたものが同じようなことをしてくれましたが&lt;a href=&#34;https://github.com/docker-library/official-images/issues/2076&#34;&gt;いつの間にか deprecate されていた&lt;/a&gt;ようです)&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://qiita.com/kaiinui/items/5ec52437d114e364b7f0&#34;&gt;Docker で bundle install を爆速にする&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;こうすることで、&lt;code&gt;Gemfile&lt;/code&gt;/&lt;code&gt;Gemfile.lock&lt;/code&gt; 以外のファイルに更新が起こった時点で Docker のレイヤーキャッシュが無効になり、&lt;code&gt;bundle install&lt;/code&gt; がゼロからになってしまう問題を避けられます。&lt;/p&gt;
+
+&lt;p&gt;ですが、この場合も結局 &lt;code&gt;Gemfile&lt;/code&gt; に 1 gem 追加しただけでも &lt;code&gt;bundle install&lt;/code&gt; は最初から実行されて、特に &lt;code&gt;nokogiri&lt;/code&gt; のようなネイティブ拡張を含む gem のビルドに時間を取られてしまうことには変わりありません。&lt;/p&gt;
+
+&lt;p&gt;これかを解決するには、&lt;code&gt;docker build&lt;/code&gt; 時に &lt;code&gt;bundle install&lt;/code&gt; したディレクトリ全体をキャッシュとして保持しておき、次回以降のビルドに引き継ぐ必要があります。&lt;/p&gt;
+
+&lt;h2 id=&#34;guruguru-cache&#34;&gt;guruguru-cache&lt;/h2&gt;
+
+&lt;p&gt;そこで作ったのが guruguru-cache です。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/guruguru-cache&#34;&gt;yuya-takeyama/guruguru-cache&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://circleci.com/docs/2.0/caching/&#34;&gt;CircleCI 2.0 のキャッシュシステム&lt;/a&gt;がシンプルで好きだったので、これと似たようなことがコマンドでできれば良いなと思って作りました。&lt;strong&gt;Circle&lt;/strong&gt; CI 由来なのでぐるぐるです。&lt;a href=&#34;https://www.youtube.com/watch?v=Ypx_A6No600&#34;&gt;乃木坂46のデビューシングル&lt;/a&gt;や&lt;a href=&#34;https://en.wikipedia.org/wiki/Guru_Guru&#34;&gt;ジャーマンロックバンド&lt;/a&gt;は関係ありません。&lt;/p&gt;
+
+&lt;h3 id=&#34;必要なもの&#34;&gt;必要なもの&lt;/h3&gt;
+
+&lt;p&gt;キャッシュファイルは S3 に保存するため、S3 バケットと、そバケットにアクセスできる IAM User 及びアクセスキーが必要です。現状は環境変数でしか渡せないので、以下の値を用意する必要があります。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;AWS_ACCESS_KEY_ID&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;AWS_SECRET_ACCESS_KEY&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;AWS_REGION&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;また、必須ではありませんが、&lt;a href=&#34;https://docs.aws.amazon.com/AmazonS3/latest/dev/lifecycle-expire-general-considerations.html&#34;&gt;Object Expiration&lt;/a&gt; の設定をしておくと良いでしょう。&lt;/p&gt;
+
+&lt;h3 id=&#34;インストール&#34;&gt;インストール&lt;/h3&gt;
+
+&lt;p&gt;現状リリース済みのバイナリは用意していないので、&lt;code&gt;go get&lt;/code&gt; で自前ビルドするか、&lt;code&gt;docker build&lt;/code&gt; 用であれば latest の Docker イメージからコピーしてくるのが簡単です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-dockerfile&#34;&gt;# In Dockerfile
+COPY --from=yuyat/guruguru-cache /usr/local/bin/guruguru-cache /usr/local/bin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;キャッシュの保存&#34;&gt;キャッシュの保存&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$ guruguru-cache store [flags] [cache key] [paths...]
+
+Flags:
+  -h, --help               help for store
+      --s3-bucket string   S3 bucket to upload
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;第一引数にキャッシュキーを指定し、第二引数以降にはキャッシュ対象のパスを複数指定できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ guruguru-cache store --s3-bucket=example-cache \
+  &#39;gem-v1-{{ arch }}-{{ checksum &amp;quot;Gemfile.lock&amp;quot; }}&#39; \
+  vendor/bundle
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;キャッシュキーには CircleCI と同様のテンプレート記法が使えます。テンプレート記法についてはあとで別途説明します。&lt;/p&gt;
+
+&lt;h3 id=&#34;キャッシュの復元&#34;&gt;キャッシュの復元&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;$ guruguru-cache restore [flags] [cache keys...]
+
+Flags:
+  -h, --help               help for restore
+      --s3-bucket string   S3 bucket to upload
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;キャッシュキーを複数指定することができます。順番にキャッシュを前方一致で探索し、見つかるまで次のキーにフォールバックしていきます。キャッシュが見つからなければ何もせず終了します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ guruguru-cache restore --s3-bucket=example-cache \
+  &#39;gem-v1-{{ arch }}-{{ checksum &amp;quot;Gemfile.lock&amp;quot; }}&#39; \
+  &#39;gem-v1-{{ arch }}&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この例ではまず &lt;code&gt;Gemfile.lock&lt;/code&gt; のチェックサムが一致するキャッシュを探索します。これが見つかった場合、通常は gem が過不足なくキャッシュから復元されるので、&lt;code&gt;bundle install&lt;/code&gt; は一瞬で終わるはずです。 (もちろん実装依存ですが)&lt;/p&gt;
+
+&lt;p&gt;チェックサムが一致するキャッシュが見つからなかった場合、2 番目の &lt;code&gt;gem-v1-{{ arch }}&lt;/code&gt; にフォールバックします。複数見つかった場合は作成日時が一番新しいものを取得します。この辺は CircleCI と同様の挙動にしたつもりです。&lt;/p&gt;
+
+&lt;h2 id=&#34;デモ&#34;&gt;デモ&lt;/h2&gt;
+
+&lt;p&gt;CircleCI 内で &lt;code&gt;docker build&lt;/code&gt; を行う例を以下に用意してみました。ファイルとして見るべきものは以下の 2 つです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/guruguru-cache-circleci-example/blob/master/Dockerfile&#34;&gt;Dockerfile&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;キャッシュの復元 -&amp;gt; &lt;code&gt;bundle install&lt;/code&gt; -&amp;gt; キャッシュの保存となっていることがわかると思います&lt;/li&gt;
+&lt;li&gt;CircleCI のジョブ本体のコンテナと Remote Docker とでキャッシュを共有できたら良いかなと思いましたが、実行してみたときは CPU アーキテクチャの微妙な違いによってうまく共有できませんでした&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/4&#34;&gt;https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/4&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;現実のケースではテストの実行用と本番環境での実行用とでは必要な gem が微妙に異なると思うので、キャッシュを共有できてもそんなに嬉しくない気もします&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/guruguru-cache-circleci-example/blob/master/.circleci/config.yml&#34;&gt;.circleci/config.yml&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;guruguru-cache&lt;/code&gt; の実行に必要な環境変数を &lt;code&gt;--build-arg&lt;/code&gt; として渡しています&lt;/li&gt;
+&lt;li&gt;CircleCI のジョブ本体のコンテナと Remote Docker とでキャッシュを共有できたら良いかなと思いましたが、実行してみたときは CPU アーキテクチャの微妙な違いによってうまく共有できませんでした&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/4&#34;&gt;https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/4&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;現実のケースではテストの実行用と本番環境での実行用とでは必要な gem が微妙に異なると思うので、キャッシュを共有できてもそんなに嬉しくない気もします&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;ビルド時間の計測&#34;&gt;ビルド時間の計測&lt;/h3&gt;
+
+&lt;p&gt;はじめに、初回のキャッシュなしの状態です。キャッシュを復元・保存するロジックは既に入っていますが、初回なので当然キャッシュがない状態です。コードはほぼ &lt;code&gt;rails new&lt;/code&gt; した直後のものです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/4&#34;&gt;https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/4&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;docker build&lt;/code&gt;: 02:01&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;guruguru-cache restore&lt;/code&gt;: 約 1 秒&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;guruguru-cache store&lt;/code&gt;: 約 10 秒&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;次に、ネイティブ拡張を含む&lt;a href=&#34;https://github.com/yuya-takeyama/guruguru-cache-circleci-example/commit/bf53270f59062927496ded5f8304d76c34b8d4bc&#34;&gt;いくつかの gem を追加&lt;/a&gt;した状態で計測してみます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/5&#34;&gt;https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/5&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;docker build&lt;/code&gt;: 01:34&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;guruguru-cache restore&lt;/code&gt;: 約 15 秒&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;guruguru-cache store&lt;/code&gt;: 約 20 秒&lt;/li&gt;
+&lt;li&gt;ほとんどの gem はキャッシュから復元されるので、差分だけのインストールが行われていることがわかります&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;libv8&lt;/code&gt; や &lt;code&gt;mini_racer&lt;/code&gt; 等の、ビルドが必要な gem がいくつか含まれていても、全体としては速くなっていることがわかります&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;そして、同じ gem を追加した状態だが、&lt;code&gt;guruguru-cache&lt;/code&gt; を一切使わないものです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/6&#34;&gt;https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/6&lt;/a&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;docker build&lt;/code&gt;: 02:12&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;guruguru-cache&lt;/code&gt; にかかる時間はなし&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;というわけで、これを見る限りでは &lt;code&gt;guruguru-cache&lt;/code&gt; を使うメリットはあると言えそうです。&lt;/p&gt;
+
+&lt;p&gt;実際は &lt;code&gt;nokogiri&lt;/code&gt; のようなビルドに時間のかかる gem がどれだけ含まれるのかにも寄るし、レイヤーキャッシュによる &lt;code&gt;bundle install&lt;/code&gt; 自体のインストールがどれだけスキップされる場合だったり、レイヤーキャッシュはないが &lt;code&gt;guruguru-cache&lt;/code&gt; のキャッシュはそのまま存在してキャッシュの保存はスキップされるケースなど、色々パターンがあるので、もう少し長い目で計測・観察が必要そうです。&lt;/p&gt;
+
+&lt;h2 id=&#34;今後改善したいポイント&#34;&gt;今後改善したいポイント&lt;/h2&gt;
+
+&lt;h3 id=&#34;キャッシュのネームスペース&#34;&gt;キャッシュのネームスペース&lt;/h3&gt;
+
+&lt;p&gt;単一のバケットに複数リポジトリのキャッシュを格納できるよう、ネームスペースの指定ができてはどうかと思っています。S3 上はパスの prefix になるだけなので、キャッシュキー自体に含めてもいいかもしれませんが、この後の設定ファイルも込みでやると便利かもしれません。&lt;/p&gt;
+
+&lt;h3 id=&#34;設定ファイルへの対応&#34;&gt;設定ファイルへの対応&lt;/h3&gt;
+
+&lt;p&gt;CircleCI のキャッシュでは、ビルドの設定ファイルのあちこちにキャッシュキーが散らばるので、一斉にキーを変更する必要があるときに煩雑になってしまう問題があると感じています。&lt;/p&gt;
+
+&lt;p&gt;なので、&lt;code&gt;guruguru-cache&lt;/code&gt; 用の設定ファイル内にキーの情報をプリセットとして持たせておいて、コマンドからはそのプリセットを指定するだけにできると良いのではないかと考えています。イメージ的には以下のような感じ。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yml&#34;&gt;# 設定ファイル
+s3-bucket: example-cache
+namespace: my-blog-app
+presets:
+  gem:
+    store:
+      key: gem-v1-{{ arch }}-{{ checksum &amp;quot;Gemfile.lock&amp;quot; }}
+      paths:
+        - vendor/bundle
+    restore:
+      keys:
+        - gem-v1-{{ arch }}-{{ checksum &amp;quot;Gemfile.lock&amp;quot; }}
+        - gem-v1-{{ arch }}
+  npm:
+    store:
+      key: npm-v1-{{ arch }}-{{ checksum &amp;quot;yarn.lock&amp;quot; }}
+      paths:
+        - node_modules
+    restore:
+      keys:
+        - npm-v1-{{ arch }}-{{ checksum &amp;quot;yarn.lock&amp;quot; }}
+        - npm-v1-{{ arch }}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-dockerfile&#34;&gt;# Dockerfile
+RUN guruguru-cache restore --preset gem
+RUN bundle install --path=vendor/bundle
+RUN guruguru-cache store --preset gem
+
+RUN guruguru-cache restore --preset npm
+RUN yarn install
+RUN guruguru-cache store --preset npm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;アップロード-ダウンロードの高速化&#34;&gt;アップロード・ダウンロードの高速化&lt;/h3&gt;
+
+&lt;p&gt;全然検証してませんが、RANGE リクエストを並列化させれば高速化できるんじゃないかと思っています。&lt;/p&gt;
+
+&lt;h3 id=&#34;ファイル属性の維持&#34;&gt;ファイル属性の維持&lt;/h3&gt;
+
+&lt;p&gt;キャッシュ展開時のファイル属性 (更新日時とか) は今のところ適当ですが、ちゃんと保持した方が良いケースが多いと思うのでちゃんとしたいです。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Kubernetes の ConfigMap を Immutable に管理する</title>
@@ -1950,40 +2181,6 @@ WHERE _TABLE_SUFFIX &amp;gt;= FORMAT_DATE(&#39;%Y%m%d&#39;, DATE_SUB(CURRENT_DAT
 &lt;p&gt;Issue を編集する機能・コメントを記入するための機能もあっていいだろうと思うものの、今のところ個人的には必要としてないので、まぁそのうち。&lt;/p&gt;
 
 &lt;p&gt;よければご利用ください。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Ruby で Dir.glob して require するときは sort してからにする</title>
-      <link>https://blog.yuyat.jp/post/make-sure-loading-order-to-be-consistent/</link>
-      <pubDate>Sun, 23 Oct 2016 16:39:29 +0900</pubDate>
-      
-      <guid>https://blog.yuyat.jp/post/make-sure-loading-order-to-be-consistent/</guid>
-      <description>&lt;p&gt;以下のように特定のディレクトリ配下のファイルを雑に &lt;code&gt;require&lt;/code&gt; することがあるとする。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;Dir.glob(&#39;./lib/**/*.rb&#39;).each {|f| require f }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これだと読み込み順が一定でないので、場合によっては A というクラスが依存している B というクラスを読み込む前に参照しようとして &lt;code&gt;NameError&lt;/code&gt; にったりする。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;# a.rb
-class A &amp;lt; B
-end
-
-# b.rb
-class B
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;もちろん、これは &lt;code&gt;a.rb&lt;/code&gt; の先頭で &lt;code&gt;require &#39;b.rb&#39;&lt;/code&gt; すればいい話ではある。&lt;br /&gt;
-だが問題は、テスト中はたまたま問題なくいっていたものが本番で急にエラーになったりすることである。&lt;/p&gt;
-
-&lt;p&gt;そのため事前に &lt;code&gt;sort&lt;/code&gt; しておくと良い。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;Dir.glob(&#39;./lib/**/*.rb&#39;).each.sort {|f| require f }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これならファイルの読み込み順序は一定になる、はず。 (OS やファイルシステムによって違う可能性もあり得る?)&lt;/p&gt;
 </description>
     </item>
     
