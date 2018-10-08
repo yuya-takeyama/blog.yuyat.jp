@@ -102,6 +102,17 @@ $ guruguru-cache restore --s3-bucket=example-cache \
 
 チェックサムが一致するキャッシュが見つからなかった場合、2 番目の `gem-v1-{{ arch }}` にフォールバックします。複数見つかった場合は作成日時が一番新しいものを取得します。この辺は CircleCI と同様の挙動にしたつもりです。
 
+### キャッシュキーのテンプレート
+
+キャッシュキーには以下のテンプレート記法が使えます。まんま CircleCI です。
+
+{{ checksum "FILEPATH" }}: ファイルの MD5 チェックサム
+{{ arch }}: CPU アーキテクチャ
+{{ epoch }}: UNIX タイムスタンプ
+{{ .Environment.FOO }}: 環境変数
+
+`{{ .Branch }}` や `{{ .Revision }}` のような CircleCI 固有の環境変数に依存したものはありません。CI 基盤で適宜取得して `docker build` 時に `--build-arg` として渡す、等する必要があります。
+
 ## デモ
 
 CircleCI 内で `docker build` を行う例を以下に用意してみました。ファイルとして見るべきものは以下の 2 つです。
