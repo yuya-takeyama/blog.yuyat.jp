@@ -193,6 +193,17 @@ Flags:
 
 <p>チェックサムが一致するキャッシュが見つからなかった場合、2 番目の <code>gem-v1-{{ arch }}</code> にフォールバックします。複数見つかった場合は作成日時が一番新しいものを取得します。この辺は CircleCI と同様の挙動にしたつもりです。</p>
 
+<h3 id="キャッシュキーのテンプレート">キャッシュキーのテンプレート</h3>
+
+<p>キャッシュキーには以下のテンプレート記法が使えます。まんま CircleCI です。</p>
+
+<p>{{ checksum &ldquo;FILEPATH&rdquo; }}: ファイルの MD5 チェックサム
+{{ arch }}: CPU アーキテクチャ
+{{ epoch }}: UNIX タイムスタンプ
+{{ .Environment.FOO }}: 環境変数</p>
+
+<p><code>{{ .Branch }}</code> や <code>{{ .Revision }}</code> のような CircleCI 固有の環境変数に依存したものはありません。CI 基盤で適宜取得して <code>docker build</code> 時に <code>--build-arg</code> として渡す、等する必要があります。</p>
+
 <h2 id="デモ">デモ</h2>
 
 <p>CircleCI 内で <code>docker build</code> を行う例を以下に用意してみました。ファイルとして見るべきものは以下の 2 つです。</p>
