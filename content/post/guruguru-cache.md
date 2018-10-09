@@ -106,10 +106,10 @@ $ guruguru-cache restore --s3-bucket=example-cache \
 
 キャッシュキーには以下のテンプレート記法が使えます。まんま CircleCI です。
 
-{{ checksum "FILEPATH" }}: ファイルの MD5 チェックサム
-{{ arch }}: CPU アーキテクチャ
-{{ epoch }}: UNIX タイムスタンプ
-{{ .Environment.FOO }}: 環境変数
+* `{{ checksum "FILEPATH" }}`: ファイルの MD5 チェックサム
+* `{{ arch }}`: CPU アーキテクチャ
+* `{{ epoch }}`: UNIX タイムスタンプ
+* `{{ .Environment.FOO }}`: 環境変数
 
 `{{ .Branch }}` や `{{ .Revision }}` のような CircleCI 固有の環境変数に依存したものはありません。CI 基盤で適宜取得して `docker build` 時に `--build-arg` として渡す、等する必要があります。
 
