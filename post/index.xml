@@ -6,8 +6,70 @@
     <description>Recent content in Posts on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 09 Oct 2018 01:10:00 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 09 Oct 2018 23:38:11 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CLI ツールを Go で書いて Docker イメージとしてリリースする</title>
+      <link>https://blog.yuyat.jp/post/make-tools-in-go-and-release-as-docker-images/</link>
+      <pubDate>Tue, 09 Oct 2018 23:38:11 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/make-tools-in-go-and-release-as-docker-images/</guid>
+      <description>
+
+&lt;p&gt;最近ようやく開発ツールとして Docker が手に馴染んできたので、タイトルの件も含めていくつか雑多に書きます。&lt;/p&gt;
+
+&lt;h2 id=&#34;cli-ツールを-go-で書いて-docker-イメージとしてリリースする&#34;&gt;CLI ツールを Go で書いて Docker イメージとしてリリースする&lt;/h2&gt;
+
+&lt;p&gt;コマンドラインツールを Go で書く、というのは以前からやっていて、主な理由としては「クロスコンパイルができるのでバイナリリリースが簡単」というのがありました。便利なので、クロスコンパイルから GitHub へのリリースを一発でやってくれるラッパーツールを書いたこともありました (一応動くものの、開発は非常に中途半端なところで止まってますが)&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://qiita.com/yuya_takeyama/items/ac200058f9a27a5db12f&#34;&gt;gox して ghr するツール ggallin 作った&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;その後、2017 年に入って Docker で Multi-Stage Builds という機能が実装されてからは、&lt;code&gt;Dockerfile&lt;/code&gt; 内の build ステージで &lt;code&gt;go build&lt;/code&gt; したバイナリを最終的なステージから &lt;code&gt;COPY --from=build&lt;/code&gt; して使う、ということもやってきました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.docker.com/develop/develop-images/multistage-build/&#34;&gt;Use multi-stage builds&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;この &lt;code&gt;COPY --from&lt;/code&gt; ですが、ドキュメントをよく見ると &lt;code&gt;COPY --from=nginx:latest&lt;/code&gt; などとすることで、外部のイメージも stage として利用することができると書いてあります。&lt;/p&gt;
+
+&lt;p&gt;これを利用すると、&lt;code&gt;Dockerfile&lt;/code&gt; 内で必要なツールはこんな感じにインストールすることができるようになります。 (例は前の記事で紹介している &lt;a href=&#34;https://blog.yuyat.jp/post/guruguru-cache/&#34;&gt;guruguru-cache&lt;/a&gt; をインストールするもの)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;COPY --from=yuyat/guruguru-cache /usr/local/bin/guruguru-cache /usr/local/bin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;guruguru-cache は Go で書かれていてシングルバイナリとしてビルドされているので、このように &lt;code&gt;$PATH&lt;/code&gt; の通ったところに &lt;code&gt;COPY&lt;/code&gt; してくるだけで使えるようになります。&lt;/p&gt;
+
+&lt;p&gt;ただし、動的リンクされている場合は動かないことがあるので、静的リンクにする必要があります。以下の記事を参考にしています。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.wrouesnel.com/articles/Totally%20static%20Go%20builds/&#34;&gt;Totally static Go builds&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;以前に &lt;a href=&#34;https://github.com/yuya-takeyama/circle-gh-tee&#34;&gt;Rust で書いたツール&lt;/a&gt; も同じやり方で手元で使ってたりするんですが、この時はその辺に気を使っていたわけではないので、たまたま動いているだけかもしれません。 (ビルドと実行が同じベースイメージで行われていれば普通に動くことも多い)&lt;/p&gt;
+
+&lt;p&gt;最近 Webpacker 用の &lt;code&gt;Dockerfile&lt;/code&gt; で、ruby のイメージの中から &lt;code&gt;COPY --from=node&lt;/code&gt; で &lt;code&gt;node&lt;/code&gt; のバイナリを直接引っ張ってきているのをちょいちょい見ますが、Quipper で一番 Docker に詳しい &lt;a href=&#34;http://twitter.com/mtsmfm&#34;&gt;@mtsmfm&lt;/a&gt; さんに聞いたところ、「多分 ruby と node のベースイメージが近いからたまたま動いているだけで、手元で使うのはいいけど本番ではやるべきではないですね」とのような意見をもらって、「なるほど、確かに〜」と思ったのでした。 (確かにどちらも &lt;code&gt;buildpack-deps:stretch&lt;/code&gt; がベース。バージョンによっても違うかもですが)&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/docker-library/ruby/blob/ccacdf5eb9e69b6f249a890c87621679410e7d74/2.5/stretch/Dockerfile&#34;&gt;ruby&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/nodejs/docker-node/blob/11d4e7fb83a52801e177a08c12eeacaf41498a54/10/stretch/Dockerfile&#34;&gt;node&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;あと言うまでもないとは思いますが、これはあくまでも &lt;code&gt;docker build&lt;/code&gt; 内で実行する開発ツール的なやつに有効なテクニックで、サーバやミドルウェアは素直で別コンテナで動かしてネットワークを通じてやり取りするのが良いでしょう (Apache と MySQL の両方を動かすようなイメージを作るべきではない)&lt;/p&gt;
+
+&lt;h2 id=&#34;docker-hub-よりも-docker-cloud&#34;&gt;Docker Hub よりも Docker Cloud&lt;/h2&gt;
+
+&lt;p&gt;というわけで最近は前よりも Docker イメージを作ることが増えて、ちょっと前までは Docker Hub を使っていました。&lt;/p&gt;
+
+&lt;p&gt;でもビルドの進捗がよくわからんなー、と思って社内の Slack で文句を言っていたところ、これまた &lt;a href=&#34;http://twitter.com/mtsmfm&#34;&gt;@mtsmfm&lt;/a&gt; さんから「進捗は Docker Cloud の方がわかりやすい」ということだったのでそちらを使い始めました。&lt;/p&gt;
+
+&lt;p&gt;名前はなんとなく知っていたものの、そこで初めて知ったのはどちらも Docker, Inc. が運営するサービスなんですね。しかも内部的にリポジトリのデータは共有されており、&lt;code&gt;docker push&lt;/code&gt; すると両方に同じイメージが表れるという不思議な作り。Docker Hub だと他人の public なイメージも閲覧できるのに対して、Docker Cloud は基本的に自分か所属する組織のイメージ以外は見えないので、Hub としての機能は持ってないようです。&lt;/p&gt;
+
+&lt;p&gt;使ってみると UI 以外にも Automated Build が少しいい感じになっていて、Git の tag は &lt;code&gt;v1.2.3&lt;/code&gt; だったら Docker イメージの tag は &lt;code&gt;1.2.3&lt;/code&gt; というように先頭の v を取る、みたいなことも簡単にできるので便利です。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>docker build 内の bundle install を最適化するために guruguru-cache というツールを作った</title>
@@ -2142,56 +2204,6 @@ WHERE _TABLE_SUFFIX &amp;gt;= FORMAT_DATE(&#39;%Y%m%d&#39;, DATE_SUB(CURRENT_DAT
 &lt;p&gt;設定としては以下のようにしておけば &lt;code&gt;_TABLE_SUFFIX&lt;/code&gt; というキーワードをトリガーに補完されます。&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/filtering-tables-in-bigquery-standard-sql/setting.png&#34; width=&#34;658&#34; height=&#34;257&#34;&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>GitHub の Issue を作るコマンド ghissue を作った</title>
-      <link>https://blog.yuyat.jp/post/ghissue-a-command-to-create-github-issues/</link>
-      <pubDate>Sun, 27 Nov 2016 02:43:58 +0900</pubDate>
-      
-      <guid>https://blog.yuyat.jp/post/ghissue-a-command-to-create-github-issues/</guid>
-      <description>
-
-&lt;p&gt;作りました。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/ghissue&#34;&gt;yuya-takeyama/ghissue&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;なぜ作ったか&#34;&gt;なぜ作ったか&lt;/h2&gt;
-
-&lt;p&gt;いろいろな自動化スクリプトを書く中で、&lt;a href=&#34;https://octokit.github.io/&#34;&gt;Octokit&lt;/a&gt; とかで毎回実装するのは面倒だったので、標準入力だけ食わせればいい感じにやってくれるものが欲しいな、と思って作りました。&lt;/p&gt;
-
-&lt;p&gt;タイトル・本文だけを標準出力に書き出すスクリプトだけ書けば、それをパイプで繋げるだけで ghissue が Issue を立ててくれます。&lt;br /&gt;
-タイトル・本文だけうまく組み立てることに集中すればよくなり、テストも楽になるでしょう。&lt;/p&gt;
-
-&lt;p&gt;類似ツールとしては &lt;a href=&#34;https://github.com/stephencelis/ghi&#34;&gt;ghi&lt;/a&gt; というツールがありますが、これは標準入力からタイトル・本文を指定することができないので、他のコマンドと組み合わせて使うのはやや面倒です。&lt;br /&gt;
-また、ghi が Ruby なのに対して、ghissue は Go で実装されていてコンパイル済みのバイナリも GitHub からダウンロードできます。&lt;/p&gt;
-
-&lt;h2 id=&#34;使い方&#34;&gt;使い方&lt;/h2&gt;
-
-&lt;h3 id=&#34;アクセストークンの指定&#34;&gt;アクセストークンの指定&lt;/h3&gt;
-
-&lt;p&gt;GitHub のアクセストークンを &lt;code&gt;GITHUB_ACCESS_TOKEN&lt;/code&gt; という環境変数で指定します。&lt;/p&gt;
-
-&lt;h3 id=&#34;issue-を作る&#34;&gt;Issue を作る&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;$ some_command | ghissue yuya-takeyama/test --labels Bug,Major --assignees yuya-takeyama
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;some_command&lt;/code&gt; は Issue のタイトル・本文を生成するためのコマンドです。&lt;br /&gt;
-1 行目がタイトルになり、残りは本文になります。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;--labels&lt;/code&gt; (&lt;code&gt;-l&lt;/code&gt;) ではラベルを指定します。カンマ区切りで複数指定可能です。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;--assignees&lt;/code&gt; (&lt;code&gt;-a&lt;/code&gt;) では assignee を指定します。これもカンマ区切りで複数指定可能です。&lt;/p&gt;
-
-&lt;h2 id=&#34;その他&#34;&gt;その他&lt;/h2&gt;
-
-&lt;p&gt;Issue を編集する機能・コメントを記入するための機能もあっていいだろうと思うものの、今のところ個人的には必要としてないので、まぁそのうち。&lt;/p&gt;
-
-&lt;p&gt;よければご利用ください。&lt;/p&gt;
 </description>
     </item>
     
