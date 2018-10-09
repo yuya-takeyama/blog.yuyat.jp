@@ -184,10 +184,12 @@ Flags:
 
 &lt;p&gt;キャッシュキーには以下のテンプレート記法が使えます。まんま CircleCI です。&lt;/p&gt;
 
-&lt;p&gt;{{ checksum &amp;ldquo;FILEPATH&amp;rdquo; }}: ファイルの MD5 チェックサム
-{{ arch }}: CPU アーキテクチャ
-{{ epoch }}: UNIX タイムスタンプ
-{{ .Environment.FOO }}: 環境変数&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;{{ checksum &amp;quot;FILEPATH&amp;quot; }}&lt;/code&gt;: ファイルの MD5 チェックサム&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;{{ arch }}&lt;/code&gt;: CPU アーキテクチャ&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;{{ epoch }}&lt;/code&gt;: UNIX タイムスタンプ&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;{{ .Environment.FOO }}&lt;/code&gt;: 環境変数&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;&lt;code&gt;{{ .Branch }}&lt;/code&gt; や &lt;code&gt;{{ .Revision }}&lt;/code&gt; のような CircleCI 固有の環境変数に依存したものはありません。CI 基盤で適宜取得して &lt;code&gt;docker build&lt;/code&gt; 時に &lt;code&gt;--build-arg&lt;/code&gt; として渡す、等する必要があります。&lt;/p&gt;
 

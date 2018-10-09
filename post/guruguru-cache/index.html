@@ -197,10 +197,12 @@ Flags:
 
 <p>キャッシュキーには以下のテンプレート記法が使えます。まんま CircleCI です。</p>
 
-<p>{{ checksum &ldquo;FILEPATH&rdquo; }}: ファイルの MD5 チェックサム
-{{ arch }}: CPU アーキテクチャ
-{{ epoch }}: UNIX タイムスタンプ
-{{ .Environment.FOO }}: 環境変数</p>
+<ul>
+<li><code>{{ checksum &quot;FILEPATH&quot; }}</code>: ファイルの MD5 チェックサム</li>
+<li><code>{{ arch }}</code>: CPU アーキテクチャ</li>
+<li><code>{{ epoch }}</code>: UNIX タイムスタンプ</li>
+<li><code>{{ .Environment.FOO }}</code>: 環境変数</li>
+</ul>
 
 <p><code>{{ .Branch }}</code> や <code>{{ .Revision }}</code> のような CircleCI 固有の環境変数に依存したものはありません。CI 基盤で適宜取得して <code>docker build</code> 時に <code>--build-arg</code> として渡す、等する必要があります。</p>
 
