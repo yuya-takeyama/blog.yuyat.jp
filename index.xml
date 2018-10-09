@@ -6,13 +6,13 @@
     <description>Recent content on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 09 Oct 2018 23:38:11 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 10 Oct 2018 01:30:00 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>CLI ツールを Go で書いて Docker イメージとしてリリースする</title>
       <link>https://blog.yuyat.jp/post/make-tools-in-go-and-release-as-docker-images/</link>
-      <pubDate>Tue, 09 Oct 2018 23:38:11 +0900</pubDate>
+      <pubDate>Wed, 10 Oct 2018 01:30:00 +0900</pubDate>
       
       <guid>https://blog.yuyat.jp/post/make-tools-in-go-and-release-as-docker-images/</guid>
       <description>
