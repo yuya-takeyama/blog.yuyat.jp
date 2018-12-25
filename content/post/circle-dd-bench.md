@@ -87,4 +87,4 @@ CircleCI には Insights という機能があり、Job の実行時間の履歴
 
 [circle-dd-bench](https://github.com/yuya-takeyama/circle-dd-bench) を使うと Fact Based に CircleCI の Workflow を最適化していけるかもしれません。同じような問題を抱えている方は是非使ってみてください。
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/dx6USnGDLwY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/WJBeFy3VcgY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
