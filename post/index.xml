@@ -6,8 +6,103 @@
     <description>Recent content in Posts on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 10 Oct 2018 01:30:00 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 25 Dec 2018 23:30:00 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>CircleCI 上でのコマンドの実行時間を Datadog に残す circle-dd-bench 作った</title>
+      <link>https://blog.yuyat.jp/post/circle-dd-bench/</link>
+      <pubDate>Tue, 25 Dec 2018 23:30:00 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/circle-dd-bench/</guid>
+      <description>
+
+&lt;p&gt;この記事は &lt;a href=&#34;https://qiita.com/advent-calendar/2018/circleci&#34;&gt;CircleCI Advent Calendar 2018&lt;/a&gt; 7 日目の記事です。今日は 12 月 25 日ですが、自分の担当分をサボっていたわけではなく、週末作ったツールについて今朝方ツイートしたところ、CircleCI Japan の中の方に「アドベントカレンダーの7日目が空いてしまったのてすがもしよければ」と誘われて書いている次第です。&lt;/p&gt;
+
+&lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;en&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;CircleCI でコマンドごとの実行時間を Datadog に記録するためのコマンドを作った &lt;a href=&#34;https://t.co/TojoKhOQ1f&#34;&gt;https://t.co/TojoKhOQ1f&lt;/a&gt;&lt;/p&gt;&amp;mdash; Yuya Takeyama (@yuya_takeyama) &lt;a href=&#34;https://twitter.com/yuya_takeyama/status/1077375699969728514?ref_src=twsrc%5Etfw&#34;&gt;December 25, 2018&lt;/a&gt;&lt;/blockquote&gt;
+&lt;script async src=&#34;https://platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;というわけで早速この &lt;a href=&#34;https://github.com/yuya-takeyama/circle-dd-bench&#34;&gt;circle-dd-bench&lt;/a&gt; というツールについて紹介します。&lt;/p&gt;
+
+&lt;h2 id=&#34;これは何&#34;&gt;これは何？&lt;/h2&gt;
+
+&lt;p&gt;これは CircleCI 内でコマンドを実行する際、ラッパーとして使用することで、実行時間を Datadog にメトリックとして記録するというものです。&lt;/p&gt;
+
+&lt;p&gt;例えばこのようなコマンドを実行していた場合&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker build . -t burzum
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このように書き換えると使用できます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;circle-dd-bench --tag command:docker-build --tag product:burzum -- docker build . -t burzum
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;実際には &lt;code&gt;DATADOG_API_KEY&lt;/code&gt; という環境変数に Datadog の API Key を持たせておく必要があります。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;--tag&lt;/code&gt; は必須ではなく、デフォルトで CircleCI の以下のような環境変数がタグとして付与されます。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;CIRCLE_PROJECT_USERNAME&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;CIRCLE_PROJECT_REPONAME&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;CIRCLE_BRANCH&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;CIRCLE_JOB&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;使ってみた&#34;&gt;使ってみた&lt;/h2&gt;
+
+&lt;p&gt;実際にこの &lt;code&gt;circle-dd-bench&lt;/code&gt; を使って記録したメトリックを元に Datadog 上で作成したダッシュボードがこちらです。ここではあらゆるサービスの &lt;code&gt;docker build&lt;/code&gt; の実行時間を計測しています。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/circle-dd-bench/datadog.png&#34; width=&#34;1156&#34; height=&#34;322&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;まだ CircleCI の config に組み込む Pull Request を出して、そのブランチ上で 2-3 回実行しただけで、&lt;code&gt;Dockerfile&lt;/code&gt; の最適化を行なってはいないため、サービスごとの &lt;code&gt;docker build&lt;/code&gt; にかかる時間の変化は誤差のみです。ですが、どのサービスの &lt;code&gt;docker build&lt;/code&gt; に時間がかかっているかは一目瞭然なので、それから最適化に着手していけばいいことになります。&lt;/p&gt;
+
+&lt;h2 id=&#34;モチベーション&#34;&gt;モチベーション&lt;/h2&gt;
+
+&lt;p&gt;一言でいうと、CircleCI の実行時間を最適化するにあたって、各コマンド単位でどれぐらい時間がかかっているのかを定点観測しておきたかったためです。&lt;/p&gt;
+
+&lt;p&gt;私が社員として所属する Quipper ではマイクロサービス化を進めるにあたって、かつては 1 サービス 1 リポジトリだったものを、一つの Monorepo に集約しています。背景については以下の記事やスライドをご覧ください。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://quipper.hatenablog.com/entry/future-with-kubernetes&#34;&gt;Kubernetes導入で実現したい世界とその先にあるMicroservices&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://speakerdeck.com/yuyatakeyama/how-quipper-works-with-circleci&#34;&gt;How Quipper Works with CircleCI&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;特にみていただきたいのは後者のスライドに含まれる以下の &lt;a href=&#34;https://speakerdeck.com/yuyatakeyama/how-quipper-works-with-circleci?slide=14&#34;&gt;CircleCI の Workflow のスクリーンショット&lt;/a&gt; です。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/circle-dd-bench/workflow.png&#34; width=&#34;1126&#34; height=&#34;655&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;たくさんのサービスの Docker Build やユニットテストが並列して実行されるため、このスクリーンショットを作成した時点で 83 もの Job が Workflow 内に含まれます (その後もう少し増えています)&lt;/p&gt;
+
+&lt;p&gt;この図を踏まえてもう少し背景を説明すると、以下のような理由が挙げられます。&lt;/p&gt;
+
+&lt;h3 id=&#34;circleci-の-insights-が-workflow-では役に立たない&#34;&gt;CircleCI の Insights が Workflow では役に立たない&lt;/h3&gt;
+
+&lt;p&gt;CircleCI には Insights という機能があり、Job の実行時間の履歴をグラフとしてビジュアライズする機能があります。&lt;/p&gt;
+
+&lt;p&gt;これは CircleCI 1.0 時代には大変有用でしたが、CircleCI 2.0 の Workflow を使っている場合はそうではありません。質の異なる複数の Job が一様にグラフ化されるため、一見して役に立てるのはこんなんです。&lt;/p&gt;
+
+&lt;p&gt;なので別のアプローチでビジュアライズを試みる必要があります。&lt;/p&gt;
+
+&lt;h3 id=&#34;同じコマンドでも実行時間にばらつきがある&#34;&gt;同じコマンドでも実行時間にばらつきがある&lt;/h3&gt;
+
+&lt;p&gt;ここでは特に &lt;code&gt;docker build&lt;/code&gt; を念頭におきますが、&lt;code&gt;docker build&lt;/code&gt; はキャッシュの有無であったり、キャッシュがあるにしてもどの layer までのキャッシュが使えるかといった場合によって実行時間はまちまちです。最適化の結果ベストケースでの実行時間は速くなっても、キャッシュが効く確率が低く、全体としての実行時間は遅くなる、ということもあるでしょう。&lt;/p&gt;
+
+&lt;p&gt;そういった状況を正しく判断できるようにするには、継続的に実行時間を残しておき、ビジュアライズしておくと Fact Based に判断しやすいでしょう。&lt;/p&gt;
+
+&lt;h3 id=&#34;job-単位での計測ではうまくいかないケースに対応したい&#34;&gt;Job 単位での計測ではうまくいかないケースに対応したい&lt;/h3&gt;
+
+&lt;p&gt;先に掲載した Workflow は、実際は変更を検知したサービスに対してのみユニットテストや &lt;code&gt;docker build&lt;/code&gt; の実行を行なっています。変更がなかった場合は最後のビルドを使いまわしています。&lt;/p&gt;
+
+&lt;p&gt;その場合、&lt;code&gt;docker build&lt;/code&gt; を実行したら数分かかるのに、スキップした場合は数秒で終わったりと、またばらつきが生まれてしまいます。なので、単純に Job 単位での実行時間を記録するのは適切でなくなります。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;circle-dd-bench&lt;/code&gt; を使ったアプローチでは、&lt;code&gt;docker build&lt;/code&gt; を実行した時のみ計測・記録が行われるので、そういったばらつきを無視することができます。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/yuya-takeyama/circle-dd-bench&#34;&gt;circle-dd-bench&lt;/a&gt; を使うと Fact Based に CircleCI の Workflow を最適化していけるかもしれません。同じような問題を抱えている方は是非使ってみてください。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>CLI ツールを Go で書いて Docker イメージとしてリリースする</title>
@@ -2163,49 +2258,6 @@ foo2.bar
 &lt;p&gt;このように最初の &lt;code&gt;foo&lt;/code&gt; では &lt;code&gt;#bar&lt;/code&gt; を呼び出すことはできましたが、別オブジェクトである &lt;code&gt;foo2&lt;/code&gt; に対しては呼び出せないので、&lt;code&gt;Foo&lt;/code&gt; クラスのインスタンスメソッドではなく &lt;code&gt;foo&lt;/code&gt; の特異メソッドであることがわかります。&lt;/p&gt;
 
 &lt;h2 id=&#34;dsl-に応用する&#34;&gt;DSL に応用する&lt;/h2&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>BigQuery の標準 SQL モードで日付テーブルのフィルタリング、または Re:dash の Query Snippets を活用する話</title>
-      <link>https://blog.yuyat.jp/post/filtering-tables-in-bigquery-standard-sql/</link>
-      <pubDate>Sun, 04 Dec 2016 23:47:21 +0900</pubDate>
-      
-      <guid>https://blog.yuyat.jp/post/filtering-tables-in-bigquery-standard-sql/</guid>
-      <description>&lt;p&gt;要は Legacy SQL モード で &lt;code&gt;FROM (TABLE_DATE_RANGE(dataset.table_, TIMESTAMP(&#39;2016-01-01&#39;), TIMESTAMP(&#39;2016-01-14&#39;)))&lt;/code&gt; とか書いていたのを標準 SQL でどう書くか、という話です。&lt;br /&gt;
-すぐ忘れるのでメモ。&lt;/p&gt;
-
-&lt;p&gt;テーブルは以下のような名前になっている前提です。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;table_20160101&lt;/li&gt;
-&lt;li&gt;table_20160102&lt;/li&gt;
-&lt;li&gt;table_20160103&lt;/li&gt;
-&lt;li&gt;&amp;hellip;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;これで例えば直近 14 日分のテーブルを対象にしたい場合はこんな感じ。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;SELECT time
-FROM `dataset.table_*`
-WHERE _TABLE_SUFFIX &amp;gt;= FORMAT_DATE(&#39;%Y%m%d&#39;, DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;テーブル名はワイルドカードで指定しつつ、&lt;code&gt;_TABLE_SUFFIX&lt;/code&gt; という擬似カラムに対して日付の条件を指定する。&lt;/p&gt;
-
-&lt;p&gt;詳細は以下の公式ドキュメントを参考にしましょう。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://cloud.google.com/bigquery/docs/wildcard-tables#wildcard_table_syntax&#34;&gt;Wildcard table syntax&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;よく使うパターンですが、覚えていられない、という人で普段 &lt;a href=&#34;https://redash.io/&#34;&gt;Re:dash&lt;/a&gt; でクエリを書いている、という人は &lt;a href=&#34;https://github.com/getredash/redash/blob/master/CHANGELOG.md#v0120---2016-11-20&#34;&gt;v0.12.0&lt;/a&gt; で追加された Query Snippets という機能を使うと、こんな感じにキーワード補完されるようになって便利です。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/filtering-tables-in-bigquery-standard-sql/query_snippets.gif&#34; alt=&#34;query snippets&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;設定としては以下のようにしておけば &lt;code&gt;_TABLE_SUFFIX&lt;/code&gt; というキーワードをトリガーに補完されます。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/filtering-tables-in-bigquery-standard-sql/setting.png&#34; width=&#34;658&#34; height=&#34;257&#34;&gt;&lt;/p&gt;
 </description>
     </item>
     

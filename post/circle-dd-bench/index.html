@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-3233912168536735",
+        enable_page_level_ads: true
+      });
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://blog.yuyat.jp/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
+    <link rel="canonical" href="https://blog.yuyat.jp/post/circle-dd-bench/">
+    <title>CircleCI 上でのコマンドの実行時間を Datadog に残す circle-dd-bench 作った | Born Too Late</title>
+    
+
+    <meta property="fb:admins" content="100000987494966" />
+<meta property="fb:app_id" content="285547814816502" />
+<meta property="og:title" content="CircleCI 上でのコマンドの実行時間を Datadog に残す circle-dd-bench 作った" />
+<meta property="og:description" content="この記事は CircleCI Advent Calendar 2018 7 日目の記事です。今日は 12 月 25 日ですが、自分の担当分をサボっていたわけではなく、週末作ったツールについて今朝方ツイートしたところ、CircleCI Japan の中の方に「アドベントカレンダーの7日目が空いてしまったのてすがもしよければ」と誘われて書いている次第です。
+
+CircleCI でコマンドごとの実行時間を Datadog に記録するためのコマンドを作った https://t.co/TojoKhOQ1f&mdash; Yuya Takeyama (@yuya_takeyama) December 25, 2018
+
+
+というわけで早速この circle-dd-bench というツールについて紹介します。
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.yuyat.jp/post/circle-dd-bench/" />
+
+  
+	  <meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg" />
+  
+
+
+  <meta property="og:updated_time" content="2018-12-25T23:30:00&#43;09:00"/>
+
+
+
+
+    <meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@yuya_takeyama">
+<meta name="twitter:creator" content="@yuya_takeyama">
+
+    
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="https://blog.yuyat.jp" class="navbar-brand">Born Too Late</a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="https://blog.yuyat.jp/post/">Archive</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">CircleCI 上でのコマンドの実行時間を Datadog に残す circle-dd-bench 作った</h1>
+      <p class="text-muted">Dec 25, 2018</p>
+
+<div>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fcircle-dd-bench%2f&amp;text=CircleCI%20%e4%b8%8a%e3%81%a7%e3%81%ae%e3%82%b3%e3%83%9e%e3%83%b3%e3%83%89%e3%81%ae%e5%ae%9f%e8%a1%8c%e6%99%82%e9%96%93%e3%82%92%20Datadog%20%e3%81%ab%e6%ae%8b%e3%81%99%20circle-dd-bench%20%e4%bd%9c%e3%81%a3%e3%81%9f&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fcircle-dd-bench%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fcircle-dd-bench%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
+</div>
+
+    </div>
+    <div class="post-content">
+      
+
+<p>この記事は <a href="https://qiita.com/advent-calendar/2018/circleci">CircleCI Advent Calendar 2018</a> 7 日目の記事です。今日は 12 月 25 日ですが、自分の担当分をサボっていたわけではなく、週末作ったツールについて今朝方ツイートしたところ、CircleCI Japan の中の方に「アドベントカレンダーの7日目が空いてしまったのてすがもしよければ」と誘われて書いている次第です。</p>
+
+<p><blockquote class="twitter-tweet" data-lang="en"><p lang="ja" dir="ltr">CircleCI でコマンドごとの実行時間を Datadog に記録するためのコマンドを作った <a href="https://t.co/TojoKhOQ1f">https://t.co/TojoKhOQ1f</a></p>&mdash; Yuya Takeyama (@yuya_takeyama) <a href="https://twitter.com/yuya_takeyama/status/1077375699969728514?ref_src=twsrc%5Etfw">December 25, 2018</a></blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<p>というわけで早速この <a href="https://github.com/yuya-takeyama/circle-dd-bench">circle-dd-bench</a> というツールについて紹介します。</p>
+
+<h2 id="これは何">これは何？</h2>
+
+<p>これは CircleCI 内でコマンドを実行する際、ラッパーとして使用することで、実行時間を Datadog にメトリックとして記録するというものです。</p>
+
+<p>例えばこのようなコマンドを実行していた場合</p>
+
+<pre><code>docker build . -t burzum
+</code></pre>
+
+<p>このように書き換えると使用できます。</p>
+
+<pre><code>circle-dd-bench --tag command:docker-build --tag product:burzum -- docker build . -t burzum
+</code></pre>
+
+<p>実際には <code>DATADOG_API_KEY</code> という環境変数に Datadog の API Key を持たせておく必要があります。</p>
+
+<p><code>--tag</code> は必須ではなく、デフォルトで CircleCI の以下のような環境変数がタグとして付与されます。</p>
+
+<ul>
+<li><code>CIRCLE_PROJECT_USERNAME</code></li>
+<li><code>CIRCLE_PROJECT_REPONAME</code></li>
+<li><code>CIRCLE_BRANCH</code></li>
+<li><code>CIRCLE_JOB</code></li>
+</ul>
+
+<h2 id="使ってみた">使ってみた</h2>
+
+<p>実際にこの <code>circle-dd-bench</code> を使って記録したメトリックを元に Datadog 上で作成したダッシュボードがこちらです。ここではあらゆるサービスの <code>docker build</code> の実行時間を計測しています。</p>
+
+<p><img src="/images/circle-dd-bench/datadog.png" width="1156" height="322"></p>
+
+<p>まだ CircleCI の config に組み込む Pull Request を出して、そのブランチ上で 2-3 回実行しただけで、<code>Dockerfile</code> の最適化を行なってはいないため、サービスごとの <code>docker build</code> にかかる時間の変化は誤差のみです。ですが、どのサービスの <code>docker build</code> に時間がかかっているかは一目瞭然なので、それから最適化に着手していけばいいことになります。</p>
+
+<h2 id="モチベーション">モチベーション</h2>
+
+<p>一言でいうと、CircleCI の実行時間を最適化するにあたって、各コマンド単位でどれぐらい時間がかかっているのかを定点観測しておきたかったためです。</p>
+
+<p>私が社員として所属する Quipper ではマイクロサービス化を進めるにあたって、かつては 1 サービス 1 リポジトリだったものを、一つの Monorepo に集約しています。背景については以下の記事やスライドをご覧ください。</p>
+
+<ul>
+<li><a href="https://quipper.hatenablog.com/entry/future-with-kubernetes">Kubernetes導入で実現したい世界とその先にあるMicroservices</a></li>
+<li><a href="https://speakerdeck.com/yuyatakeyama/how-quipper-works-with-circleci">How Quipper Works with CircleCI</a></li>
+</ul>
+
+<p>特にみていただきたいのは後者のスライドに含まれる以下の <a href="https://speakerdeck.com/yuyatakeyama/how-quipper-works-with-circleci?slide=14">CircleCI の Workflow のスクリーンショット</a> です。</p>
+
+<p><img src="/images/circle-dd-bench/workflow.png" width="1126" height="655"></p>
+
+<p>たくさんのサービスの Docker Build やユニットテストが並列して実行されるため、このスクリーンショットを作成した時点で 83 もの Job が Workflow 内に含まれます (その後もう少し増えています)</p>
+
+<p>この図を踏まえてもう少し背景を説明すると、以下のような理由が挙げられます。</p>
+
+<h3 id="circleci-の-insights-が-workflow-では役に立たない">CircleCI の Insights が Workflow では役に立たない</h3>
+
+<p>CircleCI には Insights という機能があり、Job の実行時間の履歴をグラフとしてビジュアライズする機能があります。</p>
+
+<p>これは CircleCI 1.0 時代には大変有用でしたが、CircleCI 2.0 の Workflow を使っている場合はそうではありません。質の異なる複数の Job が一様にグラフ化されるため、一見して役に立てるのはこんなんです。</p>
+
+<p>なので別のアプローチでビジュアライズを試みる必要があります。</p>
+
+<h3 id="同じコマンドでも実行時間にばらつきがある">同じコマンドでも実行時間にばらつきがある</h3>
+
+<p>ここでは特に <code>docker build</code> を念頭におきますが、<code>docker build</code> はキャッシュの有無であったり、キャッシュがあるにしてもどの layer までのキャッシュが使えるかといった場合によって実行時間はまちまちです。最適化の結果ベストケースでの実行時間は速くなっても、キャッシュが効く確率が低く、全体としての実行時間は遅くなる、ということもあるでしょう。</p>
+
+<p>そういった状況を正しく判断できるようにするには、継続的に実行時間を残しておき、ビジュアライズしておくと Fact Based に判断しやすいでしょう。</p>
+
+<h3 id="job-単位での計測ではうまくいかないケースに対応したい">Job 単位での計測ではうまくいかないケースに対応したい</h3>
+
+<p>先に掲載した Workflow は、実際は変更を検知したサービスに対してのみユニットテストや <code>docker build</code> の実行を行なっています。変更がなかった場合は最後のビルドを使いまわしています。</p>
+
+<p>その場合、<code>docker build</code> を実行したら数分かかるのに、スキップした場合は数秒で終わったりと、またばらつきが生まれてしまいます。なので、単純に Job 単位での実行時間を記録するのは適切でなくなります。</p>
+
+<p><code>circle-dd-bench</code> を使ったアプローチでは、<code>docker build</code> を実行した時のみ計測・記録が行われるので、そういったばらつきを無視することができます。</p>
+
+<h2 id="まとめ">まとめ</h2>
+
+<p><a href="https://github.com/yuya-takeyama/circle-dd-bench">circle-dd-bench</a> を使うと Fact Based に CircleCI の Workflow を最適化していけるかもしれません。同じような問題を抱えている方は是非使ってみてください。</p>
+
+    </div>
+    <div class="post-footer">
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 27 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4">
+    
+
+<h3>
+  Author
+</h3>
+
+<p>
+  <div class="media">
+    
+    <img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class="pull-left">
+    
+    
+    <div class="media-body">
+      
+        <h4 class="media-heading"><a href="https://yuyat.jp">Yuya Takeyama</a></h4>
+      
+    </div>
+    
+  </div>
+</p>
+
+
+
+<p><a href="https://twitter.com/yuya_takeyama" class="twitter-follow-button" data-show-screen-name="false" data-show-count="true" data-dnt="true" data-size="large">Follow @yuya_takeyama</a></p>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3233912168536735"
+     data-ad-slot="3268217607"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          <footer>
+
+&copy; 2015.
+Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+<a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
+
+</footer>
+
+        </div>
+      </div>
+    </div>
+    <script src="https://blog.yuyat.jp/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12392004-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+</html>
+
