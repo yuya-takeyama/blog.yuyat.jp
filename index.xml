@@ -21,15 +21,15 @@
 
 &lt;h2 id=&#34;何故やったか&#34;&gt;何故やったか&lt;/h2&gt;
 
-&lt;p&gt;4 月に SRE チームに異動してから 8 ヶ月ほど経ち、その感 Kubernetes クラスタの構築・運用・アプリケーションの移行などあらゆることをして来ましたが、未だに Kubernetes わかってる感が薄いので、もっと細かいところまで理解しようというモチベーションでやってみました。&lt;/p&gt;
+&lt;p&gt;4 月に SRE チームに異動してから 8 ヶ月ほど経ち、その間 Kubernetes クラスタの構築・運用・アプリケーションの移行などあらゆることをして来たが、未だに Kubernetes わかってる感が薄いので、もっと細かいところまで理解しようというモチベーションでやってみた。&lt;/p&gt;
 
 &lt;h2 id=&#34;手順&#34;&gt;手順&lt;/h2&gt;
 
-&lt;p&gt;ほぼ 100% &lt;a href=&#34;https://github.com/kelseyhightower/kubernetes-the-hard-way&#34;&gt;Kubernetes The Hard Way&lt;/a&gt; に書いてある手順通りです。GCP を使って、複数のサーバでの作業が必要な時は tmux の &lt;code&gt;set synchronize-panes on&lt;/code&gt; を使って (実は初めて使った)。&lt;/p&gt;
+&lt;p&gt;ほぼ 100% &lt;a href=&#34;https://github.com/kelseyhightower/kubernetes-the-hard-way&#34;&gt;Kubernetes The Hard Way&lt;/a&gt; に書いてある手順通り。GCP を使って、複数のサーバでの作業が必要な時は tmux の &lt;code&gt;set synchronize-panes on&lt;/code&gt; を使って (実は初めて使った)。&lt;/p&gt;
 
 &lt;h2 id=&#34;所要時間&#34;&gt;所要時間&lt;/h2&gt;
 
-&lt;p&gt;合計 3 時間弱でした。思ったほど時間がかからなかったので、別に普通の土日でもできますね。所要時間は個人 Slack でスレッド内に進捗や気になった点をメモしながらだったので、それで計測しています。&lt;/p&gt;
+&lt;p&gt;合計 3 時間弱。思ったほど時間がかからなかったので、別に普通の土日でも問題なくできる量。所要時間は個人 Slack でスレッド内に進捗や気になった点をメモしながらだったので、それで計測。&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;Prerequisites ~ Provisioning a CA and Generating TLS Certificates
@@ -52,7 +52,7 @@
 &lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;なお、個人の GCP アカウントは以前から持っていたので、そこの時間は含まれません。作業に使用する tmux も普段から使っており、そのインストール時間も含まれません。&lt;/p&gt;
+&lt;p&gt;なお、個人の GCP アカウントは以前から持っていたので、そこの時間は含まれない。作業に使用する tmux も普段から使っており、そのインストール時間も含まれない。&lt;/p&gt;
 
 &lt;h2 id=&#34;感想&#34;&gt;感想&lt;/h2&gt;
 
