@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-3233912168536735",
+        enable_page_level_ads: true
+      });
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://blog.yuyat.jp/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
+    <link rel="canonical" href="https://blog.yuyat.jp/post/kubernetes-the-hard-way/">
+    <title>Kubernetes The Hard Way をやってみた | Born Too Late</title>
+    
+
+    <meta property="fb:admins" content="100000987494966" />
+<meta property="fb:app_id" content="285547814816502" />
+<meta property="og:title" content="Kubernetes The Hard Way をやってみた" />
+<meta property="og:description" content="冬休みに入ったので、前からやってみたいと思っていた Kubernetes The Hard Way をやってみました。という日記です。
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.yuyat.jp/post/kubernetes-the-hard-way/" />
+
+  
+	  <meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg" />
+  
+
+
+  <meta property="og:updated_time" content="2018-12-30T01:25:45&#43;09:00"/>
+
+
+
+
+    <meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@yuya_takeyama">
+<meta name="twitter:creator" content="@yuya_takeyama">
+
+    
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="https://blog.yuyat.jp" class="navbar-brand">Born Too Late</a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="https://blog.yuyat.jp/post/">Archive</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">Kubernetes The Hard Way をやってみた</h1>
+      <p class="text-muted">Dec 30, 2018</p>
+
+<div>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fkubernetes-the-hard-way%2f&amp;text=Kubernetes%20The%20Hard%20Way%20%e3%82%92%e3%82%84%e3%81%a3%e3%81%a6%e3%81%bf%e3%81%9f&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fkubernetes-the-hard-way%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fkubernetes-the-hard-way%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
+</div>
+
+    </div>
+    <div class="post-content">
+      
+
+<p>冬休みに入ったので、前からやってみたいと思っていた <a href="https://github.com/kelseyhightower/kubernetes-the-hard-way">Kubernetes The Hard Way</a> をやってみました。という日記です。</p>
+
+<h2 id="何故やったか">何故やったか</h2>
+
+<p>4 月に SRE チームに異動してから 8 ヶ月ほど経ち、その感 Kubernetes クラスタの構築・運用・アプリケーションの移行などあらゆることをして来ましたが、未だに Kubernetes わかってる感が薄いので、もっと細かいところまで理解しようというモチベーションでやってみました。</p>
+
+<h2 id="手順">手順</h2>
+
+<p>ほぼ 100% <a href="https://github.com/kelseyhightower/kubernetes-the-hard-way">Kubernetes The Hard Way</a> に書いてある手順通りです。GCP を使って、複数のサーバでの作業が必要な時は tmux の <code>set synchronize-panes on</code> を使って (実は初めて使った)。</p>
+
+<h2 id="所要時間">所要時間</h2>
+
+<p>合計 3 時間弱でした。思ったほど時間がかからなかったので、別に普通の土日でもできますね。所要時間は個人 Slack でスレッド内に進捗や気になった点をメモしながらだったので、それで計測しています。</p>
+
+<ul>
+<li>Prerequisites ~ Provisioning a CA and Generating TLS Certificates
+
+<ul>
+<li>55 分</li>
+<li>Provisioning a CA and Generating TLS Certificates はひたすらいろんな鍵を生成するばかりで退屈だった</li>
+</ul></li>
+<li>Generating Kubernetes Configuration Files for Authentication ~ Bootstrapping the Kubernetes Control Plane
+
+<ul>
+<li>50 分</li>
+<li>Bootstrapping the Kubernetes Control Plane は全体で一番時間がかかったように思う</li>
+</ul></li>
+<li>Bootstrapping the Kubernetes Worker Nodes ~ Cleaning Up
+
+<ul>
+<li>55 分</li>
+<li>実際に Nginx が動いたりするとそこそこ嬉しかった</li>
+</ul></li>
+</ul>
+
+<p>なお、個人の GCP アカウントは以前から持っていたので、そこの時間は含まれません。作業に使用する tmux も普段から使っており、そのインストール時間も含まれません。</p>
+
+<h2 id="感想">感想</h2>
+
+<ul>
+<li>思ったほど Hard ではない
+
+<ul>
+<li>基本的にはコマンドをコピペするだけで動くので、ミスしなければ誰がやっても普通に動くと思う</li>
+<li>むしろ無意識的にやってもできそうだが、それだとさすがに意味がないので、コマンドだったり設定ファイルの中身はじっくり眺めながら進めた方が良い</li>
+</ul></li>
+<li>対象者は Kubernetes の運用やその上での開発をある程度やっている人か
+
+<ul>
+<li>コピペだけでもできるので、Kubernetes を全く知らない人でもできるとは思いますが、さすがにそれで何かを得るのは難しいのではと思った</li>
+</ul></li>
+<li>これをやっただけで「これ」と言える何かを得るのは簡単ではないかも
+
+<ul>
+<li>全体的なイメージはなんとなく持つことができる</li>
+<li>やってみても、Kubernetes のセットアップ方法は様々なので、どこまでが普遍的な知識なのはわかりづらい</li>
+<li>今回は kube-proxy を systemd で起動したけど、普段仕事で使っているクラスタでは DaemonSet で起動してるはずで、それによって何が違ってくるんだろう、とか</li>
+<li>疑問を元に何かを調べるためのきっかけとしては良いかもしれない</li>
+</ul></li>
+</ul>
+
+    </div>
+    <div class="post-footer">
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 28 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4">
+    
+
+<h3>
+  Author
+</h3>
+
+<p>
+  <div class="media">
+    
+    <img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class="pull-left">
+    
+    
+    <div class="media-body">
+      
+        <h4 class="media-heading"><a href="https://yuyat.jp">Yuya Takeyama</a></h4>
+      
+    </div>
+    
+  </div>
+</p>
+
+
+
+<p><a href="https://twitter.com/yuya_takeyama" class="twitter-follow-button" data-show-screen-name="false" data-show-count="true" data-dnt="true" data-size="large">Follow @yuya_takeyama</a></p>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3233912168536735"
+     data-ad-slot="3268217607"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          <footer>
+
+&copy; 2015.
+Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+<a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
+
+</footer>
+
+        </div>
+      </div>
+    </div>
+    <script src="https://blog.yuyat.jp/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12392004-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+</html>
+
