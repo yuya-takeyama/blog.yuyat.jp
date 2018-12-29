@@ -76,6 +76,11 @@
 &lt;li&gt;今回は kube-proxy を systemd で起動したけど、普段仕事で使っているクラスタでは DaemonSet で起動してるはずで、それによって何が違ってくるんだろう、とか&lt;/li&gt;
 &lt;li&gt;疑問を元に何かを調べるためのきっかけとしては良いかもしれない&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;あらかじめ作業ディレクトリを作って、その中で作業を行うのが良い
+
+&lt;ul&gt;
+&lt;li&gt;全て終えた時点で、50 近いファイルが作成される&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </description>
     </item>
