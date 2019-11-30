@@ -6,8 +6,146 @@
     <description>Recent content in Posts on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 30 Dec 2018 01:25:45 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 01 Dec 2019 00:22:00 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>SRE チームで Engineering Manager になって二ヶ月経っての心境など</title>
+      <link>https://blog.yuyat.jp/post/becoming-an-engineering-manager/</link>
+      <pubDate>Sun, 01 Dec 2019 00:22:00 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/becoming-an-engineering-manager/</guid>
+      <description>
+
+&lt;p&gt;この記事は &lt;a href=&#34;https://qiita.com/advent-calendar/2019/em2&#34;&gt;Engineering Manager vol.2 Advent Calendar 2019&lt;/a&gt; の 1 日目の記事です。&lt;/p&gt;
+
+&lt;p&gt;ふわっとしたタイトルのゆる目の記事ですが、Engineering Manager としては新米ですし、Advent Calendar 的にもまだ初日なのでこれぐらいで許してください。&lt;/p&gt;
+
+&lt;p&gt;まぁ一言でいうと「Engineering Manager は決して楽ではないけど楽しいぞ！」という感じです。&lt;/p&gt;
+
+&lt;h2 id=&#34;engineering-manager-として置かれている状況&#34;&gt;Engineering Manager として置かれている状況&lt;/h2&gt;
+
+&lt;p&gt;前提としてこんな感じですよ、というのを軽く書いておきますがここは読み飛ばしてもらっても大丈夫です。&lt;/p&gt;
+
+&lt;h3 id=&#34;会社&#34;&gt;会社&lt;/h3&gt;
+
+&lt;p&gt;イギリスでの創業から約 9 年、日本の大企業に買収されてから 4 年半ほど経ったベンチャー企業です。&lt;/p&gt;
+
+&lt;p&gt;ビジネスは日本だけでなく東南アジアや南米にも展開しているグローバル企業で、それぞれの地域に開発者、プロダクトマネージャー、デザイナー、BizDev、カスタマーサポート等がいて、基本的にはそれぞれの国ごとのビジネスに従事しています。&lt;/p&gt;
+
+&lt;h3 id=&#34;チーム&#34;&gt;チーム&lt;/h3&gt;
+
+&lt;p&gt;僕が Engineering Manager をやっているのは Site Reliability Engineering (SRE) チームです。他の職種が基本的に国ごとのチームなのに対し、SRE チームは横断的に仕事をしています。 (横断的に仕事をしているのは SRE だけでもないですが)&lt;/p&gt;
+
+&lt;p&gt;メンバー 5 人 + Engineering Manager で合計 6 名というチームで、メンバーには自分よりキャリアの長いベテランもいれば、海外から移住にしてきて基本的に英語で会話しているメンバーがいたりと、属性だけ取り出してみれば新人マネージャーにはちょっと難易度高めにも見えるかもしれません。 (あくまでも属性だけ切り取れば。実際には以前からの関係性もあるし、自分ができない部分は助けてもらうことで普通に楽しくやってます。それでも自分より経験・スキルのある人に対してどうマネージャーとしてのバリューを出していくかとか、母国語でない言語でどう正確にコミュニケーションを取るか、という難しさについては無いと言ったら嘘になるかなという感じ)&lt;/p&gt;
+
+&lt;p&gt;あとは自分が Engineering Manager になった日と同時に新入社員が 2 人同時に入ったというのもなかなかチャレンジングでした。このことについてはあとでオンボーディングも絡めて書きます。&lt;/p&gt;
+
+&lt;p&gt;一方で別オフィスにメンバーがいるわけではないので、地理的・タイムゾーン的に離れたメンバーをマネージすることはないですが、そっちのメンバーも採用していきたいなと個人的には考えたりもしています。&lt;/p&gt;
+
+&lt;h3 id=&#34;自分&#34;&gt;自分&lt;/h3&gt;
+
+&lt;p&gt;そもそも元は Web Developer で、SRE になったのは 2018 年の 4 月なので、SRE 歴約 1 年半。IT 系のビジネスを行う企業に入ってからは約 10 年ほど、今の会社は 2 社目で丸 4 年ほど在籍しています。&lt;/p&gt;
+
+&lt;p&gt;Web Developer として Tech Lead 的なことはやってきていたのですが、マネージャーというのは完全に初めてです。評価とか怖い！&lt;/p&gt;
+
+&lt;p&gt;また、他のメンバーは入社から 2 年未満という人が多い中で、入社から 4 年というのは会社全体で見てもかなりの古株になってしまいました。最近はそんなに入れ替わりが激しいわけでもないですが、やっぱり買収という形で exit を迎えると創業期から関わっていたメンバーとかは卒業していったりもあるので、そんなもんでしょう。というわけで会社のビジネスやプロダクト、そしてどんなチームでどんな人たちがどんな仕事をしているか、という情報については他のメンバーよりもかなりよく知っているつもりです。&lt;/p&gt;
+
+&lt;h2 id=&#34;engineering-manager-として大変なこと&#34;&gt;Engineering Manager として大変なこと&lt;/h2&gt;
+
+&lt;p&gt;前置きが長くなりましたがここからようやく本題です。&lt;/p&gt;
+
+&lt;p&gt;Engineering Manager をやっている中で自分が大変だけど重要と思っている事柄についてとりとめなく書いていきます。&lt;/p&gt;
+
+&lt;h3 id=&#34;結構技術のことを考えないといけない&#34;&gt;結構技術のことを考えないといけない&lt;/h3&gt;
+
+&lt;p&gt;&amp;ldquo;Engineering&amp;rdquo; Manager なんだから当たり前だろ！という声も聞こえてきそうですが、やはりいちメンバーに比べると技術からは遠ざかり、最新のニュースへのアンテナを高くする重要性も相対的には下がるのでは、とか思ったりもしていました。&lt;/p&gt;
+
+&lt;p&gt;もちろん、Engineering Manager になるには前提としてある程度高い技術力が求められますが、それでも業務的にはピープルマネジメントみたいなところに時間を使う必要もあるわけなので。&lt;/p&gt;
+
+&lt;p&gt;が、これはむしろ逆なのでは、というのが現時点での感想です。&lt;/p&gt;
+
+&lt;p&gt;SRE チームとしての戦略を考える上では会社、周辺のチーム、SRE チーム自身が抱えている問題を正しく理解する必要があり、これは決して技術だけではないですが、深い洞察が求められます。&lt;/p&gt;
+
+&lt;p&gt;あとこれは SRE という職種の性質上によるところもあるのかもしれませんが、そういった問題を基本的には技術の力で解決していく必要があります。&lt;/p&gt;
+
+&lt;p&gt;そういった問題を考える上でありがたいのは先人の知恵です。&lt;a href=&#34;https://www.weblio.jp/content/%E8%AA%B2%E9%A1%8C%E5%85%88%E9%80%B2%E5%9B%BD&#34;&gt;課題先進国&lt;/a&gt;という言葉がありますが、それと同じように、Google とか Netflix みたいな先進的な企業は他の企業では直面しない先進的な課題にいち早く直面して、解決していく必要があります。例えば Google が Site Reliability Engineering という新たな方法論を生み出したのにはそういう背景があったのだなと、Engineering Manager になった今は前よりも強く思えますし、DevOps やクラウドの重要性が高まっている理由についても前より想像を働かせやすくなったと感じます。&lt;/p&gt;
+
+&lt;p&gt;一方でそういった課題が今自分がいる状況にそのまま当てはめられるのか、というとそうとは限りません。今この瞬間がそうでないとして、将来問題になる可能性もならない可能性もあります。そういう状態でどういう技術や方法論を選択するか、またはしないのかという判断にはやはり高い技術力や知識が求められます (それ以外にもいっぱい求められると思いますけど)。&lt;/p&gt;
+
+&lt;h3 id=&#34;management-と-lead-の不可分性&#34;&gt;Management と Lead の不可分性&lt;/h3&gt;
+
+&lt;p&gt;今いる会社では、エンジニアのキャリアパスとして Lead Engineer, Engineering Manager, そして技術スペシャリストとしての Senior Engineer という 3 つのパスが用意されています。Senior はいいとして、Lead と Management って結構不可分では? というのが最近の悩みです。&lt;/p&gt;
+
+&lt;p&gt;特に目標設定やその振り返り、日々の 1 on 1 というのは基本的に Manager としての仕事だと思ってますが、それらを高いレベルでやるには Lead としての能力が重要なのでは、と感じています。自分としては元々 Lead をやっていたわけなので、ピープルマネジメントに比べたらそちらの方がまだ得意だと思えますが、とはいえピープルマネジメントもしながらそういった動き方を求められるのは結構タフじゃない? とも思うわけです。&lt;/p&gt;
+
+&lt;p&gt;これは単に自分の Engineering Manager としての経験値が足りてなかったり、それぞれの役割の違いに対する理解が足りてないからそう思えるのかもしれません。また、チームが成熟して、それぞれの分野においてそれぞれのメンバーがリーダーシップを発揮する範囲が増えていけば、自分が Lead として振る舞う重要性は下がってくるのかもしれません。が、自分の中でまだ明確な方向性が見えていないので、これは先人の意見を是非とも聞いてみたいところです。&lt;/p&gt;
+
+&lt;h3 id=&#34;メンバーとの距離感を近く保つことの重要性&#34;&gt;メンバーとの距離感を近く保つことの重要性&lt;/h3&gt;
+
+&lt;p&gt;僕の Engineering Manager としての前任者は会社の CTO で、CTO との兼任で Engineering Manager をやっていたことになります。僕が SRE チームに異動する前は専任の Engineering Manager の人が別にいましたが、その人が退職した後に Engineering Manager をやりたい人がいなかったので、CTO が兼任であとをつないだ形です。&lt;/p&gt;
+
+&lt;p&gt;マネジメントの経験で言うと大きな差がある前任者と比べて自分が唯一明らかに勝っているところがあるとすれば、地理的な意味での距離感です。というのも CTO は普段イギリスに住んでいるので、タイムゾーンは 9 時間ずれているし、出張でちょくちょく来ていたとはいえ、僕はそれ以外の時期も含めて常に同じオフィスで働いているわけなので、コミュニケーションに必要なレイテンシはゼロに等しいと言えます。&lt;/p&gt;
+
+&lt;p&gt;距離が近いと他チームの人が自チームのメンバーに対して話しかけていてもなんとなく聞こえてきますし、そこで自分への相談が必要だったらちょっと声を掛けるだけですぐ始められるので、発生した問題に素早くキャッチアップして、解決に動き出せる可能性が高まります。まぁこれは普通に 1 オフィスしかない国内企業で働いていた時は当たり前でしたが。&lt;/p&gt;
+
+&lt;p&gt;以上は地理的な距離感の話ですが、本質的には心理的な距離感を保つことの方がより重要だと思います。その点に関しても、イギリスでスタートアップの Co-Founder/CTO で exit も経験している前任者は属性を切り取るだけで迫力が出ますが、一方自分は曖昧な時間に出社をして、常に座席でお菓子をボリボリ食べたり時々居眠りをしながらボーっと働いている感じの人間なので、迫力もないしツッコミも入れ放題なのではと思います。 (Engineering Manager になってからは必要に応じて普通の時間や普通より早い時間の出社もやっています)&lt;/p&gt;
+
+&lt;p&gt;というのは半分 (?) 冗談ですが、些細な問題でも常に共有してもらえるようにいるには、普段は泰然自若にしてい (るように振る舞っ) たり、コミュニケーションも年齢や立場に関係なくフラットに行うことが重要だと感じています。僕がどんなにボーっとした人間だとしても、世の中には後輩力とでも呼ぶべき能力の高い人たちがいて、社会人歴や社歴だけは長い自分に対してやたら謙遜した態度で接されることも増えてきましたが、そういう人たちに対しても「自分はえらくなんかないんだ、&lt;a href=&#34;http://j-lyric.net/artist/a05efec/l048beb.html&#34;&gt;ゴミ屑ロンリネス&lt;/a&gt;なんだ」と言い聞かせて、なるべくフラットなコミュニケーションができるよう努めています。&lt;/p&gt;
+
+&lt;p&gt;よりアクティブな振る舞い方でいえば、「自分はあなたの味方であり、同じ問題を共有し、その解決のために共闘しているんだ」という態度をいかに演出し、実際に体現するかも重要だと思います。という訳で次のトピックへ。&lt;/p&gt;
+
+&lt;h3 id=&#34;ゴール設定と-それを一緒に追いかけ続けること&#34;&gt;ゴール設定と、それを一緒に追いかけ続けること&lt;/h3&gt;
+
+&lt;p&gt;Engineering Manager になる前、僕は目標設定というものが苦手だったし、むしろ嫌いだった気がします。というのは会社での目標に関してもそうですが、キャリアとか人生といった長いスパンでの目標というのも基本的に持っていません。時間が経てば状況も自分のやりたいことも変わって意味がなさそうだし、何よりめんどくさいので。&lt;/p&gt;
+
+&lt;p&gt;が、今はチーム内で一番目標設定を大事にすべき立場ですし、自分としても少なくともそうありたいと思ってはいるつもりです。&lt;/p&gt;
+
+&lt;p&gt;こうなった要因は、自分が会社の中間管理職として、ある種体制側としてのバイアスがかかっているからというのももちろんあると思います。モヒカンと中指を天高く突き上げ &amp;ldquo;Fuck The System!&amp;rdquo; なんて叫んでいたのも今は昔。 (そんな時代はなかった)&lt;/p&gt;
+
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/np3FXa4ORbY&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;p&gt;自分が体制側になったからというのもあると思うけど、それだけでもないと思います。マネージャーとしては、他の人にやってもらうことを通じてチームとしてやるべきことを成し遂げていく必要がある訳ですが、そのためにはチームや個々のメンバーを方向付けていく必要がありますし、そのためには一貫したストーリーが必要です。&lt;/p&gt;
+
+&lt;p&gt;目標として実際に決める事柄はなるべく定量的、または達成したかどうかが自明になるように努めていますが、それらはチームや会社の状況が変われば意味を失ったり、より重要な事柄が別に現れたり、ということもままあると思います。そんな中で元の目標にこだわることは会社から見たら意味がないですし、メンバー自身もモチベーションを保ちづらいと思うので、背景のストーリーを大事にして、状況に応じて目標自体を状況に合わせていけるような余白を持てるよう努めています。幸い、今いる会社の制度的には目標設定とそれに対する達成度が給料に反映される訳ではないので、そういった動き方が取りやすい状況にあります。 (OKR みたいなものをイメージしてもらうとわかりやすいと思います)&lt;/p&gt;
+
+&lt;p&gt;もちろん目標は設定するだけではダメで、実際に達成に向けて継続的に努力をしていく必要があります。心理的な距離感に関してのところでも少し書きましたが、Engineering Manager は目標に対して二人三脚で共闘していくものなんだというスタンスは強調しているつもりです。そのために、日頃から 1 on 1 を通じて心理的距離感を近く保ち、メンバーだけでは解決が難しい問題をなるべく早い段階で共有してもらい、実際に解決していくことはとても重要だと感じます。&lt;/p&gt;
+
+&lt;h2 id=&#34;engineering-manager-になってありがたかったこと&#34;&gt;Engineering Manager になってありがたかったこと&lt;/h2&gt;
+
+&lt;p&gt;最後にいい話を少ししてこの記事を締めようと思います。&lt;/p&gt;
+
+&lt;h3 id=&#34;人事や人事制度の存在&#34;&gt;人事や人事制度の存在&lt;/h3&gt;
+
+&lt;p&gt;僕は人事制度なんてなくて済むならその方が良いに違いないと思ってますし、それについては今も変わりません。&lt;/p&gt;
+
+&lt;p&gt;でも現状は、その人事制度に明らかに助けられていますし、そういったものを作り上げてきた人事や以前からのマネージャーたちに一日一万回は感謝しながら仕事しています。もちろん、完璧な制度なんてありえないし、現状の制度に不満が全くない訳ではないけど、全体として良いものだと思っているし、問題点についても積極的にフィードバックしてより良いものにしていく助けになれればと思えるものです。&lt;/p&gt;
+
+&lt;p&gt;特に、今の会社の人事は親会社の制度にアラインしつつも、そこと噛み合わない部分についてはちゃんと現状の組織に合わせたものを作っていく柔軟さも持ち合わせていてすごいなと思わされます。&lt;/p&gt;
+
+&lt;p&gt;目標設定についても基本的には人事が用意した仕組みの中でやっていますし、それへの臨み方についても新人マネージャー向けにちゃんとした研修の機会、それもどっかの訳のわからんコンサル企業への丸投げではなく、最新の研究や書籍などの出典も示された資料を自分たちで作って、自分たちの言葉で話してくれるので、自分もそれに共感できるし、そこから自分の裁量で工夫する余地が与えられている点も素晴らしいなと感じます。&lt;/p&gt;
+
+&lt;p&gt;拙いなりにもこの記事をここまで書けているのも半分くらいは人事のみなさんのおかげです。あとは経費キャッシュレス化だけやっていただけたら当分はなんの文句もありません。&lt;/p&gt;
+
+&lt;h3 id=&#34;チームの内外のメンバーの優秀さ&#34;&gt;チームの内外のメンバーの優秀さ&lt;/h3&gt;
+
+&lt;p&gt;まだ 2 ヶ月しかやってない中ではありますが、やっぱり周囲のメンバーの優秀さには本当に助けられているなと思います。これに関しても一日にもう二万回感謝しています。&lt;/p&gt;
+
+&lt;p&gt;メンバーというのはチーム内のメンバーもそうですが、チーム外の人々もそうです。SRE というのは構造的には他のチームに対して何かしてあげるように見える業務が多いので、感謝されがちで、ともすれば自分たちは偉いんだという勘違いに陥りがちなのかもしれません。&lt;/p&gt;
+
+&lt;p&gt;しかし、こちらも助けられているという感覚が強くあるので、そうならずに済みそうです。例えば新たなツールを導入し、そのためにワークフローを変える必要があっても、こちらが考えてもいなかった方向から意見をくれたり、時にはワークフロー自体をより良いものに変えてくれたりと、むしろこちらが助けられているなと感じます。&lt;/p&gt;
+
+&lt;p&gt;また、チーム内のメンバーについてもみんな自分よりも優秀だと思える人たちばかりで本当に助けられています。僕は無駄に長い社歴で得たアドバンテージを切り崩しながらなんとか Engineering Manager やらせてもらってます。&lt;/p&gt;
+
+&lt;p&gt;とはいえ、今のメンバーのうち何人かは自分も Engineering Manager になる前から採用に関わっていたので、やってきてよかったなと思います。自分が Engineering Manager になるのと同時に 2 人入ってきた二人も爆速で立ち上がってバリューを出し続けているので、これは採用頑張らないといけないなと改めて思わされました。&lt;/p&gt;
+
+&lt;p&gt;メンバーが優秀だとイージーな面と、よりハードなチャレンジを求められる面と両方ありますが、やっぱりより高いチャレンジができる状況の方が幸せに違いないので、自分がバリューを出せる限りにおいては Engineering Manager やっていけたらいいですね。&lt;/p&gt;
+
+&lt;h2 id=&#34;終わりに&#34;&gt;終わりに&lt;/h2&gt;
+
+&lt;p&gt;オンボーディングについて序盤で書くって言っといて忘れていたのでやる気が出たらそのうち書きます。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Kubernetes The Hard Way をやってみた</title>
@@ -1884,392 +2022,6 @@ Rails 2.2.8 がリリースされれば動くようになる予定。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/rails/rails/pull/26334&#34;&gt;Removed json dependency from ActiveSupport&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>引越・同棲 1 年目の 2016 年に買って良かったもの</title>
-      <link>https://blog.yuyat.jp/post/best-buys-2016/</link>
-      <pubDate>Sat, 31 Dec 2016 19:49:41 +0900</pubDate>
-      
-      <guid>https://blog.yuyat.jp/post/best-buys-2016/</guid>
-      <description>
-
-&lt;p&gt;去年 1 番のイベントは&lt;a href=&#34;http://blog.yuyat.jp/archives/2631&#34;&gt;転職&lt;/a&gt;でしたが、今年は引越・同棲というのが一大イベントでした。&lt;/p&gt;
-
-&lt;p&gt;丸 7 年住んだ埼玉から浅草に引越したことで京橋の職場への出勤時間が半分の 30 分に縮まったのも良かったですが、生活環境が変わったのを機に家具も色々と買い、QoL も大幅に向上したので、それを振り返ってみるという体でアフィブログを書きます。&lt;/p&gt;
-
-&lt;h2 id=&#34;生活編&#34;&gt;生活編&lt;/h2&gt;
-
-&lt;h3 id=&#34;東芝ドラム式洗濯機-tw-117x3l-ww-http-kakaku-com-item-k0000821187&#34;&gt;&lt;a href=&#34;http://kakaku.com/item/K0000821187/&#34;&gt;東芝ドラム式洗濯機 TW-117X3L(WW)&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;MVP は明らかにこれです。&lt;/p&gt;
-
-&lt;p&gt;埼玉に住んでいた 7 年間は洗濯機外置きという洗濯機もあってドラム式の大きいのは無理だったんですが、ようやく室内に置ける部屋に引っ越せたので奮発して買いました。&lt;/p&gt;
-
-&lt;p&gt;乾燥機付きでもドラム式とタテ型で迷いました。ドラム式について事前に調べた中で特に気になったのが臭いの問題でしたが、以下に気をつけたところ、購入から 7 ヶ月経つ今の所臭い問題は起きていません。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://amzn.to/2inXgv9&#34;&gt;ドラム式へに対応した抗菌洗剤&lt;/a&gt; を使う
-
-&lt;ul&gt;
-&lt;li&gt;臭いの原因になるのは雑菌と、ドラム式に合わない洗剤が洗濯に残ってしまうこと、ということだったのでその点に注意した&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;2 ヶ月に 1 回は&lt;a href=&#34;http://amzn.to/2iPRG7N&#34;&gt;洗濯槽カビキラー&lt;/a&gt;で洗う&lt;/li&gt;
-&lt;li&gt;乾燥なしの洗濯だけで終わらせない
-
-&lt;ul&gt;
-&lt;li&gt;乾燥機を使えない洗濯があっても、そのあとに乾燥機を使う洗濯物を別途洗うことで、洗濯槽を濡れたまま放置しないようにした&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;洗濯機を使わない間はなるべくフタを開けておいて換気した&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://amzn.to/2inYLJF&#34;&gt;排水エルボ&lt;/a&gt; を買う
-
-&lt;ul&gt;
-&lt;li&gt;洗濯物の臭いとは関係ないけど下水から臭いが上がってこないようにするのに必要&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;thule-paramount-29l-backpack-http-amzn-to-2iqf4lb&#34;&gt;&lt;a href=&#34;http://amzn.to/2iQf4lB&#34;&gt;Thule Paramount 29L Backpack&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00MHNPQ16&amp;linkId=d8e4803f20e116f2e5a7bdd1b7dcd771&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;これは自分で買ったのではなくて誕生日に買ってもらいました。&lt;/p&gt;
-
-&lt;p&gt;長年 &lt;a href=&#34;http://product.rakuten.co.jp/product/-/1e3e477d3b4232eb70c2a0aeee7c5d85/?sc2id=gmc_502240_1e3e477d3b4232eb70c2a0aeee7c5d85&amp;amp;scid=s_kwa_pla&#34;&gt;Chrome の斜めがけメッセンジャーバッグ&lt;/a&gt;を使っていましたが、以下のまとめを見てからずっとバックパックが欲しいと思っていました。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://togetter.com/li/613904&#34;&gt;重い鞄の斜めがけで椎間板ダメージ疑惑とバックパックのススメ&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;具体的になんらかの症状が出ていたわけではなかったものの、単純に片方だけに重さがかかるのは辛かったので、バックパックに変えて良かったです。&lt;br /&gt;
-肩のところも程よく厚みがあるので、多少重い荷物も苦になりません。&lt;/p&gt;
-
-&lt;p&gt;ポケットが多くて荷物はいろいろ入りますし、背中の部分は厚みのある素材が使われているので、ラップトップも安心して入れておけます。&lt;/p&gt;
-
-&lt;h3 id=&#34;コクヨ-ホワイトボード-ピタボ-http-amzn-to-2hza5vu&#34;&gt;&lt;a href=&#34;http://amzn.to/2hzA5vU&#34;&gt;コクヨ ホワイトボード ピタボ&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B001MSQWMO&amp;linkId=6743009de3c04122f9243f4322af2e16&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;壁に貼れるホワイトボードですが、貼り直しがしやすく、かつ壁紙にもダメージがないので使いやすいです。&lt;/p&gt;
-
-&lt;p&gt;自分の机の横に貼ってあるので、開発の時の頭の整理や設計メモに使ったり、あとは家事とかの細かい TODO のうち、Trello に記入するのも煩わしいやつとかメモしています。&lt;/p&gt;
-
-&lt;p&gt;アプリで写真を取ると綺麗に取り込めるのも便利です。&lt;/p&gt;
-
-&lt;p&gt;近々もっと大きいのを別途買おうかなと思ってます。&lt;/p&gt;
-
-&lt;h3 id=&#34;平和工業-ゴミ箱-ペダルペール-40l-http-amzn-to-2iqnnvd&#34;&gt;&lt;a href=&#34;http://amzn.to/2iQnNVd&#34;&gt;平和工業 ゴミ箱 ペダルペール 40L&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00SSRNN2E&amp;linkId=9c76c50fa82f530d763c9c042225fcb3&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00SSROVUW&amp;linkId=f3647109a8d2247bffefa69d49706a19&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;キッチン用に買いました。&lt;/p&gt;
-
-&lt;p&gt;特に夏場は虫が来ないようにフタ付きなのが良いのと、料理中とかで手がふさがっている状態でも使えるようペダル付きのものを探していました。&lt;/p&gt;
-
-&lt;p&gt;割としっかりしているので、壁際に置いておけばルンバがガンガン当たっても全然問題ないのも良いです。&lt;/p&gt;
-
-&lt;h3 id=&#34;ねこのロールペーパーホルダー-クロ-http-amzn-to-2iprixe&#34;&gt;&lt;a href=&#34;http://amzn.to/2iPriXE&#34;&gt;ねこのロールペーパーホルダー クロ&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00E37ADOE&amp;linkId=2565e50707b82a8ffe9e6d1d105f42b3&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;特に便利とかではないですが、猫がトイレットペーパーを抱えているみたいになって可愛いので気に入ってます。&lt;/p&gt;
-
-&lt;h2 id=&#34;料理編&#34;&gt;料理編&lt;/h2&gt;
-
-&lt;h3 id=&#34;ツインバード-タイマー付きスロークッカー-ぜっぴん亭-http-amzn-to-2ipe25q&#34;&gt;&lt;a href=&#34;http://amzn.to/2iPe25q&#34;&gt;ツインバード　タイマー付きスロークッカー　ぜっぴん亭&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00HWLI8SQ&amp;linkId=937e09917b9002ad4f62235fd3f8dbaf&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;引越す前はコンロのついていない部屋だったので、ずっと一口の IH で料理を作っていましたが、引越先はガスコンロが 3 口になったので料理がしやすくなりました。&lt;/p&gt;
-
-&lt;p&gt;まぁそれは良かったんですが、IH と違ってタイマーでの調理はできないので、例えばポトフとかを作る時に放置しておくのが難しくなってしまいました。&lt;/p&gt;
-
-&lt;p&gt;そこで他の種類の調理器具も検討しましたが、結果スロークカーを選びました。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://amzn.to/2is1eWe&#34;&gt;シャトルシェフ&lt;/a&gt;
-
-&lt;ul&gt;
-&lt;li&gt;放置できる点は良かったものの、火力が必要な調理はできなさそうだったので見送り&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;圧力鍋
-
-&lt;ul&gt;
-&lt;li&gt;時短調理ができるという意味では別アプローチからの良さはあるものの、これも放置はしにくいので見送り&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;スロークッカーは電気だけなので放置しやすいですし、基本的には材料を詰め込んでタイマーをセットするだけなので調理の再現性が高いのも良いです。&lt;/p&gt;
-
-&lt;p&gt;ツインバード社からは同等のスペックで別カラーのものも出ていますが、このオレンジのものはスロークッカー用のレシピブックが付いている点でもオススメです。&lt;/p&gt;
-
-&lt;p&gt;個人的にお気に入りのレシピは以下です。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://damndelicious.net/2013/11/02/slow-cooker-crockpot-honey-sesame-chicken/&#34;&gt;SLOW COOKER HONEY SESAME CHICKEN&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://allrecipes.com/recipe/16066/awesome-slow-cooker-pot-roast/&#34;&gt;Awesome Slow Cooker Pot Roast&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.lecremedelacrumb.com/slow-cooker-broccoli-beef/&#34;&gt;SLOW COOKER BROCCOLI BEEF&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;まぁ一番よく作ったのは適当に野菜やら何やらを切って適当に加熱しただけのポトフなんですが。&lt;/p&gt;
-
-&lt;p&gt;スロークッカーを購入する上で、以下の記事から受けた触発された部分は大きかったので、この場でお礼申し上げます。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://rimuru.lunanet.gr.jp/notes/post/bought-a-slow-cooker/&#34;&gt;スロークッカーを買って2週間が経った&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;デカめの肉を調理する上ではアメリカっぽい横長のものも便利そうなので、そのうち買うかもしれません。&lt;/p&gt;
-
-&lt;h3 id=&#34;tanica-ヨーグルティア-http-amzn-to-2hctfnj&#34;&gt;&lt;a href=&#34;http://amzn.to/2hCTfnJ&#34;&gt;TANICA ヨーグルティア&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B002SV0BL2&amp;linkId=0b59c6fbd9441f6088319afc4001ee4d&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;いわゆるヨーグルトメーカーですが、ヨーグルトではなく肉をはじめとした食材の真空低温調理に使用しました。&lt;br /&gt;
-要は Poor man&amp;rsquo;s &lt;a href=&#34;http://amzn.to/2iQ5NtT&#34;&gt;Anova&lt;/a&gt; ですね。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://long-reviews.hatenablog.com/entry/2016/01/18/230017&#34;&gt;【ヨーグルティアで低温調理】失敗知らずのローストビーフ&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://everyday.iroiro7.com/?p=1303&#34;&gt;ヨーグルティアでの鳥ハムの作り方｜鳥胸肉もしっとり　塩麹or塩で&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://magazine.shokuikuclub.jp/kitchen/20140818_050008/&#34;&gt;サーモンは低温でコンフィをすると滑らかな食感に&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;ローストビーフはかなり作りましたし、鳥はむは 1g 1 円程度の安い肉でもちゃんとおいしくなるので楽しいです。&lt;br /&gt;
-同居人がサーモンアレルギーなのであまり作りませんでしたが、一番美味しかったのはサーモンのコンフィでした。これは家に来た友人をもてなした時にも喜ばれました。&lt;/p&gt;
-
-&lt;p&gt;最初はヨーグルトも作っていましたが、種になるヨーグルトを 400g 買って、そのうち 100g から 1kg のヨーグルトを作っては食べ、というサイクルだと、元のヨーグルトの賞味期限が切れてしまい、うまく食べきれないことが多かったのでやめてしまいました。&lt;/p&gt;
-
-&lt;p&gt;ヨーグルティアの購入・運用にあたっては以下の記事が大変参考になったのでお礼申し上げます。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://www.kwappa.net/blog/archives/1995&#34;&gt;まだアクチンの熱変性で消耗してるの？ – 低温調理による革命的肉食のすすめ – #ヨーグルティア肉&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://portal.nifty.com/kiji/150203192686_1.htm&#34;&gt;ヨーグルトメーカーで肉を煮る&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;もちろん小林銅蟲さんの&lt;a href=&#34;http://negineesan.hatenablog.com/&#34;&gt;ブログ&lt;/a&gt;・漫画にも大いに触発れました。&lt;/p&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B01N8Q8DA7&amp;linkId=bbd088ef5aa8cd3e4fef081a17bc496d&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;そして以下の書籍も読みました。&lt;/p&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=4873115094&amp;linkId=71b460407075c773d819b230f0323b76&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=4903063577&amp;linkId=81b2b29eb7920d68d53250627b0ac8d2&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://amzn.to/2iQ6gfw&#34;&gt;Cooking for Geeks は第二版の日本語版&lt;/a&gt;もつい最近出たようなのでそのうち買いなおそうと思います。&lt;/p&gt;
-
-&lt;h3 id=&#34;タニタ-スティック温度計-http-amzn-to-2iplq0b&#34;&gt;&lt;a href=&#34;http://amzn.to/2iPlq0B&#34;&gt;タニタ スティック温度計&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B0017TCOEI&amp;linkId=1d2fbe9a9b16bf5267fe61b125b3b228&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;低温調理は迂闊にやるときわどい感じになってしまうので、温度に気をつける必要があって買いました。&lt;/p&gt;
-
-&lt;p&gt;ヨーグルティアを使えば温度の維持は勝手にやってくれますが、それでも立ち上がりの温度に気をつける必要があります。&lt;br /&gt;
-特に鶏肉・豚肉・生魚の時なんかは、水から初めてしまうと菌が繁殖しやすい温度の中で時間が経過してしまい、大変危険です。&lt;br /&gt;
-あらかじめ目的の温度に上げたお湯を用意しておく必要があります。&lt;/p&gt;
-
-&lt;p&gt;あとはステーキなんかを焼く時にもよく使いました。&lt;br /&gt;
-肉の種類・部位や大きさなどにもよりますが、中心温度が 45 度ぐらいまで上がればあとは余熱で上昇していくので、アクチンが熱変性する 65 ℃ を超えないようにうまく調整するのに使いました。&lt;/p&gt;
-
-&lt;p&gt;温度計はいろいろありますが、この安さで必要な仕事をちゃんとやってくれるところが気に入っています。&lt;/p&gt;
-
-&lt;h3 id=&#34;タニタ-デジタルクッキングスケール-http-amzn-to-2hzkgvy&#34;&gt;&lt;a href=&#34;http://amzn.to/2hzkGvy&#34;&gt;タニタ デジタルクッキングスケール&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B007JP7E6C&amp;linkId=d55eceaf72e2be01f7e3aa0fab895500&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;肉ばっかり食べてる感じになってしまいましたが、それ以上に野菜を意識的に食べた 1 年でした。&lt;br /&gt;
-たまに意識の低下した日を除けば、基本的に毎日 350g の野菜を食べ続けたと思います。&lt;/p&gt;
-
-&lt;p&gt;平日は時間がないので野菜・きのこ・肉を適当に蒸しただけの料理とは言えないような代物を作ることも多かったですが、ちゃんと図って作りました。&lt;/p&gt;
-
-&lt;h3 id=&#34;k-a-みじん切り器-ぶんぶんチョッパー-http-amzn-to-2iqlgas&#34;&gt;&lt;a href=&#34;http://amzn.to/2iQlGAs&#34;&gt;K&amp;amp;A みじん切り器 ぶんぶんチョッパー&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00WDZYLT6&amp;linkId=a0d50b5dbf80bef14462b0bd93c2bf33&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;これは小物ですが、とても良かったです。&lt;br /&gt;
-中に玉ねぎとかニンニクとかを入れて、紐を引っ張るだけで電気もなしにみじん切りが出来上がります。&lt;/p&gt;
-
-&lt;p&gt;先日 &lt;a href=&#34;https://connpass.com/event/45509/&#34;&gt;Recruit.rb #0&lt;/a&gt; という Ruby 勉強会でも、&lt;a href=&#34;https://twitter.com/remore&#34;&gt;@remore&lt;/a&gt; さんとスロークッカーの話とともに盛り上がりました。 (Ruby 関係ない)&lt;/p&gt;
-
-&lt;p&gt;これについては映像で見てもらうのが一番わかりやすいと思います。&lt;/p&gt;
-
-&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/572m44-cFgY&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
-
-&lt;p&gt;唯一困るのは洗うときです。&lt;br /&gt;
-中の紐の部分が濡れてしまうと、乾かすのが大変 (巻き戻ってしまう) なので、容器とフタの間にサランラップを挟んで、汚れないようにして使っています。&lt;/p&gt;
-
-&lt;h2 id=&#34;健康編&#34;&gt;健康編&lt;/h2&gt;
-
-&lt;h3 id=&#34;フィリップス-電動歯ブラシ-ソニッケアー-ダイヤモンドクリーン-http-amzn-to-2iiwof4&#34;&gt;&lt;a href=&#34;http://amzn.to/2iiwOF4&#34;&gt;フィリップス 電動歯ブラシ ソニッケアー ダイヤモンドクリーン&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00NXEYMB8&amp;linkId=bd56f8f4c02238a1de1f52cba54ade48&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;歯医者さんに勧められて買いました。&lt;/p&gt;
-
-&lt;p&gt;長年手動で歯磨きしてきましたが、もう戻れないと思います。かなりスッキリします。&lt;/p&gt;
-
-&lt;p&gt;Amazon レビューとかでよく、すぐ壊れてしまった、という人がいるんですが、ボタンのところから水が入って壊れることが多いようなのでそれだけ気をつけて使っています。&lt;/p&gt;
-
-&lt;h3 id=&#34;フッ素付きデンタルフロス-http-amzn-to-2hcrxcw&#34;&gt;&lt;a href=&#34;http://amzn.to/2hCRxCW&#34;&gt;フッ素付きデンタルフロス&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B009UPW1G2&amp;linkId=db1006db78e1e4a4216cba266a60c0e3&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;これは同じ歯医者で歯石除去をしてもらった後に、歯科衛生士の方に勧められて買いました。&lt;/p&gt;
-
-&lt;p&gt;これまでこういうのを使ったことがなかったので最初は面倒だったんですが、毎日結構な汚れが取れるので、やらねばという感じが出ています。&lt;/p&gt;
-
-&lt;h3 id=&#34;withings-スマート体重計-smart-body-analyzer-http-amzn-to-2hzkqgc&#34;&gt;&lt;a href=&#34;http://amzn.to/2hzkqgc&#34;&gt;Withings スマート体重計 Smart Body Analyzer&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00V35HEIC&amp;linkId=503a07067ee510f28b25b237be0e2dc3&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;去年末から今年の始めにかけては忙しかったこともあって食生活が破滅しかけており、健康診断の結果も悪く、お腹の周りにも明らかに余計な肉がついてしまっていました。&lt;/p&gt;
-
-&lt;p&gt;そこで買ったのがこれです。&lt;br /&gt;
-当時は 15000 円ぐらいで買い増したが、今は&lt;a href=&#34;http://amzn.to/2iism9z&#34;&gt;新しいモデル&lt;/a&gt;が出ていることもあってさらに安くなっているようです。&lt;/p&gt;
-
-&lt;p&gt;タニタのやつなんかも検討しましたが、体重等のデータが API から取得できる、ということもあって Withings を選びました。&lt;br /&gt;
-(結局アプリがしっかりしているので API は使っていませんが)&lt;/p&gt;
-
-&lt;p&gt;これを買ってからは徐々に体重も落ち着いて行き、元の体重で安定するようになり、お腹の周りの余計な肉も消え去っています。&lt;/p&gt;
-
-&lt;p&gt;以下は Withings のアプリで見られるグラフです。&lt;br /&gt;
-まぁ身長 180cm でこれは軽すぎなので、来年は体脂肪を維持しつつ筋肉で体重を増やしていくのが目標です。&lt;/p&gt;
-
-&lt;h4 id=&#34;体重&#34;&gt;体重&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/best-buys-2016/weight.png&#34; width=&#34;963&#34; height=&#34;558&#34;&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;体脂肪率&#34;&gt;体脂肪率&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/best-buys-2016/fatmass.png&#34; width=&#34;963&#34; height=&#34;558&#34;&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;bmi&#34;&gt;BMI&lt;/h4&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://blog.yuyat.jp/images/best-buys-2016/bmi.png&#34; width=&#34;960&#34; height=&#34;556&#34;&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;withings-スマートウォッチ-activité-pop-http-amzn-to-2isr4js&#34;&gt;&lt;a href=&#34;http://amzn.to/2isr4Js&#34;&gt;Withings スマートウォッチ Activité Pop&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B010UV1M6O&amp;linkId=530407bb2025a37761aaed694083858e&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;Withings の体重計を買ってしばらくして買いました。&lt;/p&gt;
-
-&lt;p&gt;Apple Watch 以降スマートウォッチは気になっていたものの、充電が持たないものは辛かったので、スルーし続けていました。&lt;br /&gt;
-その点この Activité シリースが良いのは、充電できない代わりに、ボタン電池で 8 ヶ月持つところです。&lt;br /&gt;
-充電に関するストレスが一切ないのは大きいと思います。&lt;/p&gt;
-
-&lt;p&gt;機能的には歩数・睡眠時間を勝手にトラッキングしてくれるものです。&lt;/p&gt;
-
-&lt;p&gt;歩数はそんなに制度は高くないと思いますが、まぁ目標の歩数を超えるように意識するようになるだけでも良いと思います。&lt;br /&gt;
-睡眠に関しても同様で、精度的にはもっと良いものがあるんじゃないかとは思います。&lt;/p&gt;
-
-&lt;p&gt;防水で水泳もトラッキングしてくれますが、つけたまま風呂に入ると中が曇ってしまうので、風呂の時だけ外してそれ以外は文字通り 1 日中つけていました。&lt;/p&gt;
-
-&lt;p&gt;というわけで体験としてはとても良かったんですが、残念なことについ先日同期ができなくなってしまいました&amp;hellip;&lt;/p&gt;
-
-&lt;p&gt;上位モデルの &lt;a href=&#34;http://amzn.to/2isskfD&#34;&gt;Activité Steel&lt;/a&gt; を買おうとも思っていますが、壊れやすさについてはもうちょっと調べて考え中です。&lt;/p&gt;
-
-&lt;p&gt;ところで Withings に関しては今年 1 年でファンになったんですが、今年&lt;a href=&#34;http://wired.jp/2016/04/28/nokia-buys-withings/&#34;&gt;ノキアに買収されてしまって&lt;/a&gt;、今後どうなってしまうのか気になるところです (悪い意味で)。&lt;/p&gt;
-
-&lt;h2 id=&#34;エンタメ編&#34;&gt;エンタメ編&lt;/h2&gt;
-
-&lt;h3 id=&#34;playstation3-http-amzn-to-2iqpadl&#34;&gt;&lt;a href=&#34;http://amzn.to/2iQpaDl&#34;&gt;PlayStation3&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00MGDX5CO&amp;linkId=c1e1c55408bb540f08ef652f5b58d04b&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;PS4 も出て久しい今なぜ PS3 を買ったかというと、ブルーレイが見たかったからです。&lt;br /&gt;
-なおかつ PS3 は北米版のものでも再生できるということで Mercari で買いました。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://amzn.to/2iAh0eV&#34;&gt;ゆゆ式：コンプリート・コレクション 北米版&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;http://amzn.to/2iiuUo3&#34;&gt;TARI TARI：コンプリート・コレクション 北米版&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;特にゆゆ式はディスク交換なしで全話一気に見られるのも良いエクスペリエンスでした。&lt;/p&gt;
-
-&lt;h3 id=&#34;shirobako-初回生産限定板-dvd-全巻-http-amzn-to-2iapcf0&#34;&gt;&lt;a href=&#34;http://amzn.to/2iApcf0&#34;&gt;SHIROBAKO 初回生産限定板 DVD 全巻&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00OJXVWIS&amp;linkId=ecac6082002cef1289084831d027882d&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00OJXVTZY&amp;linkId=4dc50f19798c301cce534f46b19f408f&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00OJXVWN8&amp;linkId=3f3bea985f1d8cb22a3f64e431065f58&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00OJXVVDO&amp;linkId=6f5daede1b02fbb4289e5e20a668ac7c&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00OJXVXSM&amp;linkId=7903613462f69afa2729223c31850edd&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00OJXVVBG&amp;linkId=acac1f0ea18332c41705ca76f60dc4b0&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00OJXVWK6&amp;linkId=6c369f8fe839c502503888fcdb55f947&#34;&gt;&lt;/iframe&gt;
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00OJXVTZ4&amp;linkId=4846eed6d283328fa1c23f9d13185dc3&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;PS3 を買う前だったので DVD で買いました。&lt;/p&gt;
-
-&lt;p&gt;リアルタイムでも見ましたし、その後もテレビやニコニコの一挙放送なんかで見たと思いましたが、結局買ってしまいました。 (ちょうどテレビの一挙放送がきっかけで買った気がする)&lt;/p&gt;
-
-&lt;p&gt;杉江 3 日伝説について菅野さんが熱弁するところは何度見てもニヤニヤが止まりませんし、小笠原さんにバッティングセンターに連れて行かれる話のネタの細かさも好きです。&lt;/p&gt;
-
-&lt;h3 id=&#34;patech-bluetooth-3-0-ワイヤレススピーカー-http-amzn-to-2iqlcrc&#34;&gt;&lt;a href=&#34;http://amzn.to/2iQlCRc&#34;&gt;Patech　Bluetooth 3.0　ワイヤレススピーカー&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00NFGTRNC&amp;linkId=9a3710935f6e248be2782f6031e655e8&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;風呂で Podcast を聞くのに使いました。&lt;/p&gt;
-
-&lt;p&gt;防水なので安心して風呂に持ち込めますし、ペアリングも簡単で、かつ値段も安いのでオススメです。&lt;/p&gt;
-
-&lt;h2 id=&#34;スマートフォン編&#34;&gt;スマートフォン編&lt;/h2&gt;
-
-&lt;h3 id=&#34;iphone-se-http-amzn-to-2hzps2u&#34;&gt;&lt;a href=&#34;http://amzn.to/2hzpS2u&#34;&gt;iPhone SE&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B01GC5DYXG&amp;linkId=61dff948ba67c324c038ed47099a5cb7&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;iPhone 5 を 3 年ぐらい使い続けていましたが、ようやく買い換えました。&lt;/p&gt;
-
-&lt;p&gt;iPhone 6 のデカさに二の足を踏んでいましたが、今となっては待って良かったと思います。 (やや妥協感はあるものの)&lt;/p&gt;
-
-&lt;h3 id=&#34;iphone-se-iphone5-5s-icカード-スロットイン-収納-ケース-http-amzn-to-2iqlh7z&#34;&gt;&lt;a href=&#34;http://amzn.to/2iQlH7z&#34;&gt;iPhone SE / iPhone5/5S ICカード スロットイン 収納 ケース&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00AK4OXUE&amp;linkId=91421700b5d3ed3785c577853fe19b49&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;iPhone SE と一緒に買いました。&lt;/p&gt;
-
-&lt;p&gt;長年 iPhone とガラケーの二台持ちで、ガラケーでモバイル Suica を使い続けていたんですが、通勤が銀座線オンリーになったことで、モバイル Suica の定期券が買えなくなってしまいました。&lt;/p&gt;
-
-&lt;p&gt;モバイル Suica は本当に便利だったので残念でしたが、しょうがないので PASMO をこのケースに入れて通勤するようになりました。&lt;br /&gt;
-移動中の電車の中でチャージしたり定期の更新ができなくなったのは辛いですが、定期は半年分買って、チャージも少し多めにしておけばたまにするだけで良いので、まぁ満足しています。&lt;/p&gt;
-
-&lt;h2 id=&#34;その他小物編&#34;&gt;その他小物編&lt;/h2&gt;
-
-&lt;h3 id=&#34;anker-powerport-4-40w-4ポートusb急速充電器-http-amzn-to-2iidief&#34;&gt;&lt;a href=&#34;http://amzn.to/2iiDiEf&#34;&gt;Anker PowerPort 4 (40W 4ポートUSB急速充電器)&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B00VTJS58U&amp;linkId=85511f7be0e0adbca821a5b6b39449b7&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;今年はこれを合計 3 つ買って、自宅のリビングと寝室、そしてオフィスの机の上で使っています。&lt;/p&gt;
-
-&lt;p&gt;充電を使い切ることがほぼないので急速充電のメリットは特に感じていませんが、4 ポートあると安心感があって良いです。&lt;/p&gt;
-
-&lt;p&gt;Anker の同様の製品の中にはポートが死にやすいものがあったり、品質面に不安はありましたが、事前に調べた段階でこの 4 ポートのものは不具合の報告が少なく、実際使ってみてもトラブルなく使えています。&lt;/p&gt;
-
-&lt;h3 id=&#34;コクヨ-ペンケース-ネオクリッツフラット-http-amzn-to-2ippkgk&#34;&gt;&lt;a href=&#34;http://amzn.to/2iPpkGK&#34;&gt;コクヨ ペンケース ネオクリッツフラット&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B01AHDWS90&amp;linkId=21b2d7a22c2e292567c2e3c0408d03c4&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;就職して以降筆記用具はほとんど使わなくなりましたが、それでも必要な時はどうしてもあるので常に持っています。&lt;/p&gt;
-
-&lt;p&gt;これはペン立てにもなるのが面白くて好きです。&lt;/p&gt;
-
-&lt;h2 id=&#34;番外編&#34;&gt;番外編&lt;/h2&gt;
-
-&lt;h3 id=&#34;パナソニック-食器洗い乾燥機-np-tcr3-w-http-amzn-to-2hzvroa&#34;&gt;&lt;a href=&#34;http://amzn.to/2hzvRoa&#34;&gt;パナソニック 食器洗い乾燥機 NP-TCR3-W&lt;/a&gt;&lt;/h3&gt;
-
-&lt;iframe style=&#34;width:120px;height:240px;&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34; src=&#34;//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=000000&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=yuyat-22&amp;o=9&amp;p=8&amp;l=as4&amp;m=amazon&amp;f=ifr&amp;ref=as_ss_li_til&amp;asins=B014IIKWR0&amp;linkId=97bb93f0daf197e8bd4c2f657bfb7419&#34;&gt;&lt;/iframe&gt;
-
-&lt;p&gt;今日届きました！&lt;br /&gt;
-買って良かったかどうかは書き用がないですが、これからの活躍が期待されます。&lt;/p&gt;
-
-&lt;p&gt;見積もりの時点で「水道が古すぎてダメかもしれない」と言われていたので、ダメだった場合は水道工事に関して管理会社と交渉が必要そうな状況でしたが、なんとか無事に設置が完了し、安心して年を越せます。&lt;/p&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
-&lt;p&gt;今年は主に生活を楽にする家電をいろいろ買いました。&lt;/p&gt;
-
-&lt;p&gt;生活への投資という方向性は今後も継続していきたいですが、2017 年は家電のスマート化とかにもチャレンジして行って、ブログネタにしていきたいです。&lt;/p&gt;
-
-&lt;p&gt;あとは自宅のプログラミング環境についてはあまり投資ができずに終わってしまったので、その辺もなんとかしていきたいですね。&lt;/p&gt;
 </description>
     </item>
     
