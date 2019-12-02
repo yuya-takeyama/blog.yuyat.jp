@@ -4,6 +4,8 @@ date: 2019-12-01T00:22:00+09:00
 ---
 この記事は [Engineering Manager vol.2 Advent Calendar 2019](https://qiita.com/advent-calendar/2019/em2) の 1 日目の記事です。
 
+2 日目は [taminif](https://twitter.com/sbntaminif) さんの[マネージャーになったら身に付けたいファシリテーションスキル](http://taminif.hatenablog.jp/entry/2019/12/02/011112)です。
+
 ふわっとしたタイトルのゆる目の記事ですが、Engineering Manager としては新米ですし、Advent Calendar 的にもまだ初日なのでこれぐらいで許してください。
 
 まぁ一言でいうと「Engineering Manager は決して楽ではないけど楽しいぞ！」という感じです。
