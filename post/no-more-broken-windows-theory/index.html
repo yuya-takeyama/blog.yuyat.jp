@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-3233912168536735",
+        enable_page_level_ads: true
+      });
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://blog.yuyat.jp/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
+    <link rel="canonical" href="https://blog.yuyat.jp/post/no-more-broken-windows-theory/">
+    <title>ソフトウェア開発の文脈で割れ窓理論を引用するのはミスリーディングではないか | Born Too Late</title>
+    
+
+    <meta property="fb:admins" content="100000987494966" />
+<meta property="fb:app_id" content="285547814816502" />
+<meta property="og:title" content="ソフトウェア開発の文脈で割れ窓理論を引用するのはミスリーディングではないか" />
+<meta property="og:description" content="基本的には Twitter に既に書いた内容のまとめです。
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.yuyat.jp/post/no-more-broken-windows-theory/" />
+
+  
+	  <meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg" />
+  
+
+
+  <meta property="og:updated_time" content="2020-01-01T00:00:00&#43;09:00"/>
+
+
+
+
+    <meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@yuya_takeyama">
+<meta name="twitter:creator" content="@yuya_takeyama">
+
+    
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="https://blog.yuyat.jp" class="navbar-brand">Born Too Late</a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="https://blog.yuyat.jp/post/">Archive</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">ソフトウェア開発の文脈で割れ窓理論を引用するのはミスリーディングではないか</h1>
+      <p class="text-muted">Jan 1, 2020</p>
+
+<div>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fno-more-broken-windows-theory%2f&amp;text=%e3%82%bd%e3%83%95%e3%83%88%e3%82%a6%e3%82%a7%e3%82%a2%e9%96%8b%e7%99%ba%e3%81%ae%e6%96%87%e8%84%88%e3%81%a7%e5%89%b2%e3%82%8c%e7%aa%93%e7%90%86%e8%ab%96%e3%82%92%e5%bc%95%e7%94%a8%e3%81%99%e3%82%8b%e3%81%ae%e3%81%af%e3%83%9f%e3%82%b9%e3%83%aa%e3%83%bc%e3%83%87%e3%82%a3%e3%83%b3%e3%82%b0%e3%81%a7%e3%81%af%e3%81%aa%e3%81%84%e3%81%8b&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fno-more-broken-windows-theory%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fno-more-broken-windows-theory%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
+</div>
+
+    </div>
+    <div class="post-content">
+      
+
+<p>基本的には Twitter に既に書いた内容のまとめです。</p>
+
+<h2 id="元ツイート">元ツイート</h2>
+
+<p>いくつかのツイートがこのスレッドに続いています。</p>
+
+<p><blockquote class="twitter-tweet"><p lang="ja" dir="ltr">📝 割れ窓理論と SRE (Site Reliability Engineering) は相容れないかもしれない、という話を書いていくので意見のある方は reply ください</p>&mdash; Yuya Takeyama (@yuya_takeyama) <a href="https://twitter.com/yuya_takeyama/status/1222783547578167298?ref_src=twsrc%5Etfw">January 30, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></p>
+
+<h2 id="趣旨">趣旨</h2>
+
+<h3 id="割れ窓理論の本質">割れ窓理論の本質</h3>
+
+<p>皆さんは割れ窓理論の本質がなんであるかご存知でしょうか。私は知りません。</p>
+
+<p>ですが、私は「軽微な犯罪も徹底的に取り締まること」が「凶悪犯罪を含めた犯罪を抑止できる」という点に集約されるのではないかと思っています。まぁこれは Wikipedia 上の文言そのままなんですが。</p>
+
+<ul>
+<li><a href="https://ja.wikipedia.org/wiki/%E5%89%B2%E3%82%8C%E7%AA%93%E7%90%86%E8%AB%96">割れ窓理論</a></li>
+</ul>
+
+<h3 id="ゼロ-トレランス政策と限界効用の逓減性">ゼロ・トレランス政策と限界効用の逓減性</h3>
+
+<p>ニューヨークではゼロ・トレランス政策として実行され、実際に犯罪現象の成果が現れたそうです。一方で、その政策を実行した都市でもしなかった都市でも犯罪の発生率は同様である、という批判もあるようです。これもなんと Wikipedia に書いています。</p>
+
+<p>ということを踏まえて、私は割れ窓理論については懐疑的な立場です。</p>
+
+<p>直感的にゼロ・トレランスがダメだな、と思うのは、あらゆる施策の効用には逓減性があるはずだからです。限界効用逓減の法則というのは大学の一般教養でとった経済学史の授業で習ったはずですが、まぁ日頃使わない知識は当然忘れますよね。どちらかというと <a href="https://twitter.com/fladdict?lang=en">@fladdict</a> さんのこの記事を読んでから最近強く意識しています。</p>
+
+<ul>
+<li><a href="https://note.com/fladdict/n/nb178cbe40a6c">放出系を習得してから、自分が具現化系だと判明しました。修行をやりなおすべきでしょうか？</a></li>
+</ul>
+
+<p>この記事ではあらゆるスキルには逓減性があり、あるひとつのスキルを伸ばせば伸ばすほど、それより先に伸ばすのはより大変になる、だから必要に応じて別のスキルも伸ばしていこう、といったことが書いてあると私は理解しました。深津さんが本当にそのような意図でそれを書いたかは私にはわかりませんが、少なくともそう考える私が今ここにいるということだけは確かなことだと言えそうです。我思う、ゆえに我あり。</p>
+
+<h3 id="site-reliability-engineering-の本質">Site Reliability Engineering の本質</h3>
+
+<p>ここで突然 Site Reliability Engineering の話をするのは、私が日頃 Site Reliability Engineer として働いているので、ある種のポジショントークです。</p>
+
+<p>が、それを踏まえて、私が考える Site Reliability Engineering の本質は「計測に基づく継続的な改善」だと考えています。そしてそのためのツールとして提示されているのが SLO です。</p>
+
+<p>Site Reliability Engineering や SLO について知らない方のために簡単に説明すると、SLO というのはサイトの信頼性を測る目標値です。例えば全リクエスト中のエラーの発生率を 99.9% (スリーナイン) にしよう、99.99% (フォーナイン) にしよう、というものです。</p>
+
+<p>SLO を決める際に大事なのは必ず 100% 未満のどこかにするということです。100% を目指してしまうと、そのために必要なコストが無限に膨張するからです。そもそも、Web サービスのインフラであるネットワークやそれを支えるデバイスにしても、100% 動いているわけではありません。エンドユーザの体験として 100% の信頼性というのはいずれにせよ無理なので、適切な目標を決めてそこを目指そうというものです。</p>
+
+<p>ここにも、限界効用逓減の法則が見えますね。</p>
+
+<h3 id="割れ窓というアナロジー">割れ窓というアナロジー</h3>
+
+<p>ソフトウェア開発の文脈において、割れ窓理論の引用はよく見ます。が、面倒なのでエビデンスは示しません。私はそれを勉強会やカンファレンスの発表やブログ記事等の中で幾度となくそれを見てきた気がする、ということをここで強く主張しますが、それをあなたに押し付けてもしょうがないことです。</p>
+
+<p>なんでこんなによく見るのか、というのを考えると、私はこの「割れ窓」というアナロジーがわかりやすくて魅力的だからではないかと考えます。窓が全く割れてない学校と、半分ぐらい割れてる学校とを比較して、夜の校舎窓ガラス壊してまわる上でどちらが心理的障壁が少ないか、を考えると想像しやすいんじゃないでしょうか。</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/sAGtMfkx89Y" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<p>もちろん、<a href="https://amzn.to/2OhsANb">真っ白なものは汚したくなる</a>タイプの人にとってはゼロから窓を壊していく方がより大きなカタルシスを得られるはずです。なぜなら効用が逓減していない最大の状態だから。とはいえ基本的にはほとんどの人にとっては良識とかそのようなものがボトルネックになると私は信じています。</p>
+
+<p>ちょっと話がそれましたが、例えば部屋を完璧に片付けて、最初の数日は明らかに「散らかしたくない」という力が自分の内面に働いた経験は多くの人にあるのではないでしょうか。大抵どこかで堰を切って、いつの日かほぼ素の状態に収束するんですが。でもね、別にそんな経験無くたっていいんです。私はそれをあなたに押し付けません。とりあえず「まぁ似たようなことは世の中色々あるな」ぐらいの気持ちで読み進めてもいいし読み進めなくてもいい。<a href="https://www.sunmusic.org/profile/pekopa.html">できないことを求めるのもやめにしよう</a>。</p>
+
+<h3 id="再び割れ窓理論について">再び割れ窓理論について</h3>
+
+<p>ここまで読み進めた方にはお分かりだと思いますが、私は別に割れ窓を減らすことについては何も否定していません。徹底的にやるのが間違いだということを言っています。そして割れ窓理論は徹底的にやることを目指したものである以上、それをソフトウェア開発の文脈で引用するのはミスリーディングではないか、というのがこの記事の主旨です。</p>
+
+<h2 id="ソフトウェア開発における割れ窓との付き合い方がどうあるべきか">ソフトウェア開発における割れ窓との付き合い方がどうあるべきか</h2>
+
+<h3 id="まずは始めてみる">まずは始めてみる</h3>
+
+<p>割れ窓への対処は、ほとんどの場合において何かした方が良いでしょう。何もしていないというゼロの状態に比べて、ひとつ直した状態は効用が逓減していないので大きな効果があると考えられます。</p>
+
+<h3 id="続けてみる">続けてみる</h3>
+
+<p>実際には、何か新しいことを始める際には、それを始めるコストがかかります。例えばエラーログをどこから追えばいいか、という情報を調べることから始まります。一回わかってしまって、次回以降その知識を使い回せるのなら、そこにかかるコストはゼロということになります。つまり、やるなら一つだけ直すのではなく、それを継続した方が良いでしょう。継続はリズムを生みます。</p>
+
+<p>ここまでであれば「割れ窓は直せば直すほどお得」ということにも読めてしまいますが、もちろんそうではありません。それでは割れ窓理論の本質である「徹底的に取り締まる」になってしまいます。</p>
+
+<h3 id="一回性と覚悟">一回性と覚悟</h3>
+
+<p>あるときにアプリケーションのエラーログを調べる方法がわかれば、それについての知識は使いまわせても、別の時にはデータベースのログを調べる方法を知る必要があるかもしれません。割れ窓は多様なはずなので、それぞれごとの立ち上げコストがかかります。</p>
+
+<p>ある割れ窓に対する初回固有のコストは一回性のものですが、あらゆる割れ窓は連綿として立ち現れ、その度に初回固有のコストを払うことになります。終わりのない一回性の連続の中で日々割れ窓を直していく覚悟が求められます。</p>
+
+<h3 id="計測とそのコスト">計測とそのコスト</h3>
+
+<p>ですが、人間の覚悟のあり方は人それぞれによって異なるはずですし、多分有限です。そこの覚悟を支え得るものとして、私は計測があると思ってます。つまり、Site Reliability Engineering の本質である (と私が考えている) 「計測に基づく継続的な改善」をやればいいのです。</p>
+
+<p>ですが、計測にもコストがかかります。割れ窓理論が「徹底的に取り締まる」という結論になってしまったのは、結局のところ計測のコストの問題だったのではと思います。自宅の窓とそれが割れてる数を計測することはできても、スケールを区画、町、都市と広げていくと、どこかで無理になるでしょう。ここにも限界効用の逓減性が見えます。</p>
+
+<p>ソフトウェアにとって特徴的なのは、計測のコストが現実の世界に比べればめちゃくちゃ低いことです。一度計測の仕組みを作ってしまえば、その仕組みは自動的に動きます。</p>
+
+<p>また、Site Reliability Engineering においては、計測すべき対象についていくつか指針や、ツールとしての SLO を示してくれています。</p>
+
+<p>なので、そういった枠組みで考えやすい対象については目標値を決め、計測に応じて必要な分だけ割れ窓を直せば良いことになります。もちろん目標値は 100% 未満のどこかである必要があります。これなら終わりのない一回性の連続を乗り越える勇気も湧いてくるのではないでしょうか。</p>
+
+<p>では、そういった枠組みで考えるのが難しい対象についてはどうすれば良いか。</p>
+
+<h3 id="妥協としての割れ窓バジェット">妥協としての割れ窓バジェット</h3>
+
+<p>計測が難しいのであれば、量を固定してしまえば良いのではないでしょうか。例えば隔週で金曜日は通常の業務を原則ストップして、割れ窓を直すことに費やす、といった具合です。そういった取り組みを行なっている会社はすでにいくつかあるようです。</p>
+
+<ul>
+<li><a href="https://devpixiv.hatenablog.com/entry/2016/12/08/172049">割れ窓理論を導入してWebサービスのクオリティに直結した話</a></li>
+<li><a href="https://blog.hokkai7go.jp/entry/2018/12/13/000146">割れ窓理論をWebインフラの改善に活用し、チーム内の知識共有を促進している話</a></li>
+</ul>
+
+<p>10 営業日中 1 営業日を割れ窓を直すためにあらかじめ組み込むので、これはある種バジェットです。</p>
+
+<p>しかし、これはあくまでも計測のコストが高いことに対する妥協であるべきと考えます。といっても上記の企業の取り組みに対して批判しているわけではありません。仕事は妥協の連続。</p>
+
+<p><iframe scrolling="no" class="alu-embed-iframe-JF9EJz3tWX8ObjG6mp2D" src="https://alu.jp/series/%E6%98%A0%E5%83%8F%E7%A0%94%E3%81%AB%E3%81%AF%E6%89%8B%E3%82%92%E5%87%BA%E3%81%99%E3%81%AA%EF%BC%81/crop/embed/JF9EJz3tWX8ObjG6mp2D/0?referer=oembed" style="margin: auto; display: block; border-width: 0px;"></iframe><div class="alu-embed" style="max-width: 432px;text-align: right;margin: 0 auto;"><a href="https://alu.jp/series/%E6%98%A0%E5%83%8F%E7%A0%94%E3%81%AB%E3%81%AF%E6%89%8B%E3%82%92%E5%87%BA%E3%81%99%E3%81%AA%EF%BC%81/crop/JF9EJz3tWX8ObjG6mp2D/0" target="_blank" style="margin: 0 auto !important;display: inline-block;padding-top: 10px;font-size: 12px;color: #787c7b;text-decoration: none;text-align: right;">映像研には手を出すな！ / alu.jp</a></p>
+
+<h3 id="乗り越えられるべき存在としての割れ窓バジェット">乗り越えられるべき存在としての割れ窓バジェット</h3>
+
+<p>日々妥協の中に生きているとしても、同じ妥協に妥協してはいけないと考えます。これは善悪の問題ではなく、楽しさの問題として。人間は飽きる生き物なので、そのままではいつか絶対に割れ窓バジェットの運用は止まっていきます。そしてそれははだいたい少しずつうやむやに進み、どこかで突然に終わるものです。</p>
+
+<p>ではどうすれば良いか。常にプロセスを改善し続けることだと思います。例えばあらゆるエラーログを横串で見られるようにしてみたり、そういったログからメトリクスを生成してみたり、そこから SLO を決めてみたり。あれ、いつの間にか Site Reliability Engineering になってしまった。</p>
+
+<p>もちろん、そうすることができるものについては自然とそうなっていくだろうし、難しいものとしては妥協としてドキュメントを書いたり、問題を緩和してくれるようなツールやライブラリやミドルウェアを導入したり、色々やっていくことになるでしょう。</p>
+
+<p>より根本的な対応として、使われてない機能やサービスを終わらせる、ということもあり得ると思います。ですが、私はそれすらも本当の意味で根本的ではないと思っています。どこかに動いている機能やサービスがある限り、そこからまた割れ窓は生まれ続けるのだから。</p>
+
+<p>大事なのは常に現状に満足せず、より良く割れ窓をなおし続けることだと思います。そのための仕組みづくりが必要だとか、そのための知恵や技術力が必要だとか、そういうことに時間を使えるだけの企業としての体力が必要だとか色々なことが言えますが、結局どこかでほんの少しの情熱が必要になると思います。だから、それでも割れ窓をなおしていく、という気持ちは常に尊いと私は考えます。</p>
+
+<h2 id="蛇足-終末論としての割れ窓理論">蛇足: 終末論としての割れ窓理論</h2>
+
+<h3 id="割れ窓理論は答えのようなものを与えてくれる">割れ窓理論は答えのようなものを与えてくれる</h3>
+
+<p>昔、何かの本で、「全ての宗教は終末論の構造を持っている」といったような内容のことを読んだ記憶があります。仏教に多いては末法、ユダヤ教やキリスト教においては最後の審判。そういった終わりがあり、歴史はまっすぐそこに進む。そしてそこで救われて天国にいくためには正しいことをしろ、とかその辺の詳細はそれぞれ違うと思いますし、僕は宗教についての専門家ではないので細かい話は避けますが、構造としては共通しているということが言えそうです。</p>
+
+<p>この話、どの本で読んだんだっけな。すくなくとも宮台真司か速水健朗みたいな日本の社会学方面の人の著作だったか、それ以外のどちらかということは言えそうです。いや、もしかしてそんな私の記憶自体が偽りだったとしたら?</p>
+
+<p>ともかく、割れ窓理論もそれらと同じ構造を持っていると私は考えます。割れ窓を徹底的に潰せばそれで良い、という宗教性がそこにはあります。</p>
+
+<h3 id="site-reliability-engineering-は答えなんて教えてくれない">Site Reliability Engineering は答えなんて教えてくれない</h3>
+
+<p>一方で、Site Reliability Engineering はそのような構造から逸脱した存在だと私は考えます。</p>
+
+<p>Engineering は科学なんだから宗教じゃないのは当たり前じゃないか、と思う人もいるかもしれません。それはそう。</p>
+
+<p>さっきの終末論の構造に Site Reliability Engineering は当てはめた時、答えとして与えられたものは何一つないと私は解釈しています。与えてくれるのは「計測に基づく継続的な改善」という哲学と、それを支える方法論としての SLO であり、エラーバジェットであり、自動化。哲学は不変だとしても、方法論は不変ではないと思うので、SLO すらもいずれは乗り越えられるべきなのでは、というのが私の考えです。</p>
+
+<p>といっても、今すぐ SLO を乗り越える方法論を考えていくべきとは思っていません。世の中のほとんどの人々にとっては、SLO という方法論はまだまだ実践を繰り返して学ぶ余地があるので、今はそれをやった方が戦略としては最適なはずです。ですが、SLO という方法論の効用が限界を迎えた時には、きっと何か新しい方法論が生まれていることでしょう。</p>
+
+<h3 id="site-reliability-engineering-が教えてくれる明らかな間違い">Site Reliability Engineering が教えてくれる明らかな間違い</h3>
+
+<p>明確な答えをくれないでお馴染みの Site Reliability Engineering ですが、明確な間違いについてなら教えてくれています。それは 100% の目標です。そしてそれは限界効用逓減の法則のためです。</p>
+
+<p>明らかな間違いがわかったところで、何が正解なのはわからないので、私たちは考え続けなければなりません。思考停止させてくれる割れ窓理論の方が短期的には楽かもしれませんが、考えさせ続けてくれる Site Reliability Engineering の方が、構造的には素敵じゃないか。</p>
+
+<h3 id="site-reliability-engineering-がはらむ一抹の宗教性">Site Reliability Engineering がはらむ一抹の宗教性</h3>
+
+<p>Site Reliability Engineering は終末論の構造を逸脱していると言ったな。あれは嘘だ。いや、割れ窓理論からするとかなり逸脱しているとは言えるんだけど、逸脱しきっているとは言えない、と言った方が良いでしょう。結局のところ「計測に基づく継続的な改善」という哲学が不変なのだとして、それをカール・ポパーの<a href="https://ja.wikipedia.org/wiki/%E5%8F%8D%E8%A8%BC%E5%8F%AF%E8%83%BD%E6%80%A7">反証可能性</a>に当てはめると、それは科学ではないということが言え、つまりは宗教的な構造を持つことになります。</p>
+
+<p>いや、まぁそこの解釈はあくまで僕個人が勝手に言ってることなので、宗教的な構造というのも全ては僕の脳内世界だけの出来事なんですけどね。</p>
+
+    </div>
+    <div class="post-footer">
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 31 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4">
+    
+
+<h3>
+  Author
+</h3>
+
+<p>
+  <div class="media">
+    
+    <img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class="pull-left">
+    
+    
+    <div class="media-body">
+      
+        <h4 class="media-heading"><a href="https://yuyat.jp">Yuya Takeyama</a></h4>
+      
+    </div>
+    
+  </div>
+</p>
+
+
+
+<p><a href="https://twitter.com/yuya_takeyama" class="twitter-follow-button" data-show-screen-name="false" data-show-count="true" data-dnt="true" data-size="large">Follow @yuya_takeyama</a></p>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3233912168536735"
+     data-ad-slot="3268217607"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          <footer>
+
+&copy; 2015.
+Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+<a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
+
+</footer>
+
+        </div>
+      </div>
+    </div>
+    <script src="https://blog.yuyat.jp/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12392004-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+</html>
+
