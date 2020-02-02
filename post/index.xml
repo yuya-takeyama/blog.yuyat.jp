@@ -6,13 +6,13 @@
     <description>Recent content in Posts on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 01 Jan 2020 00:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 01 Feb 2020 16:00:00 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>ソフトウェア開発の文脈で割れ窓理論を引用するのはミスリーディングではないか</title>
       <link>https://blog.yuyat.jp/post/no-more-broken-windows-theory/</link>
-      <pubDate>Wed, 01 Jan 2020 00:00:00 +0900</pubDate>
+      <pubDate>Sat, 01 Feb 2020 16:00:00 +0900</pubDate>
       
       <guid>https://blog.yuyat.jp/post/no-more-broken-windows-theory/</guid>
       <description>
@@ -1991,6 +1991,56 @@ drwxr-xr-x  6 yuya  staff  204 Apr 16 23:13 concurrent-ruby-1.0.5
     </item>
     
     <item>
+      <title>Ruby Conf Indonesia 2017 に参加して絶望した話</title>
+      <link>https://blog.yuyat.jp/post/ruby-conf-indonesia-2017/</link>
+      <pubDate>Mon, 09 Oct 2017 05:30:00 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/ruby-conf-indonesia-2017/</guid>
+      <description>
+
+&lt;p&gt;会社の出張で &lt;a href=&#34;http://ruby.id/conf/2017/&#34;&gt;Ruby Conf Indonesia 2017&lt;/a&gt; に行って来た。はじめに断っておくと、この記事にはトークの内容についての言及はない。&lt;/p&gt;
+
+&lt;p&gt;僕が働く Quipper はカンファレンス参加の支援制度があったり、スピーカーとしてだけでなく、オーディエンスとしての参加でも会社から一定の金額の支援があり、海外カンファレンスへの参加も推奨されている。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;hakobera&lt;/li&gt;
+&lt;li&gt;joy&lt;/li&gt;
+&lt;li&gt;mtsmfm&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;が、今回はそれとは関係なく、出張としての参加だったので、当然渡航費・宿泊費は全て会社持ちで参加させてもらった。ある日いつものように仕事していると、Engineering Manager から「竹山さん、もし良かったら今度インドネシア行ってみませんか」と誘われて、いろいろ不安もあったけど「せっかくなので是非！」ということで快諾した。&lt;/p&gt;
+
+&lt;p&gt;仕事の内容はというと、Quipper は Ruby Conf Indonesia 2017 の Gold Sponser だったので、そのブースでスタッフをするというもの。と言っても実際にブースにはずっと HR のスタッフがいてくれて、自分はトークは全部中で座って聞き、それ以外の時間はブース周辺で、来てくれた人に会社の説明をしたり、それ以外の人にも話しかけて Quipper の話やいろんな雑談をしつつ、ビラを配ったりしていた。&lt;/p&gt;
+
+&lt;h2 id=&#34;インドネシア人と英語&#34;&gt;インドネシア人と英語&lt;/h2&gt;
+
+&lt;p&gt;インドネシアの公用語はインドネシア語 (Bahasa Indonesia) だが、もちろんこちらは 1 ミリも話せないので当然英語で話した。事前に調べた感じでは「インドネシア人はフィリピン人ほど英語が得意ではなさそうだ」という印象で、 (今回は日本からの自分の他に、フィリピンからの同僚も 2 人同様に参加していた) 実際フィリピン人は公教育が全て英語で行われるだけあってほぼネイティブ並みに話せるのに対して、インドネシア人は割と頭の中で翻訳しながら話しているようだった。&lt;/p&gt;
+
+&lt;p&gt;が、とはいえ英語に対して強い苦手意識を持っているような様子はなく、全員なかなか流暢に喋っていた。というか全員自分と同等かそれ以上だった。「向こうもそんなに得意じゃなさそうだから、逆にお互い気を使いながら最小限の語彙で話せるだろう」なんて高をくくっていたが、彼ら・彼女らを見下してしまっていたことを申し訳なく思ったし、そういう自分を恥じた。&lt;/p&gt;
+
+&lt;p&gt;とはいえ実際、インドネシアに着いて街で話した人たちはあまり英語が得意とは言えなさそうだった。空港で「もう Uber で予約してるから」と何度言っても無理やり「タクシー乗っていかない？」と言ってくる運転手の文法はかなりブロークンで何を言ってるのか理解するのにかなり時間がかかったし、英語で話しかけても無言でボディランゲージで返して来たりしていた。中には Uber のプロフィールで「Speaks Indonesian and English」となっている人もいたが、片言で単語ベースの会話の人もいた。普通に英会話が成立する人もいた。&lt;/p&gt;
+
+&lt;p&gt;だけど Ruby Conf Indonesia 2017 の会場にいたエンジニアたちはかなり様子が違っていた。そもそもスピーカーのほとんどは英語で話し、インドネシア語でのトークはかなり例外的だった。さらに驚いたのはカンファレンスの MC (1 人はエンジニア、1 人は Go-Jek の HR (?) スタッフ) がほぼ全て英語だったことだ。この人たちが英語を話していること自体は、そういう人選をすればいいだけだし、海外からのゲストが来ていることを考えると普通の選択だが、アナウンスも含めてほぼ全て英語なのは、会場にいるインドネシア人のほとんどがそれぐらいは理解できる、という期待があったからだろう。&lt;/p&gt;
+
+&lt;p&gt;一方、近年の日本の大規模なカンファレンスでは、同時通訳のためのイヤフォンが用意されていて、日本語から英語だったり英語から日本語に翻訳されたトークを聞くことができる。日本の RubyKaigi は Ruby の本国だけあって本当に世界中から多様なゲストが参加するので、そう言った施策はもちろん大事だし、それらを実現するために努力するカンファレンススタッフや、通訳の方々には敬意を感じるけれども、前提とされている英語力の違いを感じずにはいられなかった。&lt;/p&gt;
+
+&lt;p&gt;そしてさらに驚いたのが、英語が流暢なのはすでに働いている職業エンジニアだけでなく、学生でも変わりなかったということだ。現地に駐在している日本人の Country Manager に聞いても「まぁ一定以上の層はほぼみんな普通に英語喋れるイメージですね」と言っていた。&lt;/p&gt;
+
+&lt;h2 id=&#34;ジャカルタのベンチャー事情&#34;&gt;ジャカルタのベンチャー事情&lt;/h2&gt;
+
+&lt;p&gt;時系列は前後するが、インドネシアのスカルノ・ハッタ国際空港に着いてまず思ったのは、ベンチャー企業によるスマートフォンアプリの広告が多いことだった。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Blue Bird (タクシー)&lt;/li&gt;
+&lt;li&gt;Grab (タクシー)&lt;/li&gt;
+&lt;li&gt;Traveloka (ホテル予約)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;空港という場所を考えるとまぁ妥当なチョイスという感じである。空港からオフィスへの移動には、アプリのインストールに SMS 認証が必要という都合上、&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>peco で S3 のバケット・ファイル一覧を見るやつを作ったらめちゃくちゃ便利なのができた</title>
       <link>https://blog.yuyat.jp/post/peco-s3.zsh/</link>
       <pubDate>Fri, 12 May 2017 00:46:00 +0900</pubDate>
@@ -2100,230 +2150,6 @@ end
 &lt;p&gt;これで、適切に &lt;code&gt;.permit&lt;/code&gt; していない &lt;code&gt;ActionController::Parameters&lt;/code&gt; をセットしたりしようとすると &lt;code&gt;ActiveModel::ForbiddenAttributesError&lt;/code&gt; が発生するようになります。&lt;/p&gt;
 
 &lt;p&gt;もちろん雑に &lt;code&gt;.to_h&lt;/code&gt; したりしたものを渡したりするとそれは検出できないので、そういうのは人間が気づく必要があります。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Heroku で Resque を Graceful Shutdown する</title>
-      <link>https://blog.yuyat.jp/post/graceful-shutdown-resque-in-heroku/</link>
-      <pubDate>Mon, 10 Apr 2017 02:02:59 +0900</pubDate>
-      
-      <guid>https://blog.yuyat.jp/post/graceful-shutdown-resque-in-heroku/</guid>
-      <description>
-
-&lt;p&gt;Heroku で Resque を動かす場合、何も考えないでセットアップすると、デプロイによるプロセスの再起動時や、Dyno のスケールダウン時に Worker プロセスが強制終了され、&lt;code&gt;Resque::DirtyExit&lt;/code&gt; としてエラーになってしまいます。&lt;/p&gt;
-
-&lt;p&gt;これを避けるために正しく &lt;strong&gt;Graceful Shutdown&lt;/strong&gt; する方法について調べてみました。&lt;/p&gt;
-
-&lt;h2 id=&#34;前提とするバージョン&#34;&gt;前提とするバージョン&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Ruby 2.4.1&lt;/li&gt;
-&lt;li&gt;Rails 5.0.2&lt;/li&gt;
-&lt;li&gt;Resque 1.27.2&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;graceful-shutdown-とは-この記事における定義&#34;&gt;Graceful Shutdown とは (この記事における定義)&lt;/h2&gt;
-
-&lt;p&gt;厳密な定義を知っているわけではないですが、この記事では以下のような定義で話を進めます。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Graceful Shutdown: 中途半端なデータが残らないよう、行儀よくプロセスを終了する&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;さらにこれを細分化して、この記事では以下のように呼ぶことにします。これらは私の造語で、全く一般的でない呼び方です。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Halfway Graceful Shutdown: やりかけの処理に完了処理を行ってから全体の途中で処理を終了する&lt;/li&gt;
-&lt;li&gt;Entire Graceful Shutdown: すべての処理が完了してから終了する&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;例えば、100 件のデータを処理する Worker があり、50 件目を行っている途中で終了のシグナルを受け取った場合、その 50 件目まで正しくやりきったタイミングで終了するのが &lt;strong&gt;Halfway Graceful Shutdown&lt;/strong&gt;。&lt;/p&gt;
-
-&lt;p&gt;そして、50 件目の段階で終了のシグナルを受け取っても、100 件すべてをやりきった上で終了するのが &lt;strong&gt;Entire Graceful Shutdown&lt;/strong&gt; となります。&lt;/p&gt;
-
-&lt;p&gt;これに対して、いきなり終了してしまうことをここでは &lt;strong&gt;Immediate Shutdown&lt;/strong&gt; と呼ぶことにします。
-これも一般的な用語なのかはわからないですが、検索した感じではこういう用語を使っているドキュメントもいくつか見つかりました。&lt;/p&gt;
-
-&lt;h2 id=&#34;resque-における-graceful-shutdown&#34;&gt;Resque における Graceful Shutdown&lt;/h2&gt;
-
-&lt;p&gt;Resque では Graceful Shutdown を行う方法として、QUIT シグナルによる方法が提供されています。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/resque/resque#signals&#34;&gt;resque/resque: Signals&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;つまり Resque のプロセス ID に対して以下のようなコマンドを実行すれば良いことになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;$ kill -QUIT PID
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;なお、&lt;code&gt;QUIT&lt;/code&gt; を受け取った時の挙動は、この記事の定義で言えば Entire Graceful Shutdown です。&lt;/p&gt;
-
-&lt;h2 id=&#34;heroku-で-graceful-shutdown-を行う際の問題点&#34;&gt;Heroku で Graceful Shutdown を行う際の問題点&lt;/h2&gt;
-
-&lt;p&gt;Heroku のような PaaS では任意の UNIX プロセスに対して任意のシグナルを送ることはできないことが一般的でしょう。 (少なくとも Heorku ではできません)&lt;/p&gt;
-
-&lt;p&gt;それでいて、以下のような場合は &lt;code&gt;TERM&lt;/code&gt; シグナルが送信されます。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;デプロイの実行による Dyno の再起動&lt;/li&gt;
-&lt;li&gt;Dyno のスケールダウン&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Heroku ではこれらの場合、まずは &lt;code&gt;TERM&lt;/code&gt; シグナルが送られ、それでもプロセスが残っている場合は 30 秒後に &lt;code&gt;KILL&lt;/code&gt; シグナルが送られて強制終了となります。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://devcenter.heroku.com/articles/error-codes#r12-exit-timeout&#34;&gt;Heroku Error Codes: R12 - Exit Timeout&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;そして &lt;code&gt;TERM&lt;/code&gt; が送られた場合の Resque のデフォルトの挙動は Immediate Shutdown です。&lt;/p&gt;
-
-&lt;h2 id=&#34;heroku-で-resque-を-graceful-shutdown-する&#34;&gt;Heroku で Resque を Graceful Shutdown する&lt;/h2&gt;
-
-&lt;p&gt;実は &lt;a href=&#34;https://github.com/resque/resque#resque&#34;&gt;Resque の README&lt;/a&gt; や &lt;a href=&#34;https://devcenter.heroku.com/articles/queuing-ruby-resque#process-options&#34;&gt;Heroku のドキュメント&lt;/a&gt;にもいろいろ説明はあるんですが、以下のような理由で、一読しただけ正しく理解するのは難しいと思いました。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Resque の &lt;code&gt;master&lt;/code&gt; ブランチの README に書いてある内容の一部は現状の最新版 (&lt;code&gt;v1.27.2&lt;/code&gt;) では使えないのでややこしい
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/resque/resque/pull/1514&#34;&gt;&lt;code&gt;RESQUE_PRE_SHUTDOWN_TIMEOUT&lt;/code&gt;&lt;/a&gt; というオプションはまだリリースされていない&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Resque のドキュメントには記載されていないが有用なオプションがある
-
-&lt;ul&gt;
-&lt;li&gt;Entire Gracful Shutdown を行う上で必要な &lt;a href=&#34;https://github.com/resque/resque/pull/1007&#34;&gt;GRACEFUL_TERM&lt;/a&gt; というオプション&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;Heroku のドキュメントは Resque に関する情報が一部古いか間違っている
-
-&lt;ul&gt;
-&lt;li&gt;少なくとも Rails 5.0.2 では &lt;code&gt;rake resque:work&lt;/code&gt; ではなく &lt;code&gt;rake environment resque:work&lt;/code&gt; としないとエラーで Worker が起動できない&lt;/li&gt;
-&lt;li&gt;SIGTERM から 10 秒後に SIGKILL、と言う説明があるが正しくは 30 秒&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Resque の &lt;code&gt;GRACEFUL_TERM&lt;/code&gt; についてはプルリクエストを送ればいいとして、Heroku のドキュメントの問題についてはどこに報告すべきかよくわからないので知ってる人は教えてください。&lt;/p&gt;
-
-&lt;h3 id=&#34;halfway-graceful-shutdown&#34;&gt;Halfway Graceful Shutdown&lt;/h3&gt;
-
-&lt;p&gt;これは実は以下の記事でほぼ説明されています。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;http://webtech-walker.com/archive/2012/09/resque_heroku.html&#34;&gt;HerokuでResqueを使うときに優雅に再起動する&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;ただしこれも 4 年半ほど前の記事なので、現時点では以下のようにする必要があるでしょう。&lt;/p&gt;
-
-&lt;h4 id=&#34;worker-の実装&#34;&gt;Worker の実装&lt;/h4&gt;
-
-&lt;p&gt;&lt;code&gt;perform&lt;/code&gt; メソッドの中で &lt;code&gt;Resque::TermException&lt;/code&gt; を &lt;code&gt;rescue&lt;/code&gt; し、完了処理を実装します。&lt;/p&gt;
-
-&lt;p&gt;これについては上記の記事通りで問題ありません。&lt;/p&gt;
-
-&lt;h4 id=&#34;procfile&#34;&gt;Procfile&lt;/h4&gt;
-
-&lt;p&gt;以下のようにします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;resque: QUEUE=* TERM_CHILD=1 RESQUE_TERM_TIMEOUT=30 bundle exec rake environment resque:work
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;現在のバージョンでは &lt;code&gt;QUEUE&lt;/code&gt; の指定が必須です。 (もちろん必要に応じて変更する)&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;TERM_CHILD&lt;/code&gt; をセットすると &lt;code&gt;TERM&lt;/code&gt; シグナルを受け取った時の挙動が変わります。&lt;/p&gt;
-
-&lt;p&gt;デフォルトでは &lt;code&gt;TERM&lt;/code&gt; を受け取ると容赦なく Worker である子プロセスに &lt;code&gt;KILL&lt;/code&gt; を送り Immediate Shutdown となります。&lt;/p&gt;
-
-&lt;p&gt;これに対して &lt;code&gt;TERM_CHILD&lt;/code&gt; をセットした場合は以下のような流れになります。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Worker である子プロセスに対して &lt;code&gt;TERM&lt;/code&gt; を送る
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;Resque::TermException&lt;/code&gt; が &lt;code&gt;raise&lt;/code&gt; される&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;TERM_TIMEOUT&lt;/code&gt; に指定した秒数の間、子プロセスが終了するのを待つ&lt;/li&gt;
-&lt;li&gt;それでも子プロセスが残っていれば今度は &lt;code&gt;KILL&lt;/code&gt; を送って強制終了する&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;前述の Heroku の制限のため、&lt;code&gt;RESQUE_TERM_TIMEOUT&lt;/code&gt; は 30 秒以下にする必要があります。 (それ以上を指定しても結局 Heroku から &lt;code&gt;KILL&lt;/code&gt; される)&lt;/p&gt;
-
-&lt;h3 id=&#34;resque-pre-shutdown-timeout-について&#34;&gt;&lt;code&gt;RESQUE_PRE_SHUTDOWN_TIMEOUT&lt;/code&gt; について&lt;/h3&gt;
-
-&lt;p&gt;前述の通り未リリースではあるものの、&lt;code&gt;master&lt;/code&gt; ブランチに入っていてそのうち使えるようになると思われるこのオプションについても調べてみました。&lt;/p&gt;
-
-&lt;p&gt;これは &lt;code&gt;TERM_CHILD&lt;/code&gt; をセットしている場合のみに有効なオプションで、子プロセスに &lt;code&gt;TERM&lt;/code&gt; を送る前の待ち時間を秒数で指定することができます。&lt;/p&gt;
-
-&lt;p&gt;つまりこれは &lt;code&gt;Halfway Graceful Shutdown&lt;/code&gt; と &lt;code&gt;Entire Graceful Shutdown&lt;/code&gt; 複合です。&lt;/p&gt;
-
-&lt;p&gt;例えば &lt;code&gt;Procfile&lt;/code&gt; を以下のようにした場合、&lt;code&gt;TERM&lt;/code&gt; を受け取った後の挙動は以下のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;resque: QUEUE=* TERM_CHILD=1 RESQUE_PRE_SHUTDOWN_TIMEOUT=20 RESQUE_TERM_TIMEOUT=10 bundle exec rake environment resque:work
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;子プロセスの処理が完了するまで 20 秒間待つ
-
-&lt;ul&gt;
-&lt;li&gt;この 20 秒間に処理が全て完了すれば Entire Graceful Shutdown&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;子プロセスに &lt;code&gt;TERM&lt;/code&gt; を送る
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;Resque::TermException&lt;/code&gt; が &lt;code&gt;raise&lt;/code&gt; される&lt;/li&gt;
-&lt;li&gt;この場合は Halfway Graceful Shutdown&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-&lt;li&gt;子プロセスが終了するまでさらに 10 秒間待つ&lt;/li&gt;
-&lt;li&gt;それでも子プロセスが残っていれば今度は &lt;code&gt;KILL&lt;/code&gt; を送って強制終了する&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;具体的な秒数については実際に動いている Worker の実行時間を元にチューニングするのが良いでしょう。&lt;/p&gt;
-
-&lt;p&gt;いずれにせよ &lt;code&gt;RESQUE_PRE_SHUTDOWN_TIMEOUT&lt;/code&gt; と &lt;code&gt;RESQUE_TERM_TIMEOUT&lt;/code&gt; の合計は 30 以下にする必要があります。&lt;/p&gt;
-
-&lt;h3 id=&#34;entire-graceful-shutdown&#34;&gt;Entire Graceful Shutdown&lt;/h3&gt;
-
-&lt;p&gt;これについては説明されている記事が見つけられなかったので、自分で実際に Heroku で動かしながらわかったことを元に書きます。&lt;/p&gt;
-
-&lt;h4 id=&#34;worker-の実装-1&#34;&gt;Worker の実装&lt;/h4&gt;
-
-&lt;p&gt;Halfway Graceful Shutdown を行わないのであれば、&lt;code&gt;Resque::TermException&lt;/code&gt; の &lt;code&gt;rescue&lt;/code&gt; は不要です。&lt;/p&gt;
-
-&lt;h4 id=&#34;procfile-1&#34;&gt;Procfile&lt;/h4&gt;
-
-&lt;p&gt;以下のようにします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;resque: QUEUE=* GRACEFUL_TERM=1 bundle exec rake environment resque:work
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;この場合は &lt;code&gt;TERM_CHILD&lt;/code&gt; を指定してはいけません。指定した場合、&lt;code&gt;GRACEFUL_TERM&lt;/code&gt; の設定が&lt;a href=&#34;https://github.com/resque/resque/blob/v1.27.2/lib/resque/worker.rb#L866&#34;&gt;無効果されます&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h4 id=&#34;graceful-term-とは&#34;&gt;&lt;code&gt;GRACEFUL_TERM&lt;/code&gt; とは&lt;/h4&gt;
-
-&lt;p&gt;これは &lt;code&gt;TERM&lt;/code&gt; を受け取った時の処理を (Entire) Graceful Shutdown にするというものです。&lt;/p&gt;
-
-&lt;p&gt;前述の通り今の所ドキュメント化されていないようです。&lt;/p&gt;
-
-&lt;h2 id=&#34;どちらの方法を選ぶべきか&#34;&gt;どちらの方法を選ぶべきか&lt;/h2&gt;
-
-&lt;p&gt;基本的には Halfway Graceful Shutdown を選ぶべきでしょう。&lt;/p&gt;
-
-&lt;p&gt;Heroku では 30 秒制限がある以上、Entire Graceful Shutdown を選ぶとしても、Worker は全て 30 秒で完了できなくてはなりません。通常 1 分かかる処理があったとして、20 秒時点で &lt;code&gt;TERM&lt;/code&gt; を受け取った場合、Entire Graceful Shutdown では最後の 10 秒分の処理を残して強制終了されてしまうからです。&lt;/p&gt;
-
-&lt;p&gt;30 秒間に全てを終えることはできなくても、今やりかけの分だけ綺麗に完了させることはできるかもしれません。&lt;/p&gt;
-
-&lt;p&gt;ただし、Halfway Graceful Shutdown を行うには、前述の通り &lt;code&gt;Resque::TermException&lt;/code&gt; を正しく &lt;code&gt;rescue&lt;/code&gt; するような実装を行わなければなりません。&lt;/p&gt;
-
-&lt;p&gt;全ての Worker が 30 秒もかからないような場合であれば、その実装をサボって Entire Graceful Shutdown で妥協するのも良いでしょう。&lt;/p&gt;
-
-&lt;h2 id=&#34;関連するソースの読み方&#34;&gt;関連するソースの読み方&lt;/h2&gt;
-
-&lt;p&gt;ここに書いてあることは基本的には &lt;code&gt;Resque::Worker&lt;/code&gt; だけ読めば全て書いてあります。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/resque/resque/blob/master/lib/resque/worker.rb&#34;&gt;resque/lib/resque/worker.rb&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Resque は想像していたよりは意外と重厚な感じではなく、比較的読みやすい分量だと思いました。UNIX プロセスについての勉強としても面白いと思うのでオススメです。&lt;/p&gt;
 </description>
     </item>
     
