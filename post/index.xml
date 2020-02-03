@@ -6,8 +6,56 @@
     <description>Recent content in Posts on Born Too Late</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 01 Feb 2020 16:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 03 Feb 2020 08:00:00 +0900</lastBuildDate>
     <atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>今さら M-1 2019 における和牛のすごさを振り返る</title>
+      <link>https://blog.yuyat.jp/post/m1-2019-wagyu/</link>
+      <pubDate>Mon, 03 Feb 2020 08:00:00 +0900</pubDate>
+      
+      <guid>https://blog.yuyat.jp/post/m1-2019-wagyu/</guid>
+      <description>
+
+&lt;p&gt;昨日ご飯を食べていてこんな会話をした。&lt;/p&gt;
+
+&lt;p&gt;「M-1 2019 の決勝に出たのってさ、ミルクボーイとぺこぱと和牛だったじゃん?」&lt;/p&gt;
+
+&lt;p&gt;「うん」&lt;/p&gt;
+
+&lt;p&gt;「その時のネタってどんなんだったっけ?」&lt;/p&gt;
+
+&lt;p&gt;思い出せない。思い出せないけど「和牛はすごかった」という感覚だけが残っている。録画を改めて見たらやはり凄かったので、その凄さがどこにあったのか、素人なりに考えてみる。&lt;/p&gt;
+
+&lt;h2 id=&#34;ミルクボーイ-ぺこぱは思い出せるのに和牛は思い出せない-という現象&#34;&gt;ミルクボーイ、ぺこぱは思い出せるのに和牛は思い出せない、という現象&lt;/h2&gt;
+
+&lt;p&gt;普段そんなに熱心に大笑いを観るわけではないし、M-1 にしても毎年必ず観ているというわけではない。それでも 2019 年の M-1 は確かに凄かった。&lt;/p&gt;
+
+&lt;p&gt;行ったり来たり漫才のミルクボーイ、肯定漫才のぺこぱ、そして和牛。&lt;/p&gt;
+
+&lt;p&gt;和牛だ。&lt;/p&gt;
+
+&lt;p&gt;和牛の漫才には他の 2 グループのようなわかりやすい構造や特徴がないからレッテルが貼りづらいし、レッテルが貼りづらいからこそネタの内容を思い出せない。&lt;/p&gt;
+
+&lt;p&gt;だけど、あの時テレビの前で和牛を見て確かに爆笑したという事実だけは覚えている。&lt;/p&gt;
+
+&lt;p&gt;また、和牛はこれまでも&lt;a href=&#34;https://www.m-1gp.com/combi/73.html&#34;&gt;何度も M-1 に出場している&lt;/a&gt;し、それ以外を含めて積み上げた実績はいくらでもある。そして、今回の M-1 2019 でも爆笑させられた、というのもまた僕の中の和牛史に静かに積み上がる。&lt;/p&gt;
+
+&lt;p&gt;一方、ミルクボーイやぺこぱを観たのは僕は初めてだったし、ネタも強烈だったので、内容も含めて強烈に覚えている。&lt;/p&gt;
+
+&lt;p&gt;そういうことではないだろうか。&lt;/p&gt;
+
+&lt;h2 id=&#34;最後に&#34;&gt;最後に&lt;/h2&gt;
+
+&lt;p&gt;M-1 2019 を観ていた方はずっと違和感を感じていると思う。&lt;/p&gt;
+
+&lt;p&gt;そう、M-1 2019 の決勝に出たのは和牛ではなく、かまいたちだったのである。&lt;/p&gt;
+
+&lt;p&gt;ちょっと間違えた。&lt;/p&gt;
+
+&lt;p&gt;次は機会があればかまいたちのネタが思い出せないという現象に考察して行こうと思う。&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>ソフトウェア開発の文脈で割れ窓理論を引用するのはミスリーディングではないか</title>
@@ -2094,62 +2142,6 @@ drwxr-xr-x  6 yuya  staff  204 Apr 16 23:13 concurrent-ruby-1.0.5
 
 &lt;p&gt;zsh というかシェルスクリプトはあんまり得意じゃないので、コード的には結構拙い感じだと思います。&lt;br /&gt;
 良ければ Pull Request ください。&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>MongoMapper で Mass Assignment を自動検出する</title>
-      <link>https://blog.yuyat.jp/post/automatic-mass-assignment-detection-for-mongomapper/</link>
-      <pubDate>Thu, 13 Apr 2017 01:14:30 +0900</pubDate>
-      
-      <guid>https://blog.yuyat.jp/post/automatic-mass-assignment-detection-for-mongomapper/</guid>
-      <description>
-
-&lt;p&gt;GitHub が &lt;a href=&#34;https://www.infoq.com/jp/news/2012/03/GitHub-Compromised&#34;&gt;Mass Assignment 脆弱性を突かれて&lt;/a&gt;からもう 5 年も経っているんですね。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;ActiveRecord&lt;/code&gt; (というか &lt;code&gt;ActiveModel&lt;/code&gt;) では適切に &lt;code&gt;.permit&lt;/code&gt; したパラメータ以外は &lt;code&gt;ActiveModel::ForbiddenAttributesError&lt;/code&gt; が発生するようになっていますが、&lt;code&gt;MongoMapper&lt;/code&gt; ではそうなってなかったので対応させてみました。&lt;/p&gt;
-
-&lt;h2 id=&#34;プラグインの実装&#34;&gt;プラグインの実装&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;ActiveModel&lt;/code&gt; の &lt;a href=&#34;https://apidock.com/rails/ActiveModel/ForbiddenAttributesProtection&#34;&gt;&lt;code&gt;ForbiddenAttributesProtection&lt;/code&gt;&lt;/a&gt; をそのまま利用します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;module MongoMapper
-  module Plugins
-    module ForbiddenAttributesProtection
-      extend ActiveSupport::Concern
-
-      included do
-        include ::ActiveModel::ForbiddenAttributesProtection
-      end
-
-      def attributes=(attrs = {})
-        super sanitize_for_mass_assignment(attrs)
-      end
-    end
-  end
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;利用する&#34;&gt;利用する&lt;/h2&gt;
-
-&lt;p&gt;とりあえず &lt;code&gt;MongoMapper::Document&lt;/code&gt; を &lt;code&gt;include&lt;/code&gt; した全てのクラスに適用するには以下を呼ぶ。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;MongoMapper::Document.plugin(MongoMapper::Plugins::ForbiddenAttributesProtection)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ただし、各クラスが &lt;code&gt;MongoMapper::Document&lt;/code&gt; を &lt;code&gt;include&lt;/code&gt; するのより先に実行されている必要があると思います。&lt;/p&gt;
-
-&lt;p&gt;もしくは個別のクラスに適用する場合は普通に &lt;code&gt;include&lt;/code&gt; でも良いです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-rb&#34;&gt;class User
-  include MongoMapper::Document
-  include MongoMapper::Plugins::ForbiddenAttributesProtection
-end
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これで、適切に &lt;code&gt;.permit&lt;/code&gt; していない &lt;code&gt;ActionController::Parameters&lt;/code&gt; をセットしたりしようとすると &lt;code&gt;ActiveModel::ForbiddenAttributesError&lt;/code&gt; が発生するようになります。&lt;/p&gt;
-
-&lt;p&gt;もちろん雑に &lt;code&gt;.to_h&lt;/code&gt; したりしたものを渡したりするとそれは検出できないので、そういうのは人間が気づく必要があります。&lt;/p&gt;
 </description>
     </item>
     

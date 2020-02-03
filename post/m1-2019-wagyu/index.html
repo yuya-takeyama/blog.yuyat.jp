@@ -16,28 +16,32 @@
     <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
-    <link rel="canonical" href="https://blog.yuyat.jp/post/ghissue-a-command-to-create-github-issues/">
-    <title>GitHub の Issue を作るコマンド ghissue を作った | Born Too Late</title>
+    <link rel="canonical" href="https://blog.yuyat.jp/post/m1-2019-wagyu/">
+    <title>今さら M-1 2019 における和牛のすごさを振り返る | Born Too Late</title>
     
 
     <meta property="fb:admins" content="100000987494966" />
 <meta property="fb:app_id" content="285547814816502" />
-<meta property="og:title" content="GitHub の Issue を作るコマンド ghissue を作った" />
-<meta property="og:description" content="作りました。
+<meta property="og:title" content="今さら M-1 2019 における和牛のすごさを振り返る" />
+<meta property="og:description" content="昨日ご飯を食べていてこんな会話をした。
 
+「M-1 2019 の決勝に出たのってさ、ミルクボーイとぺこぱと和牛だったじゃん?」
 
-yuya-takeyama/ghissue
+「うん」
 
+「その時のネタってどんなんだったっけ?」
+
+思い出せない。思い出せないけど「和牛はすごかった」という感覚だけが残っている。録画を改めて見たらやはり凄かったので、その凄さがどこにあったのか、素人なりに考えてみる。
 " />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://blog.yuyat.jp/post/ghissue-a-command-to-create-github-issues/" />
+<meta property="og:url" content="https://blog.yuyat.jp/post/m1-2019-wagyu/" />
 
   
 	  <meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg" />
   
 
 
-  <meta property="og:updated_time" content="2016-11-27T02:43:58&#43;09:00"/>
+  <meta property="og:updated_time" content="2020-02-03T08:00:00&#43;09:00"/>
 
 
 
@@ -79,58 +83,56 @@ yuya-takeyama/ghissue
 <div class="row">
   <div class="col-sm-8">
     <div class="post-header">
-      <h1 class="post-title-main">GitHub の Issue を作るコマンド ghissue を作った</h1>
-      <p class="text-muted">Nov 27, 2016</p>
+      <h1 class="post-title-main">今さら M-1 2019 における和牛のすごさを振り返る</h1>
+      <p class="text-muted">Feb 3, 2020</p>
 
 <div>
-  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fghissue-a-command-to-create-github-issues%2f&amp;text=GitHub%20%e3%81%ae%20Issue%20%e3%82%92%e4%bd%9c%e3%82%8b%e3%82%b3%e3%83%9e%e3%83%b3%e3%83%89%20ghissue%20%e3%82%92%e4%bd%9c%e3%81%a3%e3%81%9f&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
-  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fghissue-a-command-to-create-github-issues%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fghissue-a-command-to-create-github-issues%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fm1-2019-wagyu%2f&amp;text=%e4%bb%8a%e3%81%95%e3%82%89%20M-1%202019%20%e3%81%ab%e3%81%8a%e3%81%91%e3%82%8b%e5%92%8c%e7%89%9b%e3%81%ae%e3%81%99%e3%81%94%e3%81%95%e3%82%92%e6%8c%af%e3%82%8a%e8%bf%94%e3%82%8b&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fm1-2019-wagyu%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fm1-2019-wagyu%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
 </div>
 
     </div>
     <div class="post-content">
       
 
-<p>作りました。</p>
+<p>昨日ご飯を食べていてこんな会話をした。</p>
 
-<ul>
-<li><a href="https://github.com/yuya-takeyama/ghissue">yuya-takeyama/ghissue</a></li>
-</ul>
+<p>「M-1 2019 の決勝に出たのってさ、ミルクボーイとぺこぱと和牛だったじゃん?」</p>
 
-<h2 id="なぜ作ったか">なぜ作ったか</h2>
+<p>「うん」</p>
 
-<p>いろいろな自動化スクリプトを書く中で、<a href="https://octokit.github.io/">Octokit</a> とかで毎回実装するのは面倒だったので、標準入力だけ食わせればいい感じにやってくれるものが欲しいな、と思って作りました。</p>
+<p>「その時のネタってどんなんだったっけ?」</p>
 
-<p>タイトル・本文だけを標準出力に書き出すスクリプトだけ書けば、それをパイプで繋げるだけで ghissue が Issue を立ててくれます。<br />
-タイトル・本文だけうまく組み立てることに集中すればよくなり、テストも楽になるでしょう。</p>
+<p>思い出せない。思い出せないけど「和牛はすごかった」という感覚だけが残っている。録画を改めて見たらやはり凄かったので、その凄さがどこにあったのか、素人なりに考えてみる。</p>
 
-<p>類似ツールとしては <a href="https://github.com/stephencelis/ghi">ghi</a> というツールがありますが、これは標準入力からタイトル・本文を指定することができないので、他のコマンドと組み合わせて使うのはやや面倒です。<br />
-また、ghi が Ruby なのに対して、ghissue は Go で実装されていてコンパイル済みのバイナリも GitHub からダウンロードできます。</p>
+<h2 id="ミルクボーイ-ぺこぱは思い出せるのに和牛は思い出せない-という現象">ミルクボーイ、ぺこぱは思い出せるのに和牛は思い出せない、という現象</h2>
 
-<h2 id="使い方">使い方</h2>
+<p>普段そんなに熱心に大笑いを観るわけではないし、M-1 にしても毎年必ず観ているというわけではない。それでも 2019 年の M-1 は確かに凄かった。</p>
 
-<h3 id="アクセストークンの指定">アクセストークンの指定</h3>
+<p>行ったり来たり漫才のミルクボーイ、肯定漫才のぺこぱ、そして和牛。</p>
 
-<p>GitHub のアクセストークンを <code>GITHUB_ACCESS_TOKEN</code> という環境変数で指定します。</p>
+<p>和牛だ。</p>
 
-<h3 id="issue-を作る">Issue を作る</h3>
+<p>和牛の漫才には他の 2 グループのようなわかりやすい構造や特徴がないからレッテルが貼りづらいし、レッテルが貼りづらいからこそネタの内容を思い出せない。</p>
 
-<pre><code>$ some_command | ghissue yuya-takeyama/test --labels Bug,Major --assignees yuya-takeyama
-</code></pre>
+<p>だけど、あの時テレビの前で和牛を見て確かに爆笑したという事実だけは覚えている。</p>
 
-<p><code>some_command</code> は Issue のタイトル・本文を生成するためのコマンドです。<br />
-1 行目がタイトルになり、残りは本文になります。</p>
+<p>また、和牛はこれまでも<a href="https://www.m-1gp.com/combi/73.html">何度も M-1 に出場している</a>し、それ以外を含めて積み上げた実績はいくらでもある。そして、今回の M-1 2019 でも爆笑させられた、というのもまた僕の中の和牛史に静かに積み上がる。</p>
 
-<p><code>--labels</code> (<code>-l</code>) ではラベルを指定します。カンマ区切りで複数指定可能です。</p>
+<p>一方、ミルクボーイやぺこぱを観たのは僕は初めてだったし、ネタも強烈だったので、内容も含めて強烈に覚えている。</p>
 
-<p><code>--assignees</code> (<code>-a</code>) では assignee を指定します。これもカンマ区切りで複数指定可能です。</p>
+<p>そういうことではないだろうか。</p>
 
-<h2 id="その他">その他</h2>
+<h2 id="最後に">最後に</h2>
 
-<p>Issue を編集する機能・コメントを記入するための機能もあっていいだろうと思うものの、今のところ個人的には必要としてないので、まぁそのうち。</p>
+<p>M-1 2019 を観ていた方はずっと違和感を感じていると思う。</p>
 
-<p>よければご利用ください。</p>
+<p>そう、M-1 2019 の決勝に出たのは和牛ではなく、かまいたちだったのである。</p>
+
+<p>ちょっと間違えた。</p>
+
+<p>次は機会があればかまいたちのネタが思い出せないという現象に考察して行こうと思う。</p>
 
     </div>
     <div class="post-footer">
