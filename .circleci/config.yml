@@ -1,0 +1,22 @@
+version: 2
+jobs:
+  deploy:
+    working_directory: ~/blog
+    docker:
+    - image: yuyat/hugo
+    steps:
+    - checkout
+    - add_ssh_keys
+    - run:
+        name: Deploy
+        command: ./scripts/deploy_production.sh
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only:
+                - master
