@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-3233912168536735",
+        enable_page_level_ads: true
+      });
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://blog.yuyat.jp/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
+    <link rel="canonical" href="https://blog.yuyat.jp/post/graceful-shutdown-resque-in-heroku/">
+    <title>Heroku で Resque を Graceful Shutdown する | Born Too Late</title>
+    
+
+    <meta property="fb:admins" content="100000987494966" />
+<meta property="fb:app_id" content="285547814816502" />
+<meta property="og:title" content="Heroku で Resque を Graceful Shutdown する" />
+<meta property="og:description" content="Heroku で Resque を動かす場合、何も考えないでセットアップすると、デプロイによるプロセスの再起動時や、Dyno のスケールダウン時に Worker プロセスが強制終了され、Resque::DirtyExit としてエラーになってしまいます。
+
+これを避けるために正しく Graceful Shutdown する方法について調べてみました。
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.yuyat.jp/post/graceful-shutdown-resque-in-heroku/" />
+
+  
+	  <meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg" />
+  
+
+
+  <meta property="og:updated_time" content="2017-04-10T02:02:59&#43;09:00"/>
+
+
+
+
+    <meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@yuya_takeyama">
+<meta name="twitter:creator" content="@yuya_takeyama">
+
+    
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="https://blog.yuyat.jp" class="navbar-brand">Born Too Late</a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="https://blog.yuyat.jp/post/">Archive</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">Heroku で Resque を Graceful Shutdown する</h1>
+      <p class="text-muted">Apr 10, 2017</p>
+
+<div>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fgraceful-shutdown-resque-in-heroku%2f&amp;text=Heroku%20%e3%81%a7%20Resque%20%e3%82%92%20Graceful%20Shutdown%20%e3%81%99%e3%82%8b&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fgraceful-shutdown-resque-in-heroku%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fgraceful-shutdown-resque-in-heroku%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
+</div>
+
+    </div>
+    <div class="post-content">
+      
+
+<p>Heroku で Resque を動かす場合、何も考えないでセットアップすると、デプロイによるプロセスの再起動時や、Dyno のスケールダウン時に Worker プロセスが強制終了され、<code>Resque::DirtyExit</code> としてエラーになってしまいます。</p>
+
+<p>これを避けるために正しく <strong>Graceful Shutdown</strong> する方法について調べてみました。</p>
+
+<h2 id="前提とするバージョン">前提とするバージョン</h2>
+
+<ul>
+<li>Ruby 2.4.1</li>
+<li>Rails 5.0.2</li>
+<li>Resque 1.27.2</li>
+</ul>
+
+<h2 id="graceful-shutdown-とは-この記事における定義">Graceful Shutdown とは (この記事における定義)</h2>
+
+<p>厳密な定義を知っているわけではないですが、この記事では以下のような定義で話を進めます。</p>
+
+<ul>
+<li>Graceful Shutdown: 中途半端なデータが残らないよう、行儀よくプロセスを終了する</li>
+</ul>
+
+<p>さらにこれを細分化して、この記事では以下のように呼ぶことにします。これらは私の造語で、全く一般的でない呼び方です。</p>
+
+<ul>
+<li>Halfway Graceful Shutdown: やりかけの処理に完了処理を行ってから全体の途中で処理を終了する</li>
+<li>Entire Graceful Shutdown: すべての処理が完了してから終了する</li>
+</ul>
+
+<p>例えば、100 件のデータを処理する Worker があり、50 件目を行っている途中で終了のシグナルを受け取った場合、その 50 件目まで正しくやりきったタイミングで終了するのが <strong>Halfway Graceful Shutdown</strong>。</p>
+
+<p>そして、50 件目の段階で終了のシグナルを受け取っても、100 件すべてをやりきった上で終了するのが <strong>Entire Graceful Shutdown</strong> となります。</p>
+
+<p>これに対して、いきなり終了してしまうことをここでは <strong>Immediate Shutdown</strong> と呼ぶことにします。
+これも一般的な用語なのかはわからないですが、検索した感じではこういう用語を使っているドキュメントもいくつか見つかりました。</p>
+
+<h2 id="resque-における-graceful-shutdown">Resque における Graceful Shutdown</h2>
+
+<p>Resque では Graceful Shutdown を行う方法として、QUIT シグナルによる方法が提供されています。</p>
+
+<ul>
+<li><a href="https://github.com/resque/resque#signals">resque/resque: Signals</a></li>
+</ul>
+
+<p>つまり Resque のプロセス ID に対して以下のようなコマンドを実行すれば良いことになります。</p>
+
+<pre><code>$ kill -QUIT PID
+</code></pre>
+
+<p>なお、<code>QUIT</code> を受け取った時の挙動は、この記事の定義で言えば Entire Graceful Shutdown です。</p>
+
+<h2 id="heroku-で-graceful-shutdown-を行う際の問題点">Heroku で Graceful Shutdown を行う際の問題点</h2>
+
+<p>Heroku のような PaaS では任意の UNIX プロセスに対して任意のシグナルを送ることはできないことが一般的でしょう。 (少なくとも Heorku ではできません)</p>
+
+<p>それでいて、以下のような場合は <code>TERM</code> シグナルが送信されます。</p>
+
+<ul>
+<li>デプロイの実行による Dyno の再起動</li>
+<li>Dyno のスケールダウン</li>
+</ul>
+
+<p>Heroku ではこれらの場合、まずは <code>TERM</code> シグナルが送られ、それでもプロセスが残っている場合は 30 秒後に <code>KILL</code> シグナルが送られて強制終了となります。</p>
+
+<ul>
+<li><a href="https://devcenter.heroku.com/articles/error-codes#r12-exit-timeout">Heroku Error Codes: R12 - Exit Timeout</a></li>
+</ul>
+
+<p>そして <code>TERM</code> が送られた場合の Resque のデフォルトの挙動は Immediate Shutdown です。</p>
+
+<h2 id="heroku-で-resque-を-graceful-shutdown-する">Heroku で Resque を Graceful Shutdown する</h2>
+
+<p>実は <a href="https://github.com/resque/resque#resque">Resque の README</a> や <a href="https://devcenter.heroku.com/articles/queuing-ruby-resque#process-options">Heroku のドキュメント</a>にもいろいろ説明はあるんですが、以下のような理由で、一読しただけ正しく理解するのは難しいと思いました。</p>
+
+<ul>
+<li>Resque の <code>master</code> ブランチの README に書いてある内容の一部は現状の最新版 (<code>v1.27.2</code>) では使えないのでややこしい
+
+<ul>
+<li><a href="https://github.com/resque/resque/pull/1514"><code>RESQUE_PRE_SHUTDOWN_TIMEOUT</code></a> というオプションはまだリリースされていない</li>
+</ul></li>
+<li>Resque のドキュメントには記載されていないが有用なオプションがある
+
+<ul>
+<li>Entire Gracful Shutdown を行う上で必要な <a href="https://github.com/resque/resque/pull/1007">GRACEFUL_TERM</a> というオプション</li>
+</ul></li>
+<li>Heroku のドキュメントは Resque に関する情報が一部古いか間違っている
+
+<ul>
+<li>少なくとも Rails 5.0.2 では <code>rake resque:work</code> ではなく <code>rake environment resque:work</code> としないとエラーで Worker が起動できない</li>
+<li>SIGTERM から 10 秒後に SIGKILL、と言う説明があるが正しくは 30 秒</li>
+</ul></li>
+</ul>
+
+<p>Resque の <code>GRACEFUL_TERM</code> についてはプルリクエストを送ればいいとして、Heroku のドキュメントの問題についてはどこに報告すべきかよくわからないので知ってる人は教えてください。</p>
+
+<h3 id="halfway-graceful-shutdown">Halfway Graceful Shutdown</h3>
+
+<p>これは実は以下の記事でほぼ説明されています。</p>
+
+<ul>
+<li><a href="http://webtech-walker.com/archive/2012/09/resque_heroku.html">HerokuでResqueを使うときに優雅に再起動する</a></li>
+</ul>
+
+<p>ただしこれも 4 年半ほど前の記事なので、現時点では以下のようにする必要があるでしょう。</p>
+
+<h4 id="worker-の実装">Worker の実装</h4>
+
+<p><code>perform</code> メソッドの中で <code>Resque::TermException</code> を <code>rescue</code> し、完了処理を実装します。</p>
+
+<p>これについては上記の記事通りで問題ありません。</p>
+
+<h4 id="procfile">Procfile</h4>
+
+<p>以下のようにします。</p>
+
+<pre><code>resque: QUEUE=* TERM_CHILD=1 RESQUE_TERM_TIMEOUT=30 bundle exec rake environment resque:work
+</code></pre>
+
+<p>現在のバージョンでは <code>QUEUE</code> の指定が必須です。 (もちろん必要に応じて変更する)</p>
+
+<p><code>TERM_CHILD</code> をセットすると <code>TERM</code> シグナルを受け取った時の挙動が変わります。</p>
+
+<p>デフォルトでは <code>TERM</code> を受け取ると容赦なく Worker である子プロセスに <code>KILL</code> を送り Immediate Shutdown となります。</p>
+
+<p>これに対して <code>TERM_CHILD</code> をセットした場合は以下のような流れになります。</p>
+
+<ol>
+<li>Worker である子プロセスに対して <code>TERM</code> を送る
+
+<ul>
+<li><code>Resque::TermException</code> が <code>raise</code> される</li>
+</ul></li>
+<li><code>TERM_TIMEOUT</code> に指定した秒数の間、子プロセスが終了するのを待つ</li>
+<li>それでも子プロセスが残っていれば今度は <code>KILL</code> を送って強制終了する</li>
+</ol>
+
+<p>前述の Heroku の制限のため、<code>RESQUE_TERM_TIMEOUT</code> は 30 秒以下にする必要があります。 (それ以上を指定しても結局 Heroku から <code>KILL</code> される)</p>
+
+<h3 id="resque-pre-shutdown-timeout-について"><code>RESQUE_PRE_SHUTDOWN_TIMEOUT</code> について</h3>
+
+<p>前述の通り未リリースではあるものの、<code>master</code> ブランチに入っていてそのうち使えるようになると思われるこのオプションについても調べてみました。</p>
+
+<p>これは <code>TERM_CHILD</code> をセットしている場合のみに有効なオプションで、子プロセスに <code>TERM</code> を送る前の待ち時間を秒数で指定することができます。</p>
+
+<p>つまりこれは <code>Halfway Graceful Shutdown</code> と <code>Entire Graceful Shutdown</code> 複合です。</p>
+
+<p>例えば <code>Procfile</code> を以下のようにした場合、<code>TERM</code> を受け取った後の挙動は以下のようになります。</p>
+
+<pre><code>resque: QUEUE=* TERM_CHILD=1 RESQUE_PRE_SHUTDOWN_TIMEOUT=20 RESQUE_TERM_TIMEOUT=10 bundle exec rake environment resque:work
+</code></pre>
+
+<ol>
+<li>子プロセスの処理が完了するまで 20 秒間待つ
+
+<ul>
+<li>この 20 秒間に処理が全て完了すれば Entire Graceful Shutdown</li>
+</ul></li>
+<li>子プロセスに <code>TERM</code> を送る
+
+<ul>
+<li><code>Resque::TermException</code> が <code>raise</code> される</li>
+<li>この場合は Halfway Graceful Shutdown</li>
+</ul></li>
+<li>子プロセスが終了するまでさらに 10 秒間待つ</li>
+<li>それでも子プロセスが残っていれば今度は <code>KILL</code> を送って強制終了する</li>
+</ol>
+
+<p>具体的な秒数については実際に動いている Worker の実行時間を元にチューニングするのが良いでしょう。</p>
+
+<p>いずれにせよ <code>RESQUE_PRE_SHUTDOWN_TIMEOUT</code> と <code>RESQUE_TERM_TIMEOUT</code> の合計は 30 以下にする必要があります。</p>
+
+<h3 id="entire-graceful-shutdown">Entire Graceful Shutdown</h3>
+
+<p>これについては説明されている記事が見つけられなかったので、自分で実際に Heroku で動かしながらわかったことを元に書きます。</p>
+
+<h4 id="worker-の実装-1">Worker の実装</h4>
+
+<p>Halfway Graceful Shutdown を行わないのであれば、<code>Resque::TermException</code> の <code>rescue</code> は不要です。</p>
+
+<h4 id="procfile-1">Procfile</h4>
+
+<p>以下のようにします。</p>
+
+<pre><code>resque: QUEUE=* GRACEFUL_TERM=1 bundle exec rake environment resque:work
+</code></pre>
+
+<p>この場合は <code>TERM_CHILD</code> を指定してはいけません。指定した場合、<code>GRACEFUL_TERM</code> の設定が<a href="https://github.com/resque/resque/blob/v1.27.2/lib/resque/worker.rb#L866">無効果されます</a>。</p>
+
+<h4 id="graceful-term-とは"><code>GRACEFUL_TERM</code> とは</h4>
+
+<p>これは <code>TERM</code> を受け取った時の処理を (Entire) Graceful Shutdown にするというものです。</p>
+
+<p>前述の通り今の所ドキュメント化されていないようです。</p>
+
+<h2 id="どちらの方法を選ぶべきか">どちらの方法を選ぶべきか</h2>
+
+<p>基本的には Halfway Graceful Shutdown を選ぶべきでしょう。</p>
+
+<p>Heroku では 30 秒制限がある以上、Entire Graceful Shutdown を選ぶとしても、Worker は全て 30 秒で完了できなくてはなりません。通常 1 分かかる処理があったとして、20 秒時点で <code>TERM</code> を受け取った場合、Entire Graceful Shutdown では最後の 10 秒分の処理を残して強制終了されてしまうからです。</p>
+
+<p>30 秒間に全てを終えることはできなくても、今やりかけの分だけ綺麗に完了させることはできるかもしれません。</p>
+
+<p>ただし、Halfway Graceful Shutdown を行うには、前述の通り <code>Resque::TermException</code> を正しく <code>rescue</code> するような実装を行わなければなりません。</p>
+
+<p>全ての Worker が 30 秒もかからないような場合であれば、その実装をサボって Entire Graceful Shutdown で妥協するのも良いでしょう。</p>
+
+<h2 id="関連するソースの読み方">関連するソースの読み方</h2>
+
+<p>ここに書いてあることは基本的には <code>Resque::Worker</code> だけ読めば全て書いてあります。</p>
+
+<ul>
+<li><a href="https://github.com/resque/resque/blob/master/lib/resque/worker.rb">resque/lib/resque/worker.rb</a></li>
+</ul>
+
+<p>Resque は想像していたよりは意外と重厚な感じではなく、比較的読みやすい分量だと思いました。UNIX プロセスについての勉強としても面白いと思うのでオススメです。</p>
+
+    </div>
+    <div class="post-footer">
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 36 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4">
+    
+
+<h3>
+  Author
+</h3>
+
+<p>
+  <div class="media">
+    
+    <img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class="pull-left">
+    
+    
+    <div class="media-body">
+      
+        <h4 class="media-heading"><a href="https://yuyat.jp">Yuya Takeyama</a></h4>
+      
+    </div>
+    
+  </div>
+</p>
+
+
+
+<p><a href="https://twitter.com/yuya_takeyama" class="twitter-follow-button" data-show-screen-name="false" data-show-count="true" data-dnt="true" data-size="large">Follow @yuya_takeyama</a></p>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3233912168536735"
+     data-ad-slot="3268217607"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          <footer>
+
+&copy; 2015.
+Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+<a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
+
+</footer>
+
+        </div>
+      </div>
+    </div>
+    <script src="https://blog.yuyat.jp/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12392004-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+</html>
+

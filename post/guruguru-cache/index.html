@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-3233912168536735",
+        enable_page_level_ads: true
+      });
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://blog.yuyat.jp/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
+    <link rel="canonical" href="https://blog.yuyat.jp/post/guruguru-cache/">
+    <title>docker build 内の bundle install を最適化するために guruguru-cache というツールを作った | Born Too Late</title>
+    
+
+    <meta property="fb:admins" content="100000987494966" />
+<meta property="fb:app_id" content="285547814816502" />
+<meta property="og:title" content="docker build 内の bundle install を最適化するために guruguru-cache というツールを作った" />
+<meta property="og:description" content="作りました。
+
+
+yuya-takeyama/guruguru-cache
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.yuyat.jp/post/guruguru-cache/" />
+
+  
+	  <meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg" />
+  
+
+
+  <meta property="og:updated_time" content="2018-10-09T01:10:00&#43;09:00"/>
+
+
+
+
+    <meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@yuya_takeyama">
+<meta name="twitter:creator" content="@yuya_takeyama">
+
+    
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="https://blog.yuyat.jp" class="navbar-brand">Born Too Late</a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="https://blog.yuyat.jp/post/">Archive</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">docker build 内の bundle install を最適化するために guruguru-cache というツールを作った</h1>
+      <p class="text-muted">Oct 9, 2018</p>
+
+<div>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fguruguru-cache%2f&amp;text=docker%20build%20%e5%86%85%e3%81%ae%20bundle%20install%20%e3%82%92%e6%9c%80%e9%81%a9%e5%8c%96%e3%81%99%e3%82%8b%e3%81%9f%e3%82%81%e3%81%ab%20guruguru-cache%20%e3%81%a8%e3%81%84%e3%81%86%e3%83%84%e3%83%bc%e3%83%ab%e3%82%92%e4%bd%9c%e3%81%a3%e3%81%9f&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fguruguru-cache%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fguruguru-cache%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
+</div>
+
+    </div>
+    <div class="post-content">
+      
+
+<p>作りました。</p>
+
+<ul>
+<li><a href="https://github.com/yuya-takeyama/guruguru-cache">yuya-takeyama/guruguru-cache</a></li>
+</ul>
+
+<h2 id="解決したい問題">解決したい問題</h2>
+
+<p>Quipper では開発プラットフォームが Deis (OSS の Heroku クローン) から割と素な感じの Kubernetes へと変わったので、元々は Buildpack で行なっていたコンテナイメージのビルドはシェルスクリプト内で <code>docker build</code> を直接実行して行うようになりました。</p>
+
+<ul>
+<li><a href="https://quipper.hatenablog.com/entry/future-with-kubernetes">Kubernetes導入で実現したい世界とその先にあるMicroservices</a></li>
+</ul>
+
+<p>Monorepo なので、Pull Request を出したりマージすると変更のあったサービスの Docker Image のビルドが一気に走るのですが、並列とはいえキューがたまりがちになってきたので、実行時間が気になり始めました。</p>
+
+<h3 id="bundle-install-が長い"><code>bundle install</code> が長い</h3>
+
+<p>特に気になるのがこれです。Quipper の場合 Ruby で書かれたアプリが多いので主に Bundler ですが、Node.js の Yarn 等でも同様の問題があります。</p>
+
+<p>この問題に対するよく知られた対処として、「<code>Gemfile</code>/<code>Gemfile.lock</code> を先に <code>ADD</code>/<code>COPY</code> して <code>bundle install</code> を実行したあとでアプリ全体を <code>ADD</code>/<code>COPY</code> する」というものがあります。
+(以前は Ruby のオフィシャルイメージの中の <code>onbuild</code> タグがついたものが同じようなことをしてくれましたが<a href="https://github.com/docker-library/official-images/issues/2076">いつの間にか deprecate されていた</a>ようです)</p>
+
+<ul>
+<li><a href="https://qiita.com/kaiinui/items/5ec52437d114e364b7f0">Docker で bundle install を爆速にする</a></li>
+</ul>
+
+<p>こうすることで、<code>Gemfile</code>/<code>Gemfile.lock</code> 以外のファイルに更新が起こった時点で Docker のレイヤーキャッシュが無効になり、<code>bundle install</code> がゼロからになってしまう問題を避けられます。</p>
+
+<p>ですが、この場合も結局 <code>Gemfile</code> に 1 gem 追加しただけでも <code>bundle install</code> は最初から実行されて、特に <code>nokogiri</code> のようなネイティブ拡張を含む gem のビルドに時間を取られてしまうことには変わりありません。</p>
+
+<p>これかを解決するには、<code>docker build</code> 時に <code>bundle install</code> したディレクトリ全体をキャッシュとして保持しておき、次回以降のビルドに引き継ぐ必要があります。</p>
+
+<h2 id="guruguru-cache">guruguru-cache</h2>
+
+<p>そこで作ったのが guruguru-cache です。</p>
+
+<ul>
+<li><a href="https://github.com/yuya-takeyama/guruguru-cache">yuya-takeyama/guruguru-cache</a></li>
+</ul>
+
+<p><a href="https://circleci.com/docs/2.0/caching/">CircleCI 2.0 のキャッシュシステム</a>がシンプルで好きだったので、これと似たようなことがコマンドでできれば良いなと思って作りました。<strong>Circle</strong> CI 由来なのでぐるぐるです。<a href="https://www.youtube.com/watch?v=Ypx_A6No600">乃木坂46のデビューシングル</a>や<a href="https://en.wikipedia.org/wiki/Guru_Guru">ジャーマンロックバンド</a>は関係ありません。</p>
+
+<h3 id="必要なもの">必要なもの</h3>
+
+<p>キャッシュファイルは S3 に保存するため、S3 バケットと、そバケットにアクセスできる IAM User 及びアクセスキーが必要です。現状は環境変数でしか渡せないので、以下の値を用意する必要があります。</p>
+
+<ul>
+<li><code>AWS_ACCESS_KEY_ID</code></li>
+<li><code>AWS_SECRET_ACCESS_KEY</code></li>
+<li><code>AWS_REGION</code></li>
+</ul>
+
+<p>また、必須ではありませんが、<a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/lifecycle-expire-general-considerations.html">Object Expiration</a> の設定をしておくと良いでしょう。</p>
+
+<h3 id="インストール">インストール</h3>
+
+<p>現状リリース済みのバイナリは用意していないので、<code>go get</code> で自前ビルドするか、<code>docker build</code> 用であれば latest の Docker イメージからコピーしてくるのが簡単です。</p>
+
+<pre><code class="language-dockerfile"># In Dockerfile
+COPY --from=yuyat/guruguru-cache /usr/local/bin/guruguru-cache /usr/local/bin
+</code></pre>
+
+<h3 id="キャッシュの保存">キャッシュの保存</h3>
+
+<pre><code>$ guruguru-cache store [flags] [cache key] [paths...]
+
+Flags:
+  -h, --help               help for store
+      --s3-bucket string   S3 bucket to upload
+</code></pre>
+
+<p>第一引数にキャッシュキーを指定し、第二引数以降にはキャッシュ対象のパスを複数指定できます。</p>
+
+<pre><code>$ guruguru-cache store --s3-bucket=example-cache \
+  'gem-v1-{{ arch }}-{{ checksum &quot;Gemfile.lock&quot; }}' \
+  vendor/bundle
+</code></pre>
+
+<p>キャッシュキーには CircleCI と同様のテンプレート記法が使えます。テンプレート記法についてはあとで別途説明します。</p>
+
+<h3 id="キャッシュの復元">キャッシュの復元</h3>
+
+<pre><code>$ guruguru-cache restore [flags] [cache keys...]
+
+Flags:
+  -h, --help               help for restore
+      --s3-bucket string   S3 bucket to upload
+</code></pre>
+
+<p>キャッシュキーを複数指定することができます。順番にキャッシュを前方一致で探索し、見つかるまで次のキーにフォールバックしていきます。キャッシュが見つからなければ何もせず終了します。</p>
+
+<pre><code>$ guruguru-cache restore --s3-bucket=example-cache \
+  'gem-v1-{{ arch }}-{{ checksum &quot;Gemfile.lock&quot; }}' \
+  'gem-v1-{{ arch }}'
+</code></pre>
+
+<p>この例ではまず <code>Gemfile.lock</code> のチェックサムが一致するキャッシュを探索します。これが見つかった場合、通常は gem が過不足なくキャッシュから復元されるので、<code>bundle install</code> は一瞬で終わるはずです。 (もちろん実装依存ですが)</p>
+
+<p>チェックサムが一致するキャッシュが見つからなかった場合、2 番目の <code>gem-v1-{{ arch }}</code> にフォールバックします。複数見つかった場合は作成日時が一番新しいものを取得します。この辺は CircleCI と同様の挙動にしたつもりです。</p>
+
+<h3 id="キャッシュキーのテンプレート">キャッシュキーのテンプレート</h3>
+
+<p>キャッシュキーには以下のテンプレート記法が使えます。まんま CircleCI です。</p>
+
+<ul>
+<li><code>{{ checksum &quot;FILEPATH&quot; }}</code>: ファイルの MD5 チェックサム</li>
+<li><code>{{ arch }}</code>: CPU アーキテクチャ</li>
+<li><code>{{ epoch }}</code>: UNIX タイムスタンプ</li>
+<li><code>{{ .Environment.FOO }}</code>: 環境変数</li>
+</ul>
+
+<p><code>{{ .Branch }}</code> や <code>{{ .Revision }}</code> のような CircleCI 固有の環境変数に依存したものはありません。CI 基盤で適宜取得して <code>docker build</code> 時に <code>--build-arg</code> として渡す、等する必要があります。</p>
+
+<h2 id="デモ">デモ</h2>
+
+<p>CircleCI 内で <code>docker build</code> を行う例を以下に用意してみました。ファイルとして見るべきものは以下の 2 つです。</p>
+
+<ul>
+<li><a href="https://github.com/yuya-takeyama/guruguru-cache-circleci-example/blob/master/Dockerfile">Dockerfile</a>
+
+<ul>
+<li>キャッシュの復元 -&gt; <code>bundle install</code> -&gt; キャッシュの保存となっていることがわかると思います</li>
+<li>CircleCI のジョブ本体のコンテナと Remote Docker とでキャッシュを共有できたら良いかなと思いましたが、実行してみたときは CPU アーキテクチャの微妙な違いによってうまく共有できませんでした</li>
+<li><a href="https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/4">https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/4</a></li>
+<li>現実のケースではテストの実行用と本番環境での実行用とでは必要な gem が微妙に異なると思うので、キャッシュを共有できてもそんなに嬉しくない気もします</li>
+</ul></li>
+<li><a href="https://github.com/yuya-takeyama/guruguru-cache-circleci-example/blob/master/.circleci/config.yml">.circleci/config.yml</a>
+
+<ul>
+<li><code>guruguru-cache</code> の実行に必要な環境変数を <code>--build-arg</code> として渡しています</li>
+<li>CircleCI のジョブ本体のコンテナと Remote Docker とでキャッシュを共有できたら良いかなと思いましたが、実行してみたときは CPU アーキテクチャの微妙な違いによってうまく共有できませんでした</li>
+<li><a href="https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/4">https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/4</a></li>
+<li>現実のケースではテストの実行用と本番環境での実行用とでは必要な gem が微妙に異なると思うので、キャッシュを共有できてもそんなに嬉しくない気もします</li>
+</ul></li>
+</ul>
+
+<h3 id="ビルド時間の計測">ビルド時間の計測</h3>
+
+<p>はじめに、初回のキャッシュなしの状態です。キャッシュを復元・保存するロジックは既に入っていますが、初回なので当然キャッシュがない状態です。コードはほぼ <code>rails new</code> した直後のものです。</p>
+
+<ul>
+<li><a href="https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/4">https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/4</a>
+
+<ul>
+<li><code>docker build</code>: 02:01</li>
+<li><code>guruguru-cache restore</code>: 約 1 秒</li>
+<li><code>guruguru-cache store</code>: 約 10 秒</li>
+</ul></li>
+</ul>
+
+<p>次に、ネイティブ拡張を含む<a href="https://github.com/yuya-takeyama/guruguru-cache-circleci-example/commit/bf53270f59062927496ded5f8304d76c34b8d4bc">いくつかの gem を追加</a>した状態で計測してみます。</p>
+
+<ul>
+<li><a href="https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/5">https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/5</a>
+
+<ul>
+<li><code>docker build</code>: 01:34</li>
+<li><code>guruguru-cache restore</code>: 約 15 秒</li>
+<li><code>guruguru-cache store</code>: 約 20 秒</li>
+<li>ほとんどの gem はキャッシュから復元されるので、差分だけのインストールが行われていることがわかります</li>
+<li><code>libv8</code> や <code>mini_racer</code> 等の、ビルドが必要な gem がいくつか含まれていても、全体としては速くなっていることがわかります</li>
+</ul></li>
+</ul>
+
+<p>そして、同じ gem を追加した状態だが、<code>guruguru-cache</code> を一切使わないものです。</p>
+
+<ul>
+<li><a href="https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/6">https://circleci.com/gh/yuya-takeyama/guruguru-cache-circleci-example/6</a>
+
+<ul>
+<li><code>docker build</code>: 02:12</li>
+<li><code>guruguru-cache</code> にかかる時間はなし</li>
+</ul></li>
+</ul>
+
+<p>というわけで、これを見る限りでは <code>guruguru-cache</code> を使うメリットはあると言えそうです。</p>
+
+<p>実際は <code>nokogiri</code> のようなビルドに時間のかかる gem がどれだけ含まれるのかにも寄るし、レイヤーキャッシュによる <code>bundle install</code> 自体のインストールがどれだけスキップされる場合だったり、レイヤーキャッシュはないが <code>guruguru-cache</code> のキャッシュはそのまま存在してキャッシュの保存はスキップされるケースなど、色々パターンがあるので、もう少し長い目で計測・観察が必要そうです。</p>
+
+<h2 id="今後改善したいポイント">今後改善したいポイント</h2>
+
+<h3 id="キャッシュのネームスペース">キャッシュのネームスペース</h3>
+
+<p>単一のバケットに複数リポジトリのキャッシュを格納できるよう、ネームスペースの指定ができてはどうかと思っています。S3 上はパスの prefix になるだけなので、キャッシュキー自体に含めてもいいかもしれませんが、この後の設定ファイルも込みでやると便利かもしれません。</p>
+
+<h3 id="設定ファイルへの対応">設定ファイルへの対応</h3>
+
+<p>CircleCI のキャッシュでは、ビルドの設定ファイルのあちこちにキャッシュキーが散らばるので、一斉にキーを変更する必要があるときに煩雑になってしまう問題があると感じています。</p>
+
+<p>なので、<code>guruguru-cache</code> 用の設定ファイル内にキーの情報をプリセットとして持たせておいて、コマンドからはそのプリセットを指定するだけにできると良いのではないかと考えています。イメージ的には以下のような感じ。</p>
+
+<pre><code class="language-yml"># 設定ファイル
+s3-bucket: example-cache
+namespace: my-blog-app
+presets:
+  gem:
+    store:
+      key: gem-v1-{{ arch }}-{{ checksum &quot;Gemfile.lock&quot; }}
+      paths:
+        - vendor/bundle
+    restore:
+      keys:
+        - gem-v1-{{ arch }}-{{ checksum &quot;Gemfile.lock&quot; }}
+        - gem-v1-{{ arch }}
+  npm:
+    store:
+      key: npm-v1-{{ arch }}-{{ checksum &quot;yarn.lock&quot; }}
+      paths:
+        - node_modules
+    restore:
+      keys:
+        - npm-v1-{{ arch }}-{{ checksum &quot;yarn.lock&quot; }}
+        - npm-v1-{{ arch }}
+</code></pre>
+
+<pre><code class="language-dockerfile"># Dockerfile
+RUN guruguru-cache restore --preset gem
+RUN bundle install --path=vendor/bundle
+RUN guruguru-cache store --preset gem
+
+RUN guruguru-cache restore --preset npm
+RUN yarn install
+RUN guruguru-cache store --preset npm
+</code></pre>
+
+<h3 id="アップロード-ダウンロードの高速化">アップロード・ダウンロードの高速化</h3>
+
+<p>全然検証してませんが、RANGE リクエストを並列化させれば高速化できるんじゃないかと思っています。</p>
+
+<h3 id="ファイル属性の維持">ファイル属性の維持</h3>
+
+<p>キャッシュ展開時のファイル属性 (更新日時とか) は今のところ適当ですが、ちゃんと保持した方が良いケースが多いと思うのでちゃんとしたいです。</p>
+
+    </div>
+    <div class="post-footer">
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 36 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4">
+    
+
+<h3>
+  Author
+</h3>
+
+<p>
+  <div class="media">
+    
+    <img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class="pull-left">
+    
+    
+    <div class="media-body">
+      
+        <h4 class="media-heading"><a href="https://yuyat.jp">Yuya Takeyama</a></h4>
+      
+    </div>
+    
+  </div>
+</p>
+
+
+
+<p><a href="https://twitter.com/yuya_takeyama" class="twitter-follow-button" data-show-screen-name="false" data-show-count="true" data-dnt="true" data-size="large">Follow @yuya_takeyama</a></p>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3233912168536735"
+     data-ad-slot="3268217607"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          <footer>
+
+&copy; 2015.
+Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+<a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
+
+</footer>
+
+        </div>
+      </div>
+    </div>
+    <script src="https://blog.yuyat.jp/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12392004-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+</html>
+

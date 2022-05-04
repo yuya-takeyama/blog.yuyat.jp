@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-3233912168536735",
+        enable_page_level_ads: true
+      });
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://blog.yuyat.jp/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
+    <link rel="canonical" href="https://blog.yuyat.jp/post/alexa-skill-keyakizaka46/">
+    <title>欅坂46 の情報が聞ける Alexa Skill を作った | Born Too Late</title>
+    
+
+    <meta property="fb:admins" content="100000987494966" />
+<meta property="fb:app_id" content="285547814816502" />
+<meta property="og:title" content="欅坂46 の情報が聞ける Alexa Skill を作った" />
+<meta property="og:description" content="なかなか来てくれなかった Amazon Echo Dot の招待がようやく来たので、早速買ってみました。
+
+ある日、テレビでたまたま、平井堅のノンフィクションという曲に合わせて踊る平手友梨奈さんを観て衝撃を受けて以来、欅坂46 の事ばっかり考えているし CD や雑誌をすごい勢いで買って COUNTDOWN JAPAN ではライブも観て来ました。避雷針すごく良かったです。
+
+というわけで題材は欅坂46 です。
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.yuyat.jp/post/alexa-skill-keyakizaka46/" />
+
+  
+	  <meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg" />
+  
+
+
+  <meta property="og:updated_time" content="2017-12-31T20:30:19&#43;09:00"/>
+
+
+
+
+    <meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@yuya_takeyama">
+<meta name="twitter:creator" content="@yuya_takeyama">
+
+    
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="https://blog.yuyat.jp" class="navbar-brand">Born Too Late</a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="https://blog.yuyat.jp/post/">Archive</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">欅坂46 の情報が聞ける Alexa Skill を作った</h1>
+      <p class="text-muted">Dec 31, 2017</p>
+
+<div>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2falexa-skill-keyakizaka46%2f&amp;text=%e6%ac%85%e5%9d%8246%20%e3%81%ae%e6%83%85%e5%a0%b1%e3%81%8c%e8%81%9e%e3%81%91%e3%82%8b%20Alexa%20Skill%20%e3%82%92%e4%bd%9c%e3%81%a3%e3%81%9f&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2falexa-skill-keyakizaka46%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2falexa-skill-keyakizaka46%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
+</div>
+
+    </div>
+    <div class="post-content">
+      
+
+<p>なかなか来てくれなかった <a href="http://amzn.to/2zT3Hxt">Amazon Echo Dot</a> の招待がようやく来たので、早速買ってみました。</p>
+
+<p>ある日、テレビでたまたま、平井堅のノンフィクションという曲に合わせて踊る平手友梨奈さんを観て衝撃を受けて以来、欅坂46 の事ばっかり考えているし CD や雑誌をすごい勢いで買って <a href="http://countdownjapan.jp/">COUNTDOWN JAPAN</a> ではライブも観て来ました。<a href="https://www.youtube.com/watch?v=8y14n7mEVlo">避雷針</a>すごく良かったです。</p>
+
+<p>というわけで題材は欅坂46 です。</p>
+
+<h2 id="作ったもの">作ったもの</h2>
+
+<p>今のところ 2 つの機能があります。</p>
+
+<ul>
+<li>特定の日にちのスケジュールを読み上げる</li>
+<li>特定の日にちまたは月が誕生日のメンバーを読み上げる。</li>
+</ul>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/fAYt8XUeUFY" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+
+<p>なお、データについては<a href="http://www.keyakizaka46.com/">欅坂46公式サイト</a>から勝手にスクレイピングしているので、公式のストア (?) には登録していないですしそのつもりもありません。ベータテスト機能で自分をテスターとして登録しています。</p>
+
+<p>自分でデプロイできる人はそれでやってみてもいいですし、ちょっと使ってみたい、という方は <a href="https://twitter.com/yuya_takeyama">Twitter</a> に声かけてもらえればベータテスターとして招待することもできます。</p>
+
+<h2 id="ソースコード">ソースコード</h2>
+
+<p>GitHub に MIT License で公開しています。</p>
+
+<ul>
+<li><a href="https://github.com/yuya-takeyama/alexa-keyakizaka-info">yuya-takeyama/alexa-keyakizaka-info</a></li>
+</ul>
+
+<p>また、Alexa Skill の Intent とかの設定は以下のようになっています。</p>
+
+<ul>
+<li><a href="https://gist.github.com/yuya-takeyama/c05d131d63865aa952eaa37470dc400f">欅坂情報 Alexa Skill の Intent とかの設定</a></li>
+</ul>
+
+<h2 id="構成">構成</h2>
+
+<ul>
+<li>言語: TypeScript</li>
+<li>動作環境: AWS Lambda (Node.js 6.10)</li>
+<li>主なライブラリ
+
+<ul>
+<li><a href="https://www.npmjs.com/package/alexa-sdk">alexa-sdk</a></li>
+<li><a href="https://www.npmjs.com/package/axios">axios</a></li>
+<li><a href="https://github.com/tmpvar/jsdom">jsdom</a></li>
+</ul></li>
+</ul>
+
+<h2 id="仕組み">仕組み</h2>
+
+<p>先にも書いた通り、スケジュール・誕生日のいずれも公式サイトのスケジュールページからスクレイピングしてます。</p>
+
+<p>誕生日については、事前にデータだけ用意をしておけばスクレイピングは必要ないですし、メンバー名から誕生日を読み上げる事も実装できるので、そういう感じに作り変えるかもしれません。</p>
+
+<p>必要な情報を元に読み上げる文言を組み立てて、alexa-sdk を使ってレスポンスを返してます。</p>
+
+<p>リクエストを受けて動作するプログラムは AWS Lambda 上で動作しており、Alexa Skill としては基本的な構成だと思います。</p>
+
+<h2 id="作ってみて思ったこと">作ってみて思ったこと</h2>
+
+<h3 id="タイムゾーンは基本的に考えなくて良い">タイムゾーンは基本的に考えなくて良い</h3>
+
+<p>これはもちろん Skill の性質にもよるんですが、今回のケースでいうとタイムゾーンのことを考慮する必要はありませんでした。</p>
+
+<p>今回でいうと「今日」とか「あさって」とか「来週の金曜日」といった感じに日付を指定しますが、これらはリクエストの中に Slot として含まれます。まぁ平たくいうとパラメータです。これは事前に定義したものを受け取れます。</p>
+
+<p>これらの日付については Amazon Echo 側のタイムゾーンに基づいて送られてくるようで、例えば日本時間 12 月 31 日の午前 4 時は UTC ではまだ 12 月 30 の 19 時ですが、Lambda には「2017-12-31」という文字列で受け取れます。</p>
+
+<p>開発中にハマったのが、Service Simulator から「今日」と送ると前日の日付が送られて来て、おそらく UTC の日付が送られて来ていたんですが、Amazon Echo Dot 実機からだと JST と思われる日付で受け取れていました。</p>
+
+<p>今回は日付ベースの処理しかなかったのでこういう結論になりましたが、例えば時刻の計算を行うようなアプリとかだと当然タイムゾーンは考慮する必要があると思います。</p>
+
+<h3 id="開発中はフィードバックのループを回すのが大変">開発中はフィードバックのループを回すのが大変</h3>
+
+<p>作る前から想像していましたが、やはり試行錯誤を繰り返すのに時間がかかります。</p>
+
+<p>今回は CircleCI で AWS Lambda へのデプロイを自動化したところで効率よく回せるようになって来ました。</p>
+
+<p>本番用とテスト用二つの Alexa Skill を登録しておいて、機能ブランチへの push ごとにテスト用のアプリを更新、master にマージすると本番を更新、としています。</p>
+
+<ul>
+<li><a href="https://github.com/yuya-takeyama/alexa-keyakizaka-info/blob/master/.circleci/config.yml">.circleci/config.yml</a></li>
+</ul>
+
+<p>今のところ awscli のインストールに時間がかかってしまっていて、あらかじめインストールした Docker Image を作っておけば短縮できると思いますが、まぁその辺は後回しで。</p>
+
+<p>あとはスケジュールの取得とか誕生日の取得とかの部分は独立してテストできるようにしておくと細かくテストできて良かったです。</p>
+
+<ul>
+<li><a href="https://github.com/yuya-takeyama/alexa-keyakizaka-info/tree/master/bin">./bin</a></li>
+</ul>
+
+<h3 id="手軽にハックできて楽しい">手軽にハックできて楽しい！</h3>
+
+<p>先に Google Home も買っていて、そっちは Nature Remo と IFTTT を組み合わせて照明、テレビ、エアコンの操作に毎日使っていますが、まだアプリの開発には手を出していません。</p>
+
+<p>一方 Alexa は Lambda に Node.js のコードをちょっとデプロイするだけで簡単に動かせてお手軽なので、購入初日から手をつけていました。</p>
+
+<p>事前に AWS のアカウントを持っているかとか、Lambda を触ったことがあるかによっても変わってくるとは思いますが、その辺を仕事で触っている人には本当に簡単だと思います。</p>
+
+    </div>
+    <div class="post-footer">
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 36 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4">
+    
+
+<h3>
+  Author
+</h3>
+
+<p>
+  <div class="media">
+    
+    <img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class="pull-left">
+    
+    
+    <div class="media-body">
+      
+        <h4 class="media-heading"><a href="https://yuyat.jp">Yuya Takeyama</a></h4>
+      
+    </div>
+    
+  </div>
+</p>
+
+
+
+<p><a href="https://twitter.com/yuya_takeyama" class="twitter-follow-button" data-show-screen-name="false" data-show-count="true" data-dnt="true" data-size="large">Follow @yuya_takeyama</a></p>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3233912168536735"
+     data-ad-slot="3268217607"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          <footer>
+
+&copy; 2015.
+Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+<a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
+
+</footer>
+
+        </div>
+      </div>
+    </div>
+    <script src="https://blog.yuyat.jp/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12392004-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+</html>
+

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-3233912168536735",
+        enable_page_level_ads: true
+      });
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://blog.yuyat.jp/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
+    <link rel="canonical" href="https://blog.yuyat.jp/post/bundle-install-clean/">
+    <title>bundle install には --clean を指定する (特に Circle CI では) | Born Too Late</title>
+    
+
+    <meta property="fb:admins" content="100000987494966" />
+<meta property="fb:app_id" content="285547814816502" />
+<meta property="og:title" content="bundle install には --clean を指定する (特に Circle CI では)" />
+<meta property="og:description" content="TL;DR
+
+bundle install を --clean オプション付きで実行することで、もう使っていない gem や古いバージョンの gem が削除されます。
+
+さもないと、Circle CI 上における Bundler のキャッシュの restore はどんどん遅くなります。
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.yuyat.jp/post/bundle-install-clean/" />
+
+  
+	  <meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg" />
+  
+
+
+  <meta property="og:updated_time" content="2018-04-16T21:28:11&#43;09:00"/>
+
+
+
+
+    <meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@yuya_takeyama">
+<meta name="twitter:creator" content="@yuya_takeyama">
+
+    
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="https://blog.yuyat.jp" class="navbar-brand">Born Too Late</a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="https://blog.yuyat.jp/post/">Archive</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">bundle install には --clean を指定する (特に Circle CI では)</h1>
+      <p class="text-muted">Apr 16, 2018</p>
+
+<div>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fbundle-install-clean%2f&amp;text=bundle%20install%20%e3%81%ab%e3%81%af%20--clean%20%e3%82%92%e6%8c%87%e5%ae%9a%e3%81%99%e3%82%8b%20%28%e7%89%b9%e3%81%ab%20Circle%20CI%20%e3%81%a7%e3%81%af%29&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fbundle-install-clean%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fbundle-install-clean%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
+</div>
+
+    </div>
+    <div class="post-content">
+      
+
+<h2 id="tl-dr">TL;DR</h2>
+
+<p><code>bundle install</code> を <code>--clean</code> オプション付きで実行することで、もう使っていない gem や古いバージョンの gem が削除されます。</p>
+
+<p>さもないと、Circle CI 上における Bundler のキャッシュの restore はどんどん遅くなります。</p>
+
+<h2 id="前提">前提</h2>
+
+<p>この記事では Circle CI 2.0 において、<code>store_cache</code> と <code>restore_cache</code> を使って、Bundler の gem をキャッシュしているプロジェクトを対象としています。</p>
+
+<h2 id="キャッシュの-restore-が遅い">キャッシュの restore が遅い！！</h2>
+
+<p>ある日ふと、Circle CI におけるキャッシュの restore にすごく時間がかかっていることに気づきました。</p>
+
+<p>その時のプロジェクトにおいては Bundler のキャッシュだけでなんと <strong>1.2 GB</strong>、時間にして <strong>2 分</strong> もかかっていました。
+そのプロジェクトは Workflow が三段階になっていたので、全体で 2 x 3 = <strong>6 分</strong> もキャッシュの restore にかかっていることになります。</p>
+
+<p>素の状態から <code>bundle install</code> はもっともっと時間がかかるので、これでも意味なくはないけど、もっと速くしたいですね。</p>
+
+<h2 id="起きていた問題">起きていた問題</h2>
+
+<p><code>bundle install</code> では、<code>Gemfile</code> から削除された gem であったり、バージョンアップ前の古い gem を削除することなく、ディレクトリ中に保持します。</p>
+
+<p>そのため、プロジェクトを続けていると、主に gem をアップデートするごとに、もう使っていない gem がどんどん増えて行くことになります。</p>
+
+<p>Circle CI の場合、ディレクトリ内を丸ごとキャッシュするので、gem のアップデート時にも古いバージョンが残ったまま、また新たにキャッシュを store し直すことになるため、キャッシュが時間を追うごとに肥大化します。</p>
+
+<h2 id="キャッシュをクリアしてみる">キャッシュをクリアしてみる</h2>
+
+<p>とりあえずキャッシュキーを変更することで、丸ごとキャッシュをクリアしてみました。</p>
+
+<p>キャッシュの設定は以下のようになっていました。</p>
+
+<pre><code class="language-yaml">    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-api-bundle-{{ arch }}-{{ checksum &quot;Gemfile.lock&quot; }}
+            - v1-api-bundle-
+      - run: bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=3
+      - save_cache:
+          key: v1-api-bundle-{{ arch }}-{{ checksum &quot;Gemfile.lock&quot; }}
+          paths:
+            - ~/api/vendor/bundle
+</code></pre>
+
+<p>キーの prefix の <code>v1-</code> を <code>v2-</code> に変更することで、キャッシュがヒットしなくなるので、とりあえずキャッシュがクリアされました。</p>
+
+<p>一度キャッシュをゼロから再生成した後、<code>restore_cache</code> を確認したところ、ファイルサイズが <strong>154MB</strong>、restore にかかる時間は <strong>11 秒</strong> と、大幅に改善されました。</p>
+
+<h2 id="別の方法を検討してみる">別の方法を検討してみる</h2>
+
+<p>とりあえずキャッシュをクリアすることで restore の時間を大幅に改善することはわかりましたが、いつのまにか遅くなっていって、気づいた頃に手動でクリアする、というのはダルいですね。</p>
+
+<p>というわけでいいオプションが Bundler にないものかと <code>bundle install --help</code> したところ、良さそうななオプションが見つかりました。</p>
+
+<pre><code>--clean
+       On finishing the installation Bundler is going to remove any gems not present in the current Gemfile(5). Don't worry, gems currently in use will not be removed.
+</code></pre>
+
+<p>こちらが意図している通りの挙動なのか、試してみましょう。</p>
+
+<p>まずは以下のような <code>Gemfile</code> を用意します。あとでアップデートするために、あえて現時点でやや古いバージョンを指定します。</p>
+
+<pre><code class="language-rb">source 'https://rubygems.org'
+
+gem 'concurrent-ruby', '1.0.0'
+</code></pre>
+
+<p>この状態で <code>bundle install --path=vendor/bundle</code> し、ディレクトリ内をチェックします。</p>
+
+<pre><code>$ bundle install --path=vendor/bundle
+Fetching gem metadata from https://rubygems.org/..
+Resolving dependencies...
+Using bundler 1.16.1
+Fetching concurrent-ruby 1.0.0
+Installing concurrent-ruby 1.0.0
+Bundle complete! 1 Gemfile dependency, 2 gems now installed.
+Bundled gems are installed into `./vendor/bundle`
+
+$ ls -l vendor/bundle/ruby/2.5.0/gems/
+total 0
+drwxr-xr-x  6 yuya  staff  204 Apr 16 21:24 concurrent-ruby-1.0.0
+</code></pre>
+
+<p>ここまではいいですが、ここで <code>Gemfile</code> 中のバージョンを <code>'1.0.5'</code> に変えてもう一度 <code>bundle install</code> し、もう一度ディレクトリの中身を確認してみましょう。</p>
+
+<pre><code>$ bundle install --path=vendor/bundle
+Fetching gem metadata from https://rubygems.org/..
+Resolving dependencies...
+Using bundler 1.16.1
+Using concurrent-ruby 1.0.5 (was 1.0.0)
+Bundle complete! 1 Gemfile dependency, 2 gems now installed.
+Bundled gems are installed into `./vendor/bundle`
+
+$ ls -l vendor/bundle/ruby/2.5.0/gems/
+total 0
+drwxr-xr-x  6 yuya  staff  204 Apr 16 23:10 concurrent-ruby-1.0.0
+drwxr-xr-x  6 yuya  staff  204 Apr 16 23:09 concurrent-ruby-1.0.5
+</code></pre>
+
+<p>やはりバージョン違いの同一 gem が重複してしまいました。</p>
+
+<p>ここで <code>--clean</code> オプション付きでやってみます。</p>
+
+<pre><code>$ bundle install --path=vendor/bundle --clean
+Using bundler 1.16.1
+Using concurrent-ruby 1.0.5
+Bundle complete! 1 Gemfile dependency, 2 gems now installed.
+Bundled gems are installed into `./vendor/bundle`
+Removing concurrent-ruby (1.0.0)
+
+$ ls -l vendor/bundle/ruby/2.5.0/gems/
+total 0
+drwxr-xr-x  6 yuya  staff  204 Apr 16 23:13 concurrent-ruby-1.0.5
+</code></pre>
+
+<p>古いバージョンが消えました！</p>
+
+<p>なお、一度 <code>--clean</code> で実行すると、設定が <code>.bundle/config</code> に保存され、次回以降は <code>--clean</code> なしでも同じ挙動になるようです。</p>
+
+<h2 id="まとめ">まとめ</h2>
+
+<p>Ruby/Bundler ではこのようになっていましたが、他のパッケージマネージャーでも同様の問題には気をつけた方が良いでしょう。</p>
+
+<p>JavaScript における <code>yarn</code> はデフォルトで同じような挙動になるので、気にする必要はないと思います。</p>
+
+<p><code>--path</code> を指定している場合は基本的に思考停止で <code>--clean</code> を指定するのが良いでしょう。</p>
+
+<p>逆に <code>--path</code> を指定せずに、グローバルに gem を共有している場合はおそらく <code>--clean</code> を使わない方が良いと思います。意図せず別プロジェクトではまだ使っている gem を消しちゃうので。</p>
+
+    </div>
+    <div class="post-footer">
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 36 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4">
+    
+
+<h3>
+  Author
+</h3>
+
+<p>
+  <div class="media">
+    
+    <img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class="pull-left">
+    
+    
+    <div class="media-body">
+      
+        <h4 class="media-heading"><a href="https://yuyat.jp">Yuya Takeyama</a></h4>
+      
+    </div>
+    
+  </div>
+</p>
+
+
+
+<p><a href="https://twitter.com/yuya_takeyama" class="twitter-follow-button" data-show-screen-name="false" data-show-count="true" data-dnt="true" data-size="large">Follow @yuya_takeyama</a></p>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3233912168536735"
+     data-ad-slot="3268217607"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          <footer>
+
+&copy; 2015.
+Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+<a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
+
+</footer>
+
+        </div>
+      </div>
+    </div>
+    <script src="https://blog.yuyat.jp/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12392004-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+</html>
+

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-3233912168536735",
+        enable_page_level_ads: true
+      });
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://blog.yuyat.jp/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
+    <link rel="canonical" href="https://blog.yuyat.jp/post/becoming-an-engineering-manager/">
+    <title>SRE チームで Engineering Manager になって二ヶ月経っての心境など | Born Too Late</title>
+    
+
+    <meta property="fb:admins" content="100000987494966" />
+<meta property="fb:app_id" content="285547814816502" />
+<meta property="og:title" content="SRE チームで Engineering Manager になって二ヶ月経っての心境など" />
+<meta property="og:description" content="この記事は Engineering Manager vol.2 Advent Calendar 2019 の 1 日目の記事です。
+
+2 日目は taminif さんのマネージャーになったら身に付けたいファシリテーションスキルです。
+
+ふわっとしたタイトルのゆる目の記事ですが、Engineering Manager としては新米ですし、Advent Calendar 的にもまだ初日なのでこれぐらいで許してください。
+
+まぁ一言でいうと「Engineering Manager は決して楽ではないけど楽しいぞ！」という感じです。
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.yuyat.jp/post/becoming-an-engineering-manager/" />
+
+  
+	  <meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg" />
+  
+
+
+  <meta property="og:updated_time" content="2019-12-01T00:22:00&#43;09:00"/>
+
+
+
+
+    <meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@yuya_takeyama">
+<meta name="twitter:creator" content="@yuya_takeyama">
+
+    
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="https://blog.yuyat.jp" class="navbar-brand">Born Too Late</a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="https://blog.yuyat.jp/post/">Archive</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">SRE チームで Engineering Manager になって二ヶ月経っての心境など</h1>
+      <p class="text-muted">Dec 1, 2019</p>
+
+<div>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fbecoming-an-engineering-manager%2f&amp;text=SRE%20%e3%83%81%e3%83%bc%e3%83%a0%e3%81%a7%20Engineering%20Manager%20%e3%81%ab%e3%81%aa%e3%81%a3%e3%81%a6%e4%ba%8c%e3%83%b6%e6%9c%88%e7%b5%8c%e3%81%a3%e3%81%a6%e3%81%ae%e5%bf%83%e5%a2%83%e3%81%aa%e3%81%a9&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fbecoming-an-engineering-manager%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fbecoming-an-engineering-manager%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
+</div>
+
+    </div>
+    <div class="post-content">
+      
+
+<p>この記事は <a href="https://qiita.com/advent-calendar/2019/em2">Engineering Manager vol.2 Advent Calendar 2019</a> の 1 日目の記事です。</p>
+
+<p>2 日目は <a href="https://twitter.com/sbntaminif">taminif</a> さんの<a href="http://taminif.hatenablog.jp/entry/2019/12/02/011112">マネージャーになったら身に付けたいファシリテーションスキル</a>です。</p>
+
+<p>ふわっとしたタイトルのゆる目の記事ですが、Engineering Manager としては新米ですし、Advent Calendar 的にもまだ初日なのでこれぐらいで許してください。</p>
+
+<p>まぁ一言でいうと「Engineering Manager は決して楽ではないけど楽しいぞ！」という感じです。</p>
+
+<h2 id="engineering-manager-として置かれている状況">Engineering Manager として置かれている状況</h2>
+
+<p>前提としてこんな感じですよ、というのを軽く書いておきますがここは読み飛ばしてもらっても大丈夫です。</p>
+
+<h3 id="会社">会社</h3>
+
+<p>イギリスでの創業から約 9 年、日本の大企業に買収されてから 4 年半ほど経ったベンチャー企業です。</p>
+
+<p>ビジネスは日本だけでなく東南アジアや南米にも展開しているグローバル企業で、それぞれの地域に開発者、プロダクトマネージャー、デザイナー、BizDev、カスタマーサポート等がいて、基本的にはそれぞれの国ごとのビジネスに従事しています。</p>
+
+<h3 id="チーム">チーム</h3>
+
+<p>僕が Engineering Manager をやっているのは Site Reliability Engineering (SRE) チームです。他の職種が基本的に国ごとのチームなのに対し、SRE チームは横断的に仕事をしています。 (横断的に仕事をしているのは SRE だけでもないですが)</p>
+
+<p>メンバー 5 人 + Engineering Manager で合計 6 名というチームで、メンバーには自分よりキャリアの長いベテランもいれば、海外から移住にしてきて基本的に英語で会話しているメンバーがいたりと、属性だけ取り出してみれば新人マネージャーにはちょっと難易度高めにも見えるかもしれません。 (あくまでも属性だけ切り取れば。実際には以前からの関係性もあるし、自分ができない部分は助けてもらうことで普通に楽しくやってます。それでも自分より経験・スキルのある人に対してどうマネージャーとしてのバリューを出していくかとか、母国語でない言語でどう正確にコミュニケーションを取るか、という難しさについては無いと言ったら嘘になるかなという感じ)</p>
+
+<p>あとは自分が Engineering Manager になった日と同時に新入社員が 2 人同時に入ったというのもなかなかチャレンジングでした。このことについてはあとでオンボーディングも絡めて書きます。</p>
+
+<p>一方で別オフィスにメンバーがいるわけではないので、地理的・タイムゾーン的に離れたメンバーをマネージすることはないですが、そっちのメンバーも採用していきたいなと個人的には考えたりもしています。</p>
+
+<h3 id="自分">自分</h3>
+
+<p>そもそも元は Web Developer で、SRE になったのは 2018 年の 4 月なので、SRE 歴約 1 年半。IT 系のビジネスを行う企業に入ってからは約 10 年ほど、今の会社は 2 社目で丸 4 年ほど在籍しています。</p>
+
+<p>Web Developer として Tech Lead 的なことはやってきていたのですが、マネージャーというのは完全に初めてです。評価とか怖い！</p>
+
+<p>また、他のメンバーは入社から 2 年未満という人が多い中で、入社から 4 年というのは会社全体で見てもかなりの古株になってしまいました。最近はそんなに入れ替わりが激しいわけでもないですが、やっぱり買収という形で exit を迎えると創業期から関わっていたメンバーとかは卒業していったりもあるので、そんなもんでしょう。というわけで会社のビジネスやプロダクト、そしてどんなチームでどんな人たちがどんな仕事をしているか、という情報については他のメンバーよりもかなりよく知っているつもりです。</p>
+
+<h2 id="engineering-manager-として大変なこと">Engineering Manager として大変なこと</h2>
+
+<p>前置きが長くなりましたがここからようやく本題です。</p>
+
+<p>Engineering Manager をやっている中で自分が大変だけど重要と思っている事柄についてとりとめなく書いていきます。</p>
+
+<h3 id="結構技術のことを考えないといけない">結構技術のことを考えないといけない</h3>
+
+<p>&ldquo;Engineering&rdquo; Manager なんだから当たり前だろ！という声も聞こえてきそうですが、やはりいちメンバーに比べると技術からは遠ざかり、最新のニュースへのアンテナを高くする重要性も相対的には下がるのでは、とか思ったりもしていました。</p>
+
+<p>もちろん、Engineering Manager になるには前提としてある程度高い技術力が求められますが、それでも業務的にはピープルマネジメントみたいなところに時間を使う必要もあるわけなので。</p>
+
+<p>が、これはむしろ逆なのでは、というのが現時点での感想です。</p>
+
+<p>SRE チームとしての戦略を考える上では会社、周辺のチーム、SRE チーム自身が抱えている問題を正しく理解する必要があり、これは決して技術だけではないですが、深い洞察が求められます。</p>
+
+<p>あとこれは SRE という職種の性質上によるところもあるのかもしれませんが、そういった問題を基本的には技術の力で解決していく必要があります。</p>
+
+<p>そういった問題を考える上でありがたいのは先人の知恵です。<a href="https://www.weblio.jp/content/%E8%AA%B2%E9%A1%8C%E5%85%88%E9%80%B2%E5%9B%BD">課題先進国</a>という言葉がありますが、それと同じように、Google とか Netflix みたいな先進的な企業は他の企業では直面しない先進的な課題にいち早く直面して、解決していく必要があります。例えば Google が Site Reliability Engineering という新たな方法論を生み出したのにはそういう背景があったのだなと、Engineering Manager になった今は前よりも強く思えますし、DevOps やクラウドの重要性が高まっている理由についても前より想像を働かせやすくなったと感じます。</p>
+
+<p>一方でそういった課題が今自分がいる状況にそのまま当てはめられるのか、というとそうとは限りません。今この瞬間がそうでないとして、将来問題になる可能性もならない可能性もあります。そういう状態でどういう技術や方法論を選択するか、またはしないのかという判断にはやはり高い技術力や知識が求められます (それ以外にもいっぱい求められると思いますけど)。</p>
+
+<h3 id="management-と-lead-の不可分性">Management と Lead の不可分性</h3>
+
+<p>今いる会社では、エンジニアのキャリアパスとして Lead Engineer, Engineering Manager, そして技術スペシャリストとしての Senior Engineer という 3 つのパスが用意されています。Senior はいいとして、Lead と Management って結構不可分では? というのが最近の悩みです。</p>
+
+<p>特に目標設定やその振り返り、日々の 1 on 1 というのは基本的に Manager としての仕事だと思ってますが、それらを高いレベルでやるには Lead としての能力が重要なのでは、と感じています。自分としては元々 Lead をやっていたわけなので、ピープルマネジメントに比べたらそちらの方がまだ得意だと思えますが、とはいえピープルマネジメントもしながらそういった動き方を求められるのは結構タフじゃない? とも思うわけです。</p>
+
+<p>これは単に自分の Engineering Manager としての経験値が足りてなかったり、それぞれの役割の違いに対する理解が足りてないからそう思えるのかもしれません。また、チームが成熟して、それぞれの分野においてそれぞれのメンバーがリーダーシップを発揮する範囲が増えていけば、自分が Lead として振る舞う重要性は下がってくるのかもしれません。が、自分の中でまだ明確な方向性が見えていないので、これは先人の意見を是非とも聞いてみたいところです。</p>
+
+<h3 id="メンバーとの距離感を近く保つことの重要性">メンバーとの距離感を近く保つことの重要性</h3>
+
+<p>僕の Engineering Manager としての前任者は会社の CTO で、CTO との兼任で Engineering Manager をやっていたことになります。僕が SRE チームに異動する前は専任の Engineering Manager の人が別にいましたが、その人が退職した後に Engineering Manager をやりたい人がいなかったので、CTO が兼任であとをつないだ形です。</p>
+
+<p>マネジメントの経験で言うと大きな差がある前任者と比べて自分が唯一明らかに勝っているところがあるとすれば、地理的な意味での距離感です。というのも CTO は普段イギリスに住んでいるので、タイムゾーンは 9 時間ずれているし、出張でちょくちょく来ていたとはいえ、僕はそれ以外の時期も含めて常に同じオフィスで働いているわけなので、コミュニケーションに必要なレイテンシはゼロに等しいと言えます。</p>
+
+<p>距離が近いと他チームの人が自チームのメンバーに対して話しかけていてもなんとなく聞こえてきますし、そこで自分への相談が必要だったらちょっと声を掛けるだけですぐ始められるので、発生した問題に素早くキャッチアップして、解決に動き出せる可能性が高まります。まぁこれは普通に 1 オフィスしかない国内企業で働いていた時は当たり前でしたが。</p>
+
+<p>以上は地理的な距離感の話ですが、本質的には心理的な距離感を保つことの方がより重要だと思います。その点に関しても、イギリスでスタートアップの Co-Founder/CTO で exit も経験している前任者は属性を切り取るだけで迫力が出ますが、一方自分は曖昧な時間に出社をして、常に座席でお菓子をボリボリ食べたり時々居眠りをしながらボーっと働いている感じの人間なので、迫力もないしツッコミも入れ放題なのではと思います。 (Engineering Manager になってからは必要に応じて普通の時間や普通より早い時間の出社もやっています)</p>
+
+<p>というのは半分 (?) 冗談ですが、些細な問題でも常に共有してもらえるようにいるには、普段は泰然自若にしてい (るように振る舞っ) たり、コミュニケーションも年齢や立場に関係なくフラットに行うことが重要だと感じています。僕がどんなにボーっとした人間だとしても、世の中には後輩力とでも呼ぶべき能力の高い人たちがいて、社会人歴や社歴だけは長い自分に対してやたら謙遜した態度で接されることも増えてきましたが、そういう人たちに対しても「自分はえらくなんかないんだ、<a href="http://j-lyric.net/artist/a05efec/l048beb.html">ゴミ屑ロンリネス</a>なんだ」と言い聞かせて、なるべくフラットなコミュニケーションができるよう努めています。</p>
+
+<p>よりアクティブな振る舞い方でいえば、「自分はあなたの味方であり、同じ問題を共有し、その解決のために共闘しているんだ」という態度をいかに演出し、実際に体現するかも重要だと思います。という訳で次のトピックへ。</p>
+
+<h3 id="ゴール設定と-それを一緒に追いかけ続けること">ゴール設定と、それを一緒に追いかけ続けること</h3>
+
+<p>Engineering Manager になる前、僕は目標設定というものが苦手だったし、むしろ嫌いだった気がします。というのは会社での目標に関してもそうですが、キャリアとか人生といった長いスパンでの目標というのも基本的に持っていません。時間が経てば状況も自分のやりたいことも変わって意味がなさそうだし、何よりめんどくさいので。</p>
+
+<p>が、今はチーム内で一番目標設定を大事にすべき立場ですし、自分としても少なくともそうありたいと思ってはいるつもりです。</p>
+
+<p>こうなった要因は、自分が会社の中間管理職として、ある種体制側としてのバイアスがかかっているからというのももちろんあると思います。モヒカンと中指を天高く突き上げ &ldquo;Fuck The System!&rdquo; なんて叫んでいたのも今は昔。 (そんな時代はなかった)</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/np3FXa4ORbY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<p>自分が体制側になったからというのもあると思うけど、それだけでもないと思います。マネージャーとしては、他の人にやってもらうことを通じてチームとしてやるべきことを成し遂げていく必要がある訳ですが、そのためにはチームや個々のメンバーを方向付けていく必要がありますし、そのためには一貫したストーリーが必要です。</p>
+
+<p>目標として実際に決める事柄はなるべく定量的、または達成したかどうかが自明になるように努めていますが、それらはチームや会社の状況が変われば意味を失ったり、より重要な事柄が別に現れたり、ということもままあると思います。そんな中で元の目標にこだわることは会社から見たら意味がないですし、メンバー自身もモチベーションを保ちづらいと思うので、背景のストーリーを大事にして、状況に応じて目標自体を状況に合わせていけるような余白を持てるよう努めています。幸い、今いる会社の制度的には目標設定とそれに対する達成度が給料に反映される訳ではないので、そういった動き方が取りやすい状況にあります。 (OKR みたいなものをイメージしてもらうとわかりやすいと思います)</p>
+
+<p>もちろん目標は設定するだけではダメで、実際に達成に向けて継続的に努力をしていく必要があります。心理的な距離感に関してのところでも少し書きましたが、Engineering Manager は目標に対して二人三脚で共闘していくものなんだというスタンスは強調しているつもりです。そのために、日頃から 1 on 1 を通じて心理的距離感を近く保ち、メンバーだけでは解決が難しい問題をなるべく早い段階で共有してもらい、実際に解決していくことはとても重要だと感じます。</p>
+
+<h2 id="engineering-manager-になってありがたかったこと">Engineering Manager になってありがたかったこと</h2>
+
+<p>最後にいい話を少ししてこの記事を締めようと思います。</p>
+
+<h3 id="人事や人事制度の存在">人事や人事制度の存在</h3>
+
+<p>僕は人事制度なんてなくて済むならその方が良いに違いないと思ってますし、それについては今も変わりません。</p>
+
+<p>でも現状は、その人事制度に明らかに助けられていますし、そういったものを作り上げてきた人事や以前からのマネージャーたちに一日一万回は感謝しながら仕事しています。もちろん、完璧な制度なんてありえないし、現状の制度に不満が全くない訳ではないけど、全体として良いものだと思っているし、問題点についても積極的にフィードバックしてより良いものにしていく助けになれればと思えるものです。</p>
+
+<p>特に、今の会社の人事は親会社の制度にアラインしつつも、そこと噛み合わない部分についてはちゃんと現状の組織に合わせたものを作っていく柔軟さも持ち合わせていてすごいなと思わされます。</p>
+
+<p>目標設定についても基本的には人事が用意した仕組みの中でやっていますし、それへの臨み方についても新人マネージャー向けにちゃんとした研修の機会、それもどっかの訳のわからんコンサル企業への丸投げではなく、最新の研究や書籍などの出典も示された資料を自分たちで作って、自分たちの言葉で話してくれるので、自分もそれに共感できるし、そこから自分の裁量で工夫する余地が与えられている点も素晴らしいなと感じます。</p>
+
+<p>拙いなりにもこの記事をここまで書けているのも半分くらいは人事のみなさんのおかげです。あとは経費キャッシュレス化だけやっていただけたら当分はなんの文句もありません。</p>
+
+<h3 id="チームの内外のメンバーの優秀さ">チームの内外のメンバーの優秀さ</h3>
+
+<p>まだ 2 ヶ月しかやってない中ではありますが、やっぱり周囲のメンバーの優秀さには本当に助けられているなと思います。これに関しても一日にもう二万回感謝しています。</p>
+
+<p>メンバーというのはチーム内のメンバーもそうですが、チーム外の人々もそうです。SRE というのは構造的には他のチームに対して何かしてあげるように見える業務が多いので、感謝されがちで、ともすれば自分たちは偉いんだという勘違いに陥りがちなのかもしれません。</p>
+
+<p>しかし、こちらも助けられているという感覚が強くあるので、そうならずに済みそうです。例えば新たなツールを導入し、そのためにワークフローを変える必要があっても、こちらが考えてもいなかった方向から意見をくれたり、時にはワークフロー自体をより良いものに変えてくれたりと、むしろこちらが助けられているなと感じます。</p>
+
+<p>また、チーム内のメンバーについてもみんな自分よりも優秀だと思える人たちばかりで本当に助けられています。僕は無駄に長い社歴で得たアドバンテージを切り崩しながらなんとか Engineering Manager やらせてもらってます。</p>
+
+<p>とはいえ、今のメンバーのうち何人かは自分も Engineering Manager になる前から採用に関わっていたので、やってきてよかったなと思います。自分が Engineering Manager になるのと同時に 2 人入ってきた二人も爆速で立ち上がってバリューを出し続けているので、これは採用頑張らないといけないなと改めて思わされました。</p>
+
+<p>メンバーが優秀だとイージーな面と、よりハードなチャレンジを求められる面と両方ありますが、やっぱりより高いチャレンジができる状況の方が幸せに違いないので、自分がバリューを出せる限りにおいては Engineering Manager やっていけたらいいですね。</p>
+
+<h2 id="終わりに">終わりに</h2>
+
+<p>オンボーディングについて序盤で書くって言っといて忘れていたのでやる気が出たらそのうち書きます。</p>
+
+    </div>
+    <div class="post-footer">
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 36 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4">
+    
+
+<h3>
+  Author
+</h3>
+
+<p>
+  <div class="media">
+    
+    <img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class="pull-left">
+    
+    
+    <div class="media-body">
+      
+        <h4 class="media-heading"><a href="https://yuyat.jp">Yuya Takeyama</a></h4>
+      
+    </div>
+    
+  </div>
+</p>
+
+
+
+<p><a href="https://twitter.com/yuya_takeyama" class="twitter-follow-button" data-show-screen-name="false" data-show-count="true" data-dnt="true" data-size="large">Follow @yuya_takeyama</a></p>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3233912168536735"
+     data-ad-slot="3268217607"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          <footer>
+
+&copy; 2015.
+Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+<a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
+
+</footer>
+
+        </div>
+      </div>
+    </div>
+    <script src="https://blog.yuyat.jp/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12392004-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+</html>
+

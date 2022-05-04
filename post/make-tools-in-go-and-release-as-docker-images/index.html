@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+  <head>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-3233912168536735",
+        enable_page_level_ads: true
+      });
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://blog.yuyat.jp/stylesheets/shiori.css">
+    <link href='//fonts.googleapis.com/css?family=Montserrat:700,400' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="https://blog.yuyat.jp/favicon.ico">
+    <link rel="canonical" href="https://blog.yuyat.jp/post/make-tools-in-go-and-release-as-docker-images/">
+    <title>CLI ツールを Go で書いて Docker イメージとしてリリースする | Born Too Late</title>
+    
+
+    <meta property="fb:admins" content="100000987494966" />
+<meta property="fb:app_id" content="285547814816502" />
+<meta property="og:title" content="CLI ツールを Go で書いて Docker イメージとしてリリースする" />
+<meta property="og:description" content="最近ようやく開発ツールとして Docker が手に馴染んできたので、タイトルの件も含めていくつか雑多に書きます。
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://blog.yuyat.jp/post/make-tools-in-go-and-release-as-docker-images/" />
+
+  
+	  <meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg" />
+  
+
+
+  <meta property="og:updated_time" content="2018-10-10T01:30:00&#43;09:00"/>
+
+
+
+
+    <meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@yuya_takeyama">
+<meta name="twitter:creator" content="@yuya_takeyama">
+
+    
+
+  </head>
+  <body>
+    <div class="navbar navbar-inverse navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <div class="navbar-toggle-wrapper visible-xs">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".js-navbar-collapse">
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+          <a href="https://blog.yuyat.jp" class="navbar-brand">Born Too Late</a>
+        </div>
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          <ul class="navbar-nav nav">
+            <li><a href="https://blog.yuyat.jp/post/">Archive</a></li>
+
+          </ul>
+          <ul class="navbar-nav nav navbar-right">
+            
+
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="post-header">
+      <h1 class="post-title-main">CLI ツールを Go で書いて Docker イメージとしてリリースする</h1>
+      <p class="text-muted">Oct 10, 2018</p>
+
+<div>
+  <a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fmake-tools-in-go-and-release-as-docker-images%2f&amp;text=CLI%20%e3%83%84%e3%83%bc%e3%83%ab%e3%82%92%20Go%20%e3%81%a7%e6%9b%b8%e3%81%84%e3%81%a6%20Docker%20%e3%82%a4%e3%83%a1%e3%83%bc%e3%82%b8%e3%81%a8%e3%81%97%e3%81%a6%e3%83%aa%e3%83%aa%e3%83%bc%e3%82%b9%e3%81%99%e3%82%8b&amp;via=yuya_takeyama" rel="nofollow"><img src="/images/social/twitter.png" width="30" height="30" class="social-button"></a>
+  <a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fmake-tools-in-go-and-release-as-docker-images%2f" rel="nofollow"><img src="/images/social/hatena.svg" width="30" height="30" class="social-button"></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fmake-tools-in-go-and-release-as-docker-images%2f" rel="nofollow"><img src="/images/social/facebook.png" width="30" height="30" class="social-button"></a>
+</div>
+
+    </div>
+    <div class="post-content">
+      
+
+<p>最近ようやく開発ツールとして Docker が手に馴染んできたので、タイトルの件も含めていくつか雑多に書きます。</p>
+
+<h2 id="cli-ツールを-go-で書いて-docker-イメージとしてリリースする">CLI ツールを Go で書いて Docker イメージとしてリリースする</h2>
+
+<p>コマンドラインツールを Go で書く、というのは以前からやっていて、主な理由としては「クロスコンパイルができるのでバイナリリリースが簡単」というのがありました。便利なので、クロスコンパイルから GitHub へのリリースを一発でやってくれるラッパーツールを書いたこともありました (一応動くものの、開発は非常に中途半端なところで止まってますが)</p>
+
+<ul>
+<li><a href="https://qiita.com/yuya_takeyama/items/ac200058f9a27a5db12f">gox して ghr するツール ggallin 作った</a></li>
+</ul>
+
+<p>その後、2017 年に入って Docker で Multi-Stage Builds という機能が実装されてからは、<code>Dockerfile</code> 内の build ステージで <code>go build</code> したバイナリを最終的なステージから <code>COPY --from=build</code> して使う、ということもやってきました。</p>
+
+<ul>
+<li><a href="https://docs.docker.com/develop/develop-images/multistage-build/">Use multi-stage builds</a></li>
+</ul>
+
+<p>この <code>COPY --from</code> ですが、ドキュメントをよく見ると <code>COPY --from=nginx:latest</code> などとすることで、外部のイメージも stage として利用することができると書いてあります。</p>
+
+<p>これを利用すると、<code>Dockerfile</code> 内で必要なツールはこんな感じにインストールすることができるようになります。 (例は前の記事で紹介している <a href="/post/guruguru-cache/">guruguru-cache</a> をインストールするもの)</p>
+
+<pre><code>COPY --from=yuyat/guruguru-cache /usr/local/bin/guruguru-cache /usr/local/bin
+</code></pre>
+
+<p>guruguru-cache は Go で書かれていてシングルバイナリとしてビルドされているので、このように <code>$PATH</code> の通ったところに <code>COPY</code> してくるだけで使えるようになります。</p>
+
+<p>ただし、動的リンクされている場合は動かないことがあるので、静的リンクにする必要があります。以下の記事を参考にしています。</p>
+
+<ul>
+<li><a href="http://blog.wrouesnel.com/articles/Totally%20static%20Go%20builds/">Totally static Go builds</a></li>
+</ul>
+
+<p>以前に <a href="https://github.com/yuya-takeyama/circle-gh-tee">Rust で書いたツール</a> も同じやり方で手元で使ってたりするんですが、この時はその辺に気を使っていたわけではないので、たまたま動いているだけかもしれません。 (ビルドと実行が同じベースイメージで行われていれば普通に動くことも多い)</p>
+
+<p>最近 Webpacker 用の <code>Dockerfile</code> で、ruby のイメージの中から <code>COPY --from=node</code> で <code>node</code> のバイナリを直接引っ張ってきているのをちょいちょい見ますが、Quipper で一番 Docker に詳しい <a href="http://twitter.com/mtsmfm">@mtsmfm</a> さんに聞いたところ、「多分 ruby と node のベースイメージが近いからたまたま動いているだけで、手元で使うのはいいけど本番ではやるべきではないですね」とのような意見をもらって、「なるほど、確かに〜」と思ったのでした。 (確かにどちらも <code>buildpack-deps:stretch</code> がベース。バージョンによっても違うかもですが)</p>
+
+<ul>
+<li><a href="https://github.com/docker-library/ruby/blob/ccacdf5eb9e69b6f249a890c87621679410e7d74/2.5/stretch/Dockerfile">ruby</a></li>
+<li><a href="https://github.com/nodejs/docker-node/blob/11d4e7fb83a52801e177a08c12eeacaf41498a54/10/stretch/Dockerfile">node</a></li>
+</ul>
+
+<p>あと言うまでもないとは思いますが、これはあくまでも <code>docker build</code> 内で実行する開発ツール的なやつに有効なテクニックで、サーバやミドルウェアは素直で別コンテナで動かしてネットワークを通じてやり取りするのが良いでしょう (Apache と MySQL の両方を動かすようなイメージを作るべきではない)</p>
+
+<h2 id="docker-hub-よりも-docker-cloud">Docker Hub よりも Docker Cloud</h2>
+
+<p>というわけで最近は前よりも Docker イメージを作ることが増えて、ちょっと前までは Docker Hub を使っていました。</p>
+
+<p>でもビルドの進捗がよくわからんなー、と思って社内の Slack で文句を言っていたところ、これまた <a href="http://twitter.com/mtsmfm">@mtsmfm</a> さんから「進捗は Docker Cloud の方がわかりやすい」ということだったのでそちらを使い始めました。</p>
+
+<p>名前はなんとなく知っていたものの、そこで初めて知ったのはどちらも Docker, Inc. が運営するサービスなんですね。しかも内部的にリポジトリのデータは共有されており、<code>docker push</code> すると両方に同じイメージが表れるという不思議な作り。Docker Hub だと他人の public なイメージも閲覧できるのに対して、Docker Cloud は基本的に自分か所属する組織のイメージ以外は見えないので、Hub としての機能は持ってないようです。</p>
+
+<p>使ってみると UI 以外にも Automated Build が少しいい感じになっていて、Git の tag は <code>v1.2.3</code> だったら Docker イメージの tag は <code>1.2.3</code> というように先頭の v を取る、みたいなことも簡単にできるので便利です。</p>
+
+    </div>
+    <div class="post-footer">
+      <a href="https://blog.yuyat.jp/post/" class="btn btn-primary btn-block btn-lg">View All 36 Articles →</a>
+
+    </div>
+    
+  </div>
+  <div class="col-sm-4">
+    
+
+<h3>
+  Author
+</h3>
+
+<p>
+  <div class="media">
+    
+    <img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class="pull-left">
+    
+    
+    <div class="media-body">
+      
+        <h4 class="media-heading"><a href="https://yuyat.jp">Yuya Takeyama</a></h4>
+      
+    </div>
+    
+  </div>
+</p>
+
+
+
+<p><a href="https://twitter.com/yuya_takeyama" class="twitter-follow-button" data-show-screen-name="false" data-show-count="true" data-dnt="true" data-size="large">Follow @yuya_takeyama</a></p>
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3233912168536735"
+     data-ad-slot="3268217607"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+  </div>
+</div>
+      <div class="row footer">
+        <div class="col-sm-12 text-center">
+          <footer>
+
+&copy; 2015.
+Built with <a href="http://gohugo.io/">Hugo</a> (0.16) and
+<a href="https://github.com/chibicode/hugo-theme-shiori">Shiori Theme</a>.
+
+</footer>
+
+        </div>
+      </div>
+    </div>
+    <script src="https://blog.yuyat.jp/javascripts/shiori.js"></script>
+    
+
+
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-12392004-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+  </body>
+</html>
+
