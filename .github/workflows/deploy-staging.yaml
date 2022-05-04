@@ -1,0 +1,44 @@
+name: deploy-staging
+
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  deploy:
+    permissions:
+      id-token: write
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true  # Fetch Hugo themes (true OR recursive)
+          fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
+      - uses: aquaproj/aqua-installer@v1.0.0
+        with:
+          aqua_version: v1.5.1
+      - id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.BLOG_BOT_GITHUB_APP_ID }}
+          private_key: ${{ secrets.BLOG_BOT_GITHUB_APP_PRIVATE_KEY }}
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: '0.90.1'
+      - name: Build
+        run: hugo --minify
+      - name: Push built files to GitHub
+        run: ./scripts/push_built_files.sh
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          GITHUB_BRANCH: ${{ github.head_ref }}
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::943566097936:role/blog-s3-sync
+          aws-region: ap-northeast-1
+      - name: Deploy
+        run: aws s3 sync --delete public s3://blog.staging.yuyat.jp
