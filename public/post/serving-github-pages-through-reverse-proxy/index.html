@@ -1,0 +1,146 @@
+<!doctype html><html lang=ja-jp>
+<head>
+<script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-3233912168536735",enable_page_level_ads:!0})</script>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet href=https://blog.yuyat.jp/stylesheets/shiori.css>
+<link href="//fonts.googleapis.com/css?family=Montserrat:700,400" rel=stylesheet type=text/css>
+<link href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic" rel=stylesheet type=text/css>
+<link href=//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css rel=stylesheet>
+<link rel="shortcut icon" href=https://blog.yuyat.jp/favicon.ico>
+<link rel=canonical href=https://blog.yuyat.jp/post/serving-github-pages-through-reverse-proxy/>
+<title>GitHub Pages を nginx のリバースプロキシ越しに配信する | Born Too Late</title>
+<meta property="fb:admins" content="100000987494966">
+<meta property="fb:app_id" content="285547814816502">
+<meta property="og:title" content="GitHub Pages を nginx のリバースプロキシ越しに配信する">
+<meta property="og:description" content="このブログは以前の記事にも書いた通り、GitHub Pages から配信しています。
+そしてさらに、前段に nginx のリバースプロキシを置いた構成になってます。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://blog.yuyat.jp/post/serving-github-pages-through-reverse-proxy/">
+<meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg">
+<meta property="og:updated_time" content="2016-09-25T17:57:40+09:00">
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content="@yuya_takeyama">
+<meta name=twitter:creator content="@yuya_takeyama">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-static-top">
+<div class=container>
+<div class=navbar-header>
+<div class="navbar-toggle-wrapper visible-xs">
+<button type=button class=navbar-toggle data-toggle=collapse data-target=.js-navbar-collapse>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+</button>
+</div>
+<a href=https://blog.yuyat.jp class=navbar-brand>Born Too Late</a>
+</div>
+<div class="collapse navbar-collapse js-navbar-collapse">
+<ul class="navbar-nav nav">
+<li><a href=https://blog.yuyat.jp/post/>Archive</a></li>
+</ul>
+<ul class="navbar-nav nav navbar-right">
+</ul>
+</div>
+</div>
+</div>
+<div class=container>
+<div class=row>
+<div class=col-sm-8>
+<div class=post-header>
+<h1 class=post-title-main>GitHub Pages を nginx のリバースプロキシ越しに配信する</h1>
+<p class=text-muted>Sep 25, 2016</p>
+<div>
+<a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fserving-github-pages-through-reverse-proxy%2f&text=GitHub%20Pages%20%e3%82%92%20nginx%20%e3%81%ae%e3%83%aa%e3%83%90%e3%83%bc%e3%82%b9%e3%83%97%e3%83%ad%e3%82%ad%e3%82%b7%e8%b6%8a%e3%81%97%e3%81%ab%e9%85%8d%e4%bf%a1%e3%81%99%e3%82%8b&via=yuya_takeyama" rel=nofollow><img src=/images/social/twitter.png width=30 height=30 class=social-button></a>
+<a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fserving-github-pages-through-reverse-proxy%2f" rel=nofollow><img src=/images/social/hatena.svg width=30 height=30 class=social-button></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fserving-github-pages-through-reverse-proxy%2f" rel=nofollow><img src=/images/social/facebook.png width=30 height=30 class=social-button></a>
+</div>
+</div>
+<div class=post-content>
+<p>このブログは<a href=/post/auto-deploy-hugo-to-github-pages-with-circleci/>以前の記事</a>にも書いた通り、<a href=https://pages.github.com/>GitHub Pages</a> から配信しています。</p>
+<p>そしてさらに、前段に nginx のリバースプロキシを置いた構成になってます。</p>
+<h2 id=何故リバースプロキシを利用するか>何故リバースプロキシを利用するか</h2>
+<p>はっきり言って普通に考えたら無駄感はありますが、良い点をいくつか挙げてみます。</p>
+<h3 id=zone-apex-domain-を使用することができる>Zone apex domain を使用することができる</h3>
+<p>GitHub Pages は CNAME による Custom domain に対応していますが、CNAME では通常 Zone apex domain に対応することができません。</p>
+<p>リバースプロキシを利用することで、ドメインの A レコードにリバースプロキシを指定し、その upstream に GitHub Pages の URL を指定することで、対応することができます。</p>
+<p>(このブログはご覧の通り Zone apex domain ではないですが、そのうちそっちにもページを作るつもりです)</p>
+<h3 id=custom-domain-でも-https-を使用することができる>Custom domain でも HTTPS を使用することができる</h3>
+<p>GitHub Pages はデフォルトでは USERNAME.github.io ドメインが割り当てられ、HTTPS で配信されます。</p>
+<p>ですが、CNAME を使った場合は HTTP となってしまい、HTTPS を利用する方法は GitHub からは提供されていません。</p>
+<p><a href=https://blog.yuyat.jp/post/auto-renew-letsencrypt-cert-keys-with-ansible-and-certbot/>Let&rsquo;s Encrypt</a> を使えばセットアップは簡単です。</p>
+<h3 id=アクセスログをちゃんと取得できる>アクセスログをちゃんと取得できる</h3>
+<p>GitHub でもリポジトリの Graphs -> Traffic を見るとある程度わかりますが、nginx で好きなログを残せるようになります。</p>
+<h2 id=設定手順>設定手順</h2>
+<h3 id=github-上で-custom-domain-の設定をする>GitHub 上で Custom domain の設定をする</h3>
+<p>これは必須というわけではないですが、やった方がいいと思うのでその前提で進めます。<br>
+設定しない場合、以降の設定手順も微妙に違ってくるので注意が必要です。</p>
+<p>Custom domain はいつからか Web の UI 上から設定が可能になっていたので、そこからやるのがお手軽です。<br>
+リポジトリの Settings -> Options からできます。</p>
+<h3 id=nginx-の設定>nginx の設定</h3>
+<p>HTTPS で配信する場合、おそらくこれが最小限の設定です。<br>
+(実際は <code>X-Forwarded-For</code> とかも指定しているけど多分特に影響していない)</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-nginx data-lang=nginx><span style=color:#66d9ef>server</span> {
+  <span style=color:#f92672>listen</span> <span style=color:#ae81ff>443</span> <span style=color:#e6db74>ssl</span> ;
+  <span style=color:#f92672>server_name</span> <span style=color:#e6db74>blog.yuyat.jp</span>;
+
+  <span style=color:#f92672>ssl_certificate</span>     <span style=color:#e6db74>/etc/letsencrypt/live/blog.yuyat.jp/fullchain.pem</span>;
+  <span style=color:#f92672>ssl_certificate_key</span> <span style=color:#e6db74>/etc/letsencrypt/live/blog.yuyat.jp/privkey.pem</span>;
+
+  <span style=color:#f92672>location</span> <span style=color:#e6db74>/</span> {
+    <span style=color:#f92672>proxy_pass</span> <span style=color:#e6db74>https://yuya-takeyama.github.io</span>;
+
+    <span style=color:#f92672>proxy_redirect</span> <span style=color:#e6db74>http://blog.yuyat.jp</span> <span style=color:#e6db74>https://blog.yuyat.jp</span>;
+
+    <span style=color:#f92672>proxy_set_header</span> <span style=color:#e6db74>Host</span> $host;
+  }
+}
+</code></pre></div><p>注意する必要があるのは <code>proxy_pass</code> の URL です。<br>
+このブログの GitHub Pages 上の URL は本来 <code>https://yuya-takeyama.github.io/blog.yuyat.jp/</code> ですが、リポジトリ名の部分は指定しません。</p>
+<p>その変わり、リポジトリ名は <code>proxy_set_header</code> で <code>Host</code> として指定します。<br>
+この場合はリポジトリ名がそのままドメイン名になっているので <code>$host</code> を使っています。</p>
+<p>HTTPS の場合は <code>proxy_redirect</code> も設定が必要です。<br>
+これは例えば <code>https://blog.yuyat.jp/post</code> のような末尾のスラッシュを省略した URL にアクセスした場合リダイレクトが発生しますが、<br>
+その時に http にリダイレクトしてしまうのを防ぐために必要です。</p>
+</div>
+<div class=post-footer>
+<a href=https://blog.yuyat.jp/post/ class="btn btn-primary btn-block btn-lg">View All 37 Articles →</a>
+</div>
+</div>
+<div class=col-sm-4>
+<h3>
+Author
+</h3>
+<p>
+<div class=media>
+<img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class=pull-left>
+<div class=media-body>
+<h4 class=media-heading><a href=https://yuyat.jp>Yuya Takeyama</a></h4>
+</div>
+</div>
+</p>
+<p><a href=https://twitter.com/yuya_takeyama class=twitter-follow-button data-show-screen-name=false data-show-count=true data-dnt=true data-size=large>Follow @yuya_takeyama</a></p>
+<script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<ins class=adsbygoogle style=display:block data-ad-client=ca-pub-3233912168536735 data-ad-slot=3268217607 data-ad-format=auto></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
+</div>
+</div>
+<div class="row footer">
+<div class="col-sm-12 text-center">
+<footer>
+&copy; 2015.
+Built with <a href=http://gohugo.io/>Hugo</a> (0.90.1) and
+<a href=https://github.com/chibicode/hugo-theme-shiori>Shiori Theme</a>.
+</footer>
+</div>
+</div>
+</div>
+<script src=https://blog.yuyat.jp/javascripts/shiori.js></script>
+<script>!function(a,c,d){var b,e=a.getElementsByTagName(c)[0],f=/^http:/.test(a.location)?'http':'https';a.getElementById(d)||(b=a.createElement(c),b.id=d,b.src=f+'://platform.twitter.com/widgets.js',e.parentNode.insertBefore(b,e))}(document,'script','twitter-wjs')</script>
+<script>hljs.initHighlightingOnLoad()</script>
+<script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-12392004-1','auto'),ga('send','pageview')</script>
+</body>
+</html>

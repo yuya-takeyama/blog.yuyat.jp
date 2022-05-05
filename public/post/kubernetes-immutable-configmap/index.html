@@ -1,0 +1,317 @@
+<!doctype html><html lang=ja-jp>
+<head>
+<script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-3233912168536735",enable_page_level_ads:!0})</script>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet href=https://blog.yuyat.jp/stylesheets/shiori.css>
+<link href="//fonts.googleapis.com/css?family=Montserrat:700,400" rel=stylesheet type=text/css>
+<link href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic" rel=stylesheet type=text/css>
+<link href=//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css rel=stylesheet>
+<link rel="shortcut icon" href=https://blog.yuyat.jp/favicon.ico>
+<link rel=canonical href=https://blog.yuyat.jp/post/kubernetes-immutable-configmap/>
+<title>Kubernetes の ConfigMap を Immutable に管理する | Born Too Late</title>
+<meta property="fb:admins" content="100000987494966">
+<meta property="fb:app_id" content="285547814816502">
+<meta property="og:title" content="Kubernetes の ConfigMap を Immutable に管理する">
+<meta property="og:description" content="Quipper では Microservices 基盤として Kubernetes によるクラスタを構築し、もうすぐ本番環境にリリースしようとしています。本当は Deis Workflow で使う Kubernetes クラスタを既に本番で運用していますが、Deis なしでの運用に変えようとしているのが最近の状況です。
+そこら辺の背景は 2018/07/19 に行われる Quipper Product Meetup でお話しするとして、今は YAML の管理どうするかみたいなところから試行錯誤している状態で、基本的には Pull Request ベースでレビューしてマージされたらデプロイ、みたいなことをアプリでもクラスタでもやる感じになっています。
+今日は、その中でも ConfigMap をどう扱うか、について Mutable/Immutable 2 つのアプローチについて実際に動く設定・スクリプト付きで紹介します。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://blog.yuyat.jp/post/kubernetes-immutable-configmap/">
+<meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg">
+<meta property="og:updated_time" content="2018-07-01T21:00:00+09:00">
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content="@yuya_takeyama">
+<meta name=twitter:creator content="@yuya_takeyama">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-static-top">
+<div class=container>
+<div class=navbar-header>
+<div class="navbar-toggle-wrapper visible-xs">
+<button type=button class=navbar-toggle data-toggle=collapse data-target=.js-navbar-collapse>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+</button>
+</div>
+<a href=https://blog.yuyat.jp class=navbar-brand>Born Too Late</a>
+</div>
+<div class="collapse navbar-collapse js-navbar-collapse">
+<ul class="navbar-nav nav">
+<li><a href=https://blog.yuyat.jp/post/>Archive</a></li>
+</ul>
+<ul class="navbar-nav nav navbar-right">
+</ul>
+</div>
+</div>
+</div>
+<div class=container>
+<div class=row>
+<div class=col-sm-8>
+<div class=post-header>
+<h1 class=post-title-main>Kubernetes の ConfigMap を Immutable に管理する</h1>
+<p class=text-muted>Jul 1, 2018</p>
+<div>
+<a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fkubernetes-immutable-configmap%2f&text=Kubernetes%20%e3%81%ae%20ConfigMap%20%e3%82%92%20Immutable%20%e3%81%ab%e7%ae%a1%e7%90%86%e3%81%99%e3%82%8b&via=yuya_takeyama" rel=nofollow><img src=/images/social/twitter.png width=30 height=30 class=social-button></a>
+<a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fkubernetes-immutable-configmap%2f" rel=nofollow><img src=/images/social/hatena.svg width=30 height=30 class=social-button></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fkubernetes-immutable-configmap%2f" rel=nofollow><img src=/images/social/facebook.png width=30 height=30 class=social-button></a>
+</div>
+</div>
+<div class=post-content>
+<p>Quipper では Microservices 基盤として Kubernetes によるクラスタを構築し、もうすぐ本番環境にリリースしようとしています。本当は <a href=https://deis.com/docs/workflow/>Deis Workflow</a> で使う Kubernetes クラスタを既に本番で運用していますが、Deis なしでの運用に変えようとしているのが最近の状況です。</p>
+<p>そこら辺の背景は 2018/07/19 に行われる <a href=https://techplay.jp/event/680406>Quipper Product Meetup</a> でお話しするとして、今は YAML の管理どうするかみたいなところから試行錯誤している状態で、基本的には Pull Request ベースでレビューしてマージされたらデプロイ、みたいなことをアプリでもクラスタでもやる感じになっています。</p>
+<p>今日は、その中でも <code>ConfigMap</code> をどう扱うか、について Mutable/Immutable 2 つのアプローチについて実際に動く設定・スクリプト付きで紹介します。</p>
+<p>設定・スクリプトは全て GitHub のリポジトリに置いています: <a href=https://github.com/yuya-takeyama/kubernetes-immutable-configmap-example>yuya-takeyama/kubernetes-immutable-configmap-example</a></p>
+<h2 id=背景>背景</h2>
+<p>Kubernetes における <code>ConfigMap</code> は設定値や設定ファイルを保持するためのリソースで、<code>Deployment</code> (<code>Pod</code>) からは環境変数として読み込んだり、ファイルとして Volume にマウントしたりして使用します。</p>
+<p><code>ConfigMap</code> を更新するだけでは、それを参照する <code>Deployment</code> (<code>Pod</code>) はロールアウトされず、環境変数等にも反映されません。ロールアウトするために何か工夫が必要です。</p>
+<h2 id=元ネタ>元ネタ</h2>
+<p>「<code>ConfigMap</code> を immutable にせよ」というのは GitHub/Stack Overflow はじめ様々なところで言及されています。</p>
+<p>ですが、実際に動く例というものがなさそうなので、そういった言及を元に想像で作ってみたのが今回の例です。</p>
+<p>実際に参考にしたのは以下のコメントです。</p>
+<ul>
+<li><a href=https://github.com/kubernetes/kubernetes/pull/31701#issuecomment-252110430>https://github.com/kubernetes/kubernetes/pull/31701#issuecomment-252110430</a>
+<ul>
+<li>Kubernetes/GKE/CNCF のメンバーである <a href=https://github.com/bgrant0607>Brian Grant</a> によるコメント</li>
+</ul>
+</li>
+</ul>
+<h2 id=mutable-なアプローチ>Mutable なアプローチ</h2>
+<p>まずはより素朴なアプローチとして Mutable なアプローチです。大まかには以下のような仕組みです。</p>
+<ul>
+<li>環境変数を保持する <code>ConfigMap</code> は常に同一のものを更新する</li>
+<li>それを参照する <code>Pod</code> には <code>annotations</code> として <code>ConfigMap</code> ファイルのチェックサムを保持する</li>
+<li><code>ConfigMap</code> に変更があると <code>Pod</code> が持つチェックサムも変更されるので、<code>kubectl apply</code> 時にロールアウトが実行される</li>
+</ul>
+<h3 id=deployment>Deployment</h3>
+<p>注目すべきは以下の 2 点です。</p>
+<ul>
+<li>環境変数は <code>envFrom</code> を使って <code>nginx-config</code> という <code>ConfigMap</code> を参照している</li>
+<li><code>Pod</code> の <code>annotations</code> にはチェックサムを保持するためのプレースホルダ <code>"${config_checksum}"</code> を含む
+<ul>
+<li><code>envsubst</code> で埋め込む前提</li>
+</ul>
+</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>extensions/v1beta1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Deployment</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>nginx</span>
+  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>cm-deploy-mutable</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>1</span>
+  <span style=color:#f92672>selector</span>:
+    <span style=color:#f92672>matchLabels</span>:
+      <span style=color:#f92672>run</span>: <span style=color:#ae81ff>nginx</span>
+  <span style=color:#f92672>template</span>:
+    <span style=color:#f92672>metadata</span>:
+      <span style=color:#f92672>labels</span>:
+        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>nginx</span>
+      <span style=color:#f92672>annotations</span>:
+        <span style=color:#f92672>yuyat.jp/configmap.checksum.nginx-config</span>: <span style=color:#e6db74>&#34;${config_checksum}&#34;</span>
+    <span style=color:#f92672>spec</span>:
+      <span style=color:#f92672>containers</span>:
+      - <span style=color:#f92672>envFrom</span>:
+        - <span style=color:#f92672>configMapRef</span>:
+            <span style=color:#f92672>name</span>: <span style=color:#ae81ff>nginx-config</span>
+        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>nginx:alpine</span>
+        <span style=color:#f92672>name</span>: <span style=color:#ae81ff>nginx</span>
+</code></pre></div><h3 id=configmap>ConfigMap</h3>
+<p><code>ConfigMap</code> は <code>APP_VERSION=1</code> という値を保持するだけのプレーンな YAML なのでここでは割愛。</p>
+<h3 id=デプロイスクリプト>デプロイスクリプト</h3>
+<p>事前に <code>ConfigMap</code> ファイルの SHA-1 チェックサムを取っておき、それを <code>envsubst</code> を使って <code>Deployment</code> に埋め込んでいます。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>#!/bin/bash
+</span><span style=color:#75715e></span>config_checksum<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>shasum mutable/nginx-config.cm.yaml | awk <span style=color:#e6db74>&#39;{ print $1 }&#39;</span><span style=color:#66d9ef>)</span>
+
+kubectl apply --record -n cm-deploy-mutable <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>  -f mutable/cm-deploy-mutable.ns.yaml <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>  -f mutable/nginx-config.cm.yaml <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>  -f &lt;<span style=color:#f92672>(</span>cat mutable/nginx.deploy.yaml.tpl | config_checksum<span style=color:#f92672>=</span>$config_checksum envsubst <span style=color:#e6db74>&#39;$config_checksum&#39;</span><span style=color:#f92672>)</span>
+</code></pre></div><h3 id=デプロイしてみる>デプロイしてみる</h3>
+<p>初回はそれぞれのリソースが生成されます。</p>
+<pre tabindex=0><code>$ ./mutable/deploy.sh
+namespace &quot;cm-deploy-mutable&quot; created
+configmap &quot;nginx-config&quot; created
+deployment &quot;nginx&quot; created
+</code></pre><p>この状態で環境変数 <code>APP_VERSION</code> には <code>1</code> がセットされています。</p>
+<pre tabindex=0><code>$ ./mutable/version.sh
+1
+</code></pre><p>何も変更せずに再度デプロイしても、何も起こりません。</p>
+<pre tabindex=0><code>$ ./mutable/deploy.sh
+namespace &quot;cm-deploy-mutable&quot; configured
+configmap &quot;nginx-config&quot; unchanged
+deployment &quot;nginx&quot; unchanged
+</code></pre><p><code>APP_VERSION</code> を <code>2</code> に変更してデプロイすると、ロールアウトが行われます。</p>
+<pre tabindex=0><code>$ ./mutable/deploy.sh
+namespace &quot;cm-deploy-mutable&quot; configured
+configmap &quot;nginx-config&quot; configured
+deployment &quot;nginx&quot; configured
+</code></pre><p>コンテナ内の環境変数も正常に変更されました。</p>
+<pre tabindex=0><code>$ ./mutable/version.sh
+2
+</code></pre><h3 id=mutable-なアプローチの問題点>Mutable なアプローチの問題点</h3>
+<p>ここまでは上手くいっていますが、問題となるのはロールバックする時です。</p>
+<pre tabindex=0><code>$ kubectl rollout undo deploy/nginx -n cm-deploy-mutable
+</code></pre><p>この状態で環境変数を確認すると、<code>2</code> のままで、元に戻っていないことがわかります。</p>
+<pre tabindex=0><code>$ ./mutable/version.sh
+2
+</code></pre><p>ロールバックされるのはあくまでも <code>Deployment</code> なので、それにひもづく <code>ConfigMap</code> が変わらない以上は当然の結果です。</p>
+<p>ですが、環境変数等の設定値も含めてロールバックしたい場合には困りますね。</p>
+<h2 id=immutable-なアプローチ>Immutable なアプローチ</h2>
+<p>Mutable なアプローチの問題点を解決するための Immutable なアプローチは以下のようなものです。</p>
+<ul>
+<li>環境変数を保持する <code>ConfigMap</code> の name には suffix としてチェックサムを不可する
+<ul>
+<li>内容が変わると新しいチェックサムを持った <code>ConfigMap</code> を毎回新しく作成する</li>
+</ul>
+</li>
+<li><code>Pod</code> からもそのチェックサム付きの名前で参照する</li>
+<li><code>ConfigMap</code> に変更があると <code>Pod</code> 参照する <code>ConfigMap</code> が毎回変わるので、<code>kubectl apply</code> 時にロールアウトが実行される</li>
+</ul>
+<h3 id=deployment-1>Deployment</h3>
+<p>Mutable なものとだいたい似ていますが、差分は以下の 2 点です。</p>
+<ul>
+<li>チェックサムを保持する <code>annotations</code> を削除
+<ul>
+<li>これは敢えて持たせたままにするのもありだと思います</li>
+</ul>
+</li>
+<li><code>envFrom</code> で参照する <code>ConfigMap</code> の名前の suffix 部分がプレースホルダになっている
+<ul>
+<li>やはり <code>envsubst</code> で値を埋め込む前提</li>
+</ul>
+</li>
+</ul>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>extensions/v1beta1</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>Deployment</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>nginx</span>
+  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>cm-deploy-immutable</span>
+<span style=color:#f92672>spec</span>:
+  <span style=color:#f92672>replicas</span>: <span style=color:#ae81ff>1</span>
+  <span style=color:#f92672>selector</span>:
+    <span style=color:#f92672>matchLabels</span>:
+      <span style=color:#f92672>run</span>: <span style=color:#ae81ff>nginx</span>
+  <span style=color:#f92672>template</span>:
+    <span style=color:#f92672>metadata</span>:
+      <span style=color:#f92672>labels</span>:
+        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>nginx</span>
+    <span style=color:#f92672>spec</span>:
+      <span style=color:#f92672>containers</span>:
+      - <span style=color:#f92672>envFrom</span>:
+        - <span style=color:#f92672>configMapRef</span>:
+            <span style=color:#f92672>name</span>: <span style=color:#e6db74>&#34;nginx-config-${config_checksum}&#34;</span>
+        <span style=color:#f92672>image</span>: <span style=color:#ae81ff>nginx:alpine</span>
+        <span style=color:#f92672>name</span>: <span style=color:#ae81ff>nginx</span>
+
+</code></pre></div><h3 id=configmap-1>ConfigMap</h3>
+<p>Mutable なアプローチではプレーンな YAML でしたが、こちらでは <code>ConfigMap</code> も <code>envsubst</code> による値の埋め込みを行います。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml><span style=color:#f92672>apiVersion</span>: <span style=color:#ae81ff>v1</span>
+<span style=color:#f92672>data</span>:
+  <span style=color:#f92672>APP_VERSION</span>: <span style=color:#e6db74>&#34;1&#34;</span>
+<span style=color:#f92672>kind</span>: <span style=color:#ae81ff>ConfigMap</span>
+<span style=color:#f92672>metadata</span>:
+  <span style=color:#f92672>name</span>: <span style=color:#ae81ff>nginx-config-${config_checksum}</span>
+  <span style=color:#f92672>namespace</span>: <span style=color:#ae81ff>cm-deploy-immutable</span>
+</code></pre></div><h3 id=デプロイスクリプト-1>デプロイスクリプト</h3>
+<p>事前に <code>ConfigMap</code> ファイル (テンプレート) のチェックサムを取るのは同じですが、<code>Deployment</code> だけでなく <code>ConfigMap</code> にも <code>envsubst</code> での値の埋め込みを行います。</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash><span style=color:#75715e>#!/bin/bash
+</span><span style=color:#75715e></span>config_checksum<span style=color:#f92672>=</span><span style=color:#66d9ef>$(</span>shasum immutable/nginx-config.cm.yaml.tpl | awk <span style=color:#e6db74>&#39;{ print $1 }&#39;</span><span style=color:#66d9ef>)</span>
+
+kubectl apply --record -n cm-deploy-immutable <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>  -f immutable/cm-deploy-immutable.ns.yaml <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>  -f &lt;<span style=color:#f92672>(</span>cat immutable/nginx-config.cm.yaml.tpl | config_checksum<span style=color:#f92672>=</span>$config_checksum envsubst <span style=color:#e6db74>&#39;$config_checksum&#39;</span><span style=color:#f92672>)</span> <span style=color:#ae81ff>\
+</span><span style=color:#ae81ff></span>  -f &lt;<span style=color:#f92672>(</span>cat immutable/nginx.deploy.yaml.tpl | config_checksum<span style=color:#f92672>=</span>$config_checksum envsubst <span style=color:#e6db74>&#39;$config_checksum&#39;</span><span style=color:#f92672>)</span>
+</code></pre></div><h3 id=デプロイしてみる-1>デプロイしてみる</h3>
+<p>初回はやはりそれぞれのリソースが生成されます。<code>ConfigMap</code> の名前にチェックサムが含まれることがわかります。</p>
+<pre tabindex=0><code>$ ./immutable/deploy.sh
+namespace &quot;cm-deploy-immutable&quot; created
+configmap &quot;nginx-config-12db160438b100c95eb77c821899f524d6027405&quot; created
+deployment &quot;nginx&quot; created
+</code></pre><p>環境変数は当然ちゃんとセットされています。</p>
+<pre tabindex=0><code>$ ./immutable/version.sh
+1
+</code></pre><p><code>ConfigMap</code> に変更がない状態で再度適用しても、何も変更が起こらないのは Mutable なときと同じです。</p>
+<pre tabindex=0><code>$ ./immutable/deploy.sh
+namespace &quot;cm-deploy-immutable&quot; configured
+configmap &quot;nginx-config-12db160438b100c95eb77c821899f524d6027405&quot; unchanged
+deployment &quot;nginx&quot; unchanged
+</code></pre><p>ここで <code>APP_VERSION</code> を <code>2</code> に変更してデプロイすると、今度はロールアウトが行われます。<code>ConfigMap</code> は新しく作られていることがわかります。</p>
+<pre tabindex=0><code>$ ./immutable/deploy.sh
+namespace &quot;cm-deploy-immutable&quot; configured
+configmap &quot;nginx-config-b6fe7e2f2edca16c3778836541a399245ca2372e&quot; created
+deployment &quot;nginx&quot; configured
+</code></pre><p>コンテナ内の環境変数も正常に変更されました。</p>
+<pre tabindex=0><code>$ ./immutable/version.sh
+2
+</code></pre><h3 id=ロールバックしてみる>ロールバックしてみる</h3>
+<p>Mutable なアプローチで問題になったロールバックをこちらでもやってみます。そちらではロールバックしたにもかかわらず、<code>APP_VERSION</code> は <code>2</code> のままで元に戻ってくれませんでした。</p>
+<pre tabindex=0><code>$ kubectl rollout undo deploy/nginx -n cm-deploy-immutable
+</code></pre><p>ここでコンテナ内の環境変数を確認すると、見事 <code>1</code> に戻っています！</p>
+<pre tabindex=0><code>$ ./immutable/version.sh
+1
+</code></pre><p>ロールバックすることで <code>Pod</code> が参照する <code>ConfigMap</code> が一つ前のものに書き換わり、その <code>ConfigMap</code> には作成時のままの値が入っているので、今度は <code>ConfigMap</code> ごとロールバックされました。</p>
+<p>今回は <code>ConfigMap</code> のみの変更でしたが、<code>Deployment</code> に同時に変更を加えていた場合、その変更もアトミックになるのでロールバックも同様にアトミックに行われることになります。</p>
+<h3 id=immutable-なアプローチの問題点>Immutable なアプローチの問題点</h3>
+<p>Mutable なアプローチで問題になったロールバックも上手く行きましたが、こちらは <code>ConfigMap</code> に変更があるごとに毎回新しく <code>ConfigMap</code> が作られてしまいます。</p>
+<p>気にせず放置、というのも一つのやり方だと思いますが、気になるのであれば以下のような手順で対処することが考えられます。</p>
+<ul>
+<li><code>ConfigMap</code> には <code>label</code> で共通の値 (<code>nginx-config</code> 等) を持たせておく</li>
+<li><code>label</code> に紐付く <code>ConfigMap</code> を全て取得し、<code>metadata</code> が持つ <code>creationTimestamp</code> でソートし、新しいものいくつかを残して残りは全て削除する
+<ul>
+<li>ということを <code>CronJob</code> とかでやると良いのかも</li>
+</ul>
+</li>
+</ul>
+<h2 id=まとめ>まとめ</h2>
+<p><code>Pod</code> にとっての <code>ReplicaSet</code> のようなものが <code>ConfigMap</code> にも欲しいですね。</p>
+<p><a href=https://github.com/kubernetes-sigs/kustomize>kustomize</a> で実現する方法もあるっぽいのでそれはまた今度調べてみます。</p>
+<ul>
+<li><a href=https://github.com/kubernetes-sigs/kustomize/tree/730597b77e0a3a4d4c73668e5b1b414c13c76f5a/examples/helloWorld#how-this-works-with-kustomize>https://github.com/kubernetes-sigs/kustomize/tree/730597b77e0a3a4d4c73668e5b1b414c13c76f5a/examples/helloWorld#how-this-works-with-kustomize</a></li>
+</ul>
+<p>なお、Quipper では Kubernetes を使って最高の Microservices 基盤を作りたい SRE を大募集中です。</p>
+<ul>
+<li><a href=https://www.quipper.com/career/Japan/>https://www.quipper.com/career/Japan/</a></li>
+</ul>
+</div>
+<div class=post-footer>
+<a href=https://blog.yuyat.jp/post/ class="btn btn-primary btn-block btn-lg">View All 37 Articles →</a>
+</div>
+</div>
+<div class=col-sm-4>
+<h3>
+Author
+</h3>
+<p>
+<div class=media>
+<img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class=pull-left>
+<div class=media-body>
+<h4 class=media-heading><a href=https://yuyat.jp>Yuya Takeyama</a></h4>
+</div>
+</div>
+</p>
+<p><a href=https://twitter.com/yuya_takeyama class=twitter-follow-button data-show-screen-name=false data-show-count=true data-dnt=true data-size=large>Follow @yuya_takeyama</a></p>
+<script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<ins class=adsbygoogle style=display:block data-ad-client=ca-pub-3233912168536735 data-ad-slot=3268217607 data-ad-format=auto></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
+</div>
+</div>
+<div class="row footer">
+<div class="col-sm-12 text-center">
+<footer>
+&copy; 2015.
+Built with <a href=http://gohugo.io/>Hugo</a> (0.90.1) and
+<a href=https://github.com/chibicode/hugo-theme-shiori>Shiori Theme</a>.
+</footer>
+</div>
+</div>
+</div>
+<script src=https://blog.yuyat.jp/javascripts/shiori.js></script>
+<script>!function(a,c,d){var b,e=a.getElementsByTagName(c)[0],f=/^http:/.test(a.location)?'http':'https';a.getElementById(d)||(b=a.createElement(c),b.id=d,b.src=f+'://platform.twitter.com/widgets.js',e.parentNode.insertBefore(b,e))}(document,'script','twitter-wjs')</script>
+<script>hljs.initHighlightingOnLoad()</script>
+<script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-12392004-1','auto'),ga('send','pageview')</script>
+</body>
+</html>
