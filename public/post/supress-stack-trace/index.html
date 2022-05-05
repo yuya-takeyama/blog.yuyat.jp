@@ -1,0 +1,150 @@
+<!doctype html><html lang=ja-jp>
+<head>
+<script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-3233912168536735",enable_page_level_ads:!0})</script>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet href=https://blog.yuyat.jp/stylesheets/shiori.css>
+<link href="//fonts.googleapis.com/css?family=Montserrat:700,400" rel=stylesheet type=text/css>
+<link href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic" rel=stylesheet type=text/css>
+<link href=//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css rel=stylesheet>
+<link rel="shortcut icon" href=https://blog.yuyat.jp/favicon.ico>
+<link rel=canonical href=https://blog.yuyat.jp/post/supress-stack-trace/>
+<title>Node.js のスタックトレースを控えめにする supress-stack-trace 書いた | Born Too Late</title>
+<meta property="fb:admins" content="100000987494966">
+<meta property="fb:app_id" content="285547814816502">
+<meta property="og:title" content="Node.js のスタックトレースを控えめにする supress-stack-trace 書いた">
+<meta property="og:description" content="最近仕事で React/Redux で構築されたアプリを触っていて、mocha でテストがコケたときのスタックトレースがうるさい感じだったので node_modules 内のエラーを除外するためのものを作ってみた。
+
+yuya-takeyama/supress-stack-trace
+">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://blog.yuyat.jp/post/supress-stack-trace/">
+<meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg">
+<meta property="og:updated_time" content="2017-03-29T02:21:11+09:00">
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content="@yuya_takeyama">
+<meta name=twitter:creator content="@yuya_takeyama">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-static-top">
+<div class=container>
+<div class=navbar-header>
+<div class="navbar-toggle-wrapper visible-xs">
+<button type=button class=navbar-toggle data-toggle=collapse data-target=.js-navbar-collapse>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+</button>
+</div>
+<a href=https://blog.yuyat.jp class=navbar-brand>Born Too Late</a>
+</div>
+<div class="collapse navbar-collapse js-navbar-collapse">
+<ul class="navbar-nav nav">
+<li><a href=https://blog.yuyat.jp/post/>Archive</a></li>
+</ul>
+<ul class="navbar-nav nav navbar-right">
+</ul>
+</div>
+</div>
+</div>
+<div class=container>
+<div class=row>
+<div class=col-sm-8>
+<div class=post-header>
+<h1 class=post-title-main>Node.js のスタックトレースを控えめにする supress-stack-trace 書いた</h1>
+<p class=text-muted>Mar 29, 2017</p>
+<div>
+<a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fsupress-stack-trace%2f&text=Node.js%20%e3%81%ae%e3%82%b9%e3%82%bf%e3%83%83%e3%82%af%e3%83%88%e3%83%ac%e3%83%bc%e3%82%b9%e3%82%92%e6%8e%a7%e3%81%88%e3%82%81%e3%81%ab%e3%81%99%e3%82%8b%20supress-stack-trace%20%e6%9b%b8%e3%81%84%e3%81%9f&via=yuya_takeyama" rel=nofollow><img src=/images/social/twitter.png width=30 height=30 class=social-button></a>
+<a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fsupress-stack-trace%2f" rel=nofollow><img src=/images/social/hatena.svg width=30 height=30 class=social-button></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fsupress-stack-trace%2f" rel=nofollow><img src=/images/social/facebook.png width=30 height=30 class=social-button></a>
+</div>
+</div>
+<div class=post-content>
+<p>最近仕事で React/Redux で構築されたアプリを触っていて、<a href=https://mochajs.org/>mocha</a> でテストがコケたときのスタックトレースがうるさい感じだったので <code>node_modules</code> 内のエラーを除外するためのものを作ってみた。</p>
+<ul>
+<li><a href=https://github.com/yuya-takeyama/supress-stack-trace>yuya-takeyama/supress-stack-trace</a></li>
+</ul>
+<h2 id=使い方>使い方</h2>
+<p>まだ npm には登録してないのでとりあえず GitHub から直接インストールする必要があります。</p>
+<pre tabindex=0><code>$ yarn add -D yuya-takeyama/supress-stack-trace
+</code></pre><p>使い方は読み込むだけで OK</p>
+<pre tabindex=0><code>require('supress-stack-trace')
+</code></pre><p>mocha の場合は <code>mocha.opts</code> に <code>--require supress-stack-trace</code> とかしてあげるだけでいいと思います。</p>
+<p>今の仕事では <a href=https://www.npmjs.com/package/mocha-webpack>mocha-webpack</a> を使っていて、<code>mocha-webpack.opts</code> に同じ感じに指定すればうまくできました。</p>
+<p>なお、<a href=https://github.com/evanw/node-source-map-support>source-map-support</a> のように <code>Error.prepareStackTrace</code> をオーバーライドするライブラリを既に使っている場合は、そのあとで読み込むのが良いと思います。ライブラリの組み合わせによっては動かないこともあると思います。</p>
+<h2 id=使用感>使用感</h2>
+<p>このようにすっきりします。</p>
+<h3 id=before>Before</h3>
+<pre tabindex=0><code>     Error: error
+      at app/components/foo/Foo.jsx:18:11
+      at Object.LinkedValueUtils.executeOnChange (node_modules/react-dom/lib/LinkedValueUtils.js:129:1)
+      at ReactDOMComponent._handleChange (node_modules/react-dom/lib/ReactDOMInput.js:232:1)
+      at Object.invokeGuardedCallback [as invokeGuardedCallbackWithCatch] (node_modules/react-dom/lib/ReactErrorUtils.js:26:1)
+      at executeDispatch (node_modules/react-dom/lib/EventPluginUtils.js:83:1)
+      at Object.executeDispatchesInOrder (node_modules/react-dom/lib/EventPluginUtils.js:108:1)
+      at executeDispatchesAndRelease (node_modules/react-dom/lib/EventPluginHub.js:43:1)
+      at executeDispatchesAndReleaseSimulated (node_modules/react-dom/lib/EventPluginHub.js:51:1)
+      at forEachAccumulated (node_modules/react-dom/lib/forEachAccumulated.js:26:1)
+      at Object.EventPluginHub.processEventQueue (node_modules/react-dom/lib/EventPluginHub.js:255:1)
+      at node_modules/react-dom/lib/ReactTestUtils.js:340:1
+      at ReactDefaultBatchingStrategyTransaction.TransactionImpl.perform (node_modules/react-dom/lib/Transaction.js:140:1)
+      at Object.ReactDefaultBatchingStrategy.batchedUpdates (node_modules/react-dom/lib/ReactDefaultBatchingStrategy.js:62:1)
+      at Object.batchedUpdates (node_modules/react-dom/lib/ReactUpdates.js:97:1)
+      at node_modules/react-dom/lib/ReactTestUtils.js:338:1
+      at ReactWrapper.&lt;anonymous&gt; (node_modules/enzyme/build/ReactWrapper.js:776:1)
+      at ReactWrapper.single (node_modules/enzyme/build/ReactWrapper.js:1421:1)
+      at ReactWrapper.simulate (node_modules/enzyme/build/ReactWrapper.js:769:1)
+      at Context.&lt;anonymous&gt; (test/components/foo/Foo-test.js:168:20)
+</code></pre><h3 id=after>After</h3>
+<pre tabindex=0><code>     Error: error
+      at app/components/foo/Foo.jsx:18:11
+      at Context.&lt;anonymous&gt; (test/components/foo/Foo-test.js:168:20)
+</code></pre><h2 id=仕組み>仕組み</h2>
+<p>V8 には <a href=https://github.com/v8/v8/wiki/Stack-Trace-API>Stack Trace API</a> というものがあって、<code>Error.prepareStackTrace</code> という関数をセットすることでスタックトレースの出力をいじることができます。</p>
+<p>ただこれは API 的にはあまりイケてなくて、エラーとスタックトレースを受け取って文字列を返す関数なので、チェインすることはちょっと難しい感じです。</p>
+<p><code>source-map-support</code> も <code>Error.prepareStackTrace</code> をセットしているので、既にセットされた関数があった場合は、その出力の文字列から <code>node_modules/</code> と含まれた行だけ消す、みたいなことをしています。</p>
+<p>なので例えばエラーメッセージに <code>node_modules/</code> と含まれていた場合はそこまで省略されてしまいます。 (気が向いたらなおす)</p>
+<h2 id=その他>その他</h2>
+<p>あとはやっぱり環境変数で supress しないモードとかもあったらいいと思うんですが、いい名前が思いつかないのでとりあえず後回し。</p>
+<p>思いついたら npm に公開しようと思います。</p>
+</div>
+<div class=post-footer>
+<a href=https://blog.yuyat.jp/post/ class="btn btn-primary btn-block btn-lg">View All 37 Articles →</a>
+</div>
+</div>
+<div class=col-sm-4>
+<h3>
+Author
+</h3>
+<p>
+<div class=media>
+<img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class=pull-left>
+<div class=media-body>
+<h4 class=media-heading><a href=https://yuyat.jp>Yuya Takeyama</a></h4>
+</div>
+</div>
+</p>
+<p><a href=https://twitter.com/yuya_takeyama class=twitter-follow-button data-show-screen-name=false data-show-count=true data-dnt=true data-size=large>Follow @yuya_takeyama</a></p>
+<script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<ins class=adsbygoogle style=display:block data-ad-client=ca-pub-3233912168536735 data-ad-slot=3268217607 data-ad-format=auto></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
+</div>
+</div>
+<div class="row footer">
+<div class="col-sm-12 text-center">
+<footer>
+&copy; 2015.
+Built with <a href=http://gohugo.io/>Hugo</a> (0.90.1) and
+<a href=https://github.com/chibicode/hugo-theme-shiori>Shiori Theme</a>.
+</footer>
+</div>
+</div>
+</div>
+<script src=https://blog.yuyat.jp/javascripts/shiori.js></script>
+<script>!function(a,c,d){var b,e=a.getElementsByTagName(c)[0],f=/^http:/.test(a.location)?'http':'https';a.getElementById(d)||(b=a.createElement(c),b.id=d,b.src=f+'://platform.twitter.com/widgets.js',e.parentNode.insertBefore(b,e))}(document,'script','twitter-wjs')</script>
+<script>hljs.initHighlightingOnLoad()</script>
+<script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-12392004-1','auto'),ga('send','pageview')</script>
+</body>
+</html>
