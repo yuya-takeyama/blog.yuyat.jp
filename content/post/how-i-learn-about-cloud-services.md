@@ -3,6 +3,7 @@ date = "2023-11-03T18:00:00+09:00"
 title = "クラウドサービスについての知識をいかに身につけるか"
 images = ["/images/how-i-learn-about-cloud-services/cover.webp"]
 +++
+![クラウドサービスについて学ぼう](/images/how-i-learn-about-cloud-services/cover.webp)
 この記事における画像は全て ChatGPT (DALL·E 3) によって生成されています。
 
 # はじめにまとめ
