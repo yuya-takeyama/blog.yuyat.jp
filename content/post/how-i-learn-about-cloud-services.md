@@ -53,6 +53,8 @@ images = ["/images/how-i-learn-about-cloud-services/cover.webp"]
         - APIキーをGitHubにpushしない
         - パスワードは安全なものを設定し、使いまわさない
         - SSO等の、より安全な認証方式が使えるならそちらを使う
+        - AWS に関しては Classmethod さんが「AWSアカウントで最初にやるべきこと」というシリーズの記事を出しているので、最新のものを参照すると良いです
+          - この記事の執筆時点での最新 2022 年 6 月版: https://dev.classmethod.jp/articles/aws-baseline-setting-202206/
     - サービスの料金モデルについては理解した上で使う
     - 料金アラートが設定できるならちゃんとする (AWS Budgets等)
 
