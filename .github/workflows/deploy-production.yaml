@@ -38,7 +38,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           GITHUB_BRANCH: main
-      - uses: aws-actions/configure-aws-credentials@v1
+      - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::711930837542:role/blog-s3-sync
           aws-region: ap-northeast-1
