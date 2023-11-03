@@ -1,7 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Born Too Late</title><link>https://blog.yuyat.jp/post/</link><description>Recent content in Posts on Born Too Late</description><generator>Hugo -- gohugo.io</generator><language>ja-jp</language><lastBuildDate>Fri, 03 Nov 2023 18:00:00 +0900</lastBuildDate><atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml"/><item><title>クラウドサービスについての知識をいかに身につけるか</title><link>https://blog.yuyat.jp/post/how-i-learn-about-cloud-services/</link><pubDate>Fri, 03 Nov 2023 18:00:00 +0900</pubDate><guid>https://blog.yuyat.jp/post/how-i-learn-about-cloud-services/</guid><description>この記事における画像は全て ChatGPT (DALL·E 3) によって生成されています。
-はじめにまとめ 身銭を切り、リスクを取る より多く打席に立つ 自分の盆栽を持つ この記事のスコープ コンピュータサイエンスの基本的な知識（OS・ハードウェア等）はクラウド時代においても重要ですし、陳腐化の遅いより本質的な知識といえますが、それらの話はしません 今回は、クラウドサービスの固有知識のような、「知ってるか知らないか」だけのあまり本質的ではないが、身につけることで短期的な生産性につながる知識をいかに得るか、という話です 何故クラウドサービスの知識獲得が重要か 各種クラウドサービスの使い方のような知識は変化が大きく、陳腐化の早い知識です 逆に、それらに長い時間をかけて学ぶことは無駄であり、じっくりとした学習はより陳腐化の遅い分野に使いたいものです → 効率よくクラウドサービスについて学ぼう 私について 前職には Rails とかフロントエンドとかをやる Web Engineer として入社して、クラウドの利用経験はほとんどありませんでした 強いていえばさくらVPSを借りていた 後に色々あって SRE チームに異動して AWS をはじめとしたクラウドサービスについて学ぶ必要が出た 学んでみると Web Engineer にもクラウドサービスの知識は必要だし、それを効率よく得るための方法論はあるなと思った 身銭を切り、リスクをとる クラウド散財ボーイ
-クラウドに身銭を切る クラウドサービスの多くは従量課金や月額課金となっており、無料で試せるOSSソフトウェアとは異なり、お金を払わないと利用できません 例えばChatGPTなどはお金を払っていることでより最新のサービスにアクセスできます。これらにアクセスできるようになっておくことは、学習へのハードルを下げます クラウド破産のリスク GitHubにpushしたIAM keyでEC2勝手に作られてビットコインマイニングされまくって有り金以上に溶かしまくった顔
-クラウドサービスと契約する場合、料金モデルについての理解が不足していたり、セキュリティ上の問題があると、クラウド破産のリスクもあります そのようなリスクがあるからこそ、問題が起きないように本気で調べることにつながります 基本的なセキュリティに気をつける APIキーをGitHubにpushしない パスワードは安全なものを設定し、使いまわさない SSO等の、より安全な認証方式が使えるならそちらを使う サービスの料金モデルについては理解した上で使う 料金アラートが設定できるならちゃんとする (AWS Budgets等) 会社の支援は?</description></item><item><title>リモートワーク時代に買ってよかったもの (ほぼ 2021 年)</title><link>https://blog.yuyat.jp/post/best-buys-2021/</link><pubDate>Fri, 31 Dec 2021 01:30:00 +0900</pubDate><guid>https://blog.yuyat.jp/post/best-buys-2021/</guid><description>&lt;p>2021 年も終わりですね。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Born Too Late</title><link>https://blog.yuyat.jp/post/</link><description>Recent content in Posts on Born Too Late</description><generator>Hugo -- gohugo.io</generator><language>ja-jp</language><lastBuildDate>Fri, 03 Nov 2023 18:00:00 +0900</lastBuildDate><atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml"/><item><title>クラウドサービスについての知識をいかに身につけるか</title><link>https://blog.yuyat.jp/post/how-i-learn-about-cloud-services/</link><pubDate>Fri, 03 Nov 2023 18:00:00 +0900</pubDate><guid>https://blog.yuyat.jp/post/how-i-learn-about-cloud-services/</guid><description>&lt;p>この記事における画像は全て ChatGPT (DALL·E 3) によって生成されています。&lt;/p>
+&lt;h1 id="はじめにまとめ">はじめにまとめ&lt;/h1>
+&lt;ul>
+&lt;li>身銭を切り、リスクを取る&lt;/li>
+&lt;li>より多く打席に立つ&lt;/li>
+&lt;li>自分の盆栽を持つ&lt;/li>
+&lt;/ul>
+&lt;h1 id="この記事のスコープ">この記事のスコープ&lt;/h1>
+&lt;ul>
+&lt;li>コンピュータサイエンスの基本的な知識（OS・ハードウェア等）はクラウド時代においても重要ですし、陳腐化の遅いより本質的な知識といえますが、それらの話はしません&lt;/li>
+&lt;li>今回は、クラウドサービスの固有知識のような、「知ってるか知らないか」だけのあまり本質的ではないが、身につけることで短期的な生産性につながる知識をいかに得るか、という話です&lt;/li>
+&lt;/ul></description></item><item><title>リモートワーク時代に買ってよかったもの (ほぼ 2021 年)</title><link>https://blog.yuyat.jp/post/best-buys-2021/</link><pubDate>Fri, 31 Dec 2021 01:30:00 +0900</pubDate><guid>https://blog.yuyat.jp/post/best-buys-2021/</guid><description>&lt;p>2021 年も終わりですね。&lt;/p>
 &lt;p>2020 年の 2 月ごろから会社がほとんどリモートになり、約丸 2 年が経ちました。自宅の作業環境を中心に改善が進み、いつしか会社のオフィスでは再現が難しいレベルになったなと感じます。&lt;/p>
 &lt;p>今年の大きなトピックとしては 2 月に引っ越しをし、家が少し広くなったり、そのタイミングで家事周りも色々見直して省力化、またはより楽しめる形にしてきました。&lt;/p>
 &lt;p>そんなアフィリエイトブログです。前回は 2017 年だったので 4 年ぶり。&lt;/p>
