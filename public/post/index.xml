@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Born Too Late</title><link>https://blog.yuyat.jp/post/</link><description>Recent content in Posts on Born Too Late</description><generator>Hugo -- gohugo.io</generator><language>ja-jp</language><lastBuildDate>Fri, 03 Nov 2023 18:00:00 +0900</lastBuildDate><atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml"/><item><title>クラウドサービスについての知識をいかに身につけるか</title><link>https://blog.yuyat.jp/post/how-i-learn-about-cloud-services/</link><pubDate>Fri, 03 Nov 2023 18:00:00 +0900</pubDate><guid>https://blog.yuyat.jp/post/how-i-learn-about-cloud-services/</guid><description>&lt;p>この記事における画像は全て ChatGPT (DALL·E 3) によって生成されています。&lt;/p>
-&lt;h1 id="はじめにまとめ">はじめにまとめ&lt;/h1>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Born Too Late</title><link>https://blog.yuyat.jp/post/</link><description>Recent content in Posts on Born Too Late</description><generator>Hugo -- gohugo.io</generator><language>ja-jp</language><lastBuildDate>Fri, 03 Nov 2023 18:00:00 +0900</lastBuildDate><atom:link href="https://blog.yuyat.jp/post/index.xml" rel="self" type="application/rss+xml"/><item><title>クラウドサービスについての知識をいかに身につけるか</title><link>https://blog.yuyat.jp/post/how-i-learn-about-cloud-services/</link><pubDate>Fri, 03 Nov 2023 18:00:00 +0900</pubDate><guid>https://blog.yuyat.jp/post/how-i-learn-about-cloud-services/</guid><description>&lt;p>&lt;img src="https://blog.yuyat.jp/images/how-i-learn-about-cloud-services/cover.webp" alt="クラウドサービスについて学ぼう">
+この記事における画像は全て ChatGPT (DALL·E 3) によって生成されています。&lt;/p>
+&lt;h2 id="はじめにまとめ">はじめにまとめ&lt;/h2>
 &lt;ul>
 &lt;li>身銭を切り、リスクを取る&lt;/li>
 &lt;li>より多く打席に立つ&lt;/li>
 &lt;li>自分の盆栽を持つ&lt;/li>
 &lt;/ul>
-&lt;h1 id="この記事のスコープ">この記事のスコープ&lt;/h1>
+&lt;h2 id="この記事のスコープ">この記事のスコープ&lt;/h2>
 &lt;ul>
 &lt;li>コンピュータサイエンスの基本的な知識（OS・ハードウェア等）はクラウド時代においても重要ですし、陳腐化の遅いより本質的な知識といえますが、それらの話はしません&lt;/li>
 &lt;li>今回は、クラウドサービスの固有知識のような、「知ってるか知らないか」だけのあまり本質的ではないが、身につけることで短期的な生産性につながる知識をいかに得るか、という話です&lt;/li>
