@@ -67,8 +67,8 @@
 <div class=post-excerpt-home>
 <h2 id=tl-dr>tl; dr</h2>
 <p>バッドノウハウ感が強いですが、以下のワンライナーで <code>$multiple_lines_text</code> の中身をマスクすることが可能です。</p>
-<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml>      - <span style=color:#f92672>run</span>: |<span style=color:#e6db74>
-</span><span style=color:#e6db74>          </span>          <span style=color:#ae81ff>echo &#34;::add-mask::$(echo &#34;$multiple_lines_text&#34; | sed &#39;:a;N;$!ba;s/%/%25/g&#39; | sed &#39;:a;N;$!ba;s/\r/%0D/g&#39; | sed &#39;:a;N;$!ba;s/\n/%0A/g&#39;)&#34;</span>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-yaml data-lang=yaml>- <span style=color:#f92672>run</span>: |<span style=color:#e6db74>
+</span><span style=color:#e6db74>    </span>    <span style=color:#ae81ff>echo &#34;::add-mask::$(echo &#34;$multiple_lines_text&#34; | sed &#39;:a;N;$!ba;s/%/%25/g&#39; | sed &#39;:a;N;$!ba;s/\r/%0D/g&#39; | sed &#39;:a;N;$!ba;s/\n/%0A/g&#39;)&#34;</span>
 </code></pre></div>
 <p class=text-right><a href=https://blog.yuyat.jp/post/mask-multiple-lines-text-in-github-actions-workflow/>Continue Reading &rarr;</a></p>
 </div>
