@@ -8,8 +8,8 @@ title = "GitHub Actions の Workflow 内で複数行の文字列をマスクす�
 バッドノウハウ感が強いですが、以下のワンライナーで `$multiple_lines_text` の中身をマスクすることが可能です。
 
 ```yaml
-      - run: |
-          echo "::add-mask::$(echo "$multiple_lines_text" | sed ':a;N;$!ba;s/%/%25/g' | sed ':a;N;$!ba;s/\r/%0D/g' | sed ':a;N;$!ba;s/\n/%0A/g')"
+- run: |
+    echo "::add-mask::$(echo "$multiple_lines_text" | sed ':a;N;$!ba;s/%/%25/g' | sed ':a;N;$!ba;s/\r/%0D/g' | sed ':a;N;$!ba;s/\n/%0A/g')"
 ```
 
 <!--more-->
