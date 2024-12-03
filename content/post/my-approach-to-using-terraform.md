@@ -14,6 +14,8 @@ title = "初めてのサービスでリソースを Terraform 化するときの
 2. 概ねでき上がったら `import` ブロックを活用しながらローカル環境で `terraform plan`/`apply` を行う
 3. 最終的な tf ファイルの Pull Request を出す
 
+<!--more-->
+
 ## 問題意識
 
 AWS 等におけるクラウドリソースをいきなり Terraform で記述することは簡単ではないことも多いです。
