@@ -20,7 +20,7 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://blog.yuyat.jp/">
 <meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg">
-<meta property="og:updated_time" content="2024-05-26T22:00:00+09:00">
+<meta property="og:updated_time" content="2024-05-26T22:10:30+09:00">
 <meta name=twitter:card content="summary">
 <meta name=twitter:site content="@yuya_takeyama">
 <meta name=twitter:creator content="@yuya_takeyama">
@@ -50,6 +50,20 @@
 <div class=container>
 <div class=row>
 <div class=col-sm-8>
+<div class=post-header-home>
+<h1 class=post-title-home>
+<a href=https://blog.yuyat.jp/post/my-approach-to-using-terraform/>初めてのサービスでリソースを Terraform 化するときの私のアプローチ</a>
+</h1>
+<p class=text-muted>May 26, 2024</p>
+</div>
+<div class=post-excerpt-home>
+この記事は terraform Advent Calendar 2024 の 3 日目です。
+前日: raki さんによるTerraform のバージョン制約 tl; dr 安全に試行錯誤できるサンドボックス環境を用意し、まずは手作業でリソースを組み上げる 概ねでき上がったら import ブロックを活用しながらローカル環境で terraform plan/apply を行う 最終的な tf ファイルの Pull Request を出す 問題意識 AWS 等におけるクラウドリソースをいきなり Terraform で記述することは簡単ではないことも多いです。
+特に、そのサービスを触るのが初めての時などは、どのリソースを使用するべきかというところからして自明でないことも多いでしょう。
+また、Terraform のような IaC ツールは、チームや企業で使ってこそ本来の威力を発揮するものだと思います。ですが、通常利用者の間には Terraform や対象のクラウドサービスについての習熟度にばらつきがあるものです。より広く Terraform を活用してもらうためには、なるべく難しくないやり方を提供する必要があるでしょう。
+想定読者 企業で Terraform の CI/CD パイプラインといったプラットフォームの構築に関わる方 「どのように使ってもらうのか」を考えて明確にする助けになればと思います 業務の中で Terraform を利用する必要があるが、苦手意識がある方 「こんなふうにやればいいのか」と感じていただければ幸いです ただし、この記事の内容を実践するには前提としてのプラットフォームも必要です。それらを構築する役割の人々が別にいるなら、その人々とよく話しながら具体化すると良いでしょう この記事における前提 そのクラウドサービスを利用する上での安全なサンドボックス環境がある サンボックス環境に対して、ローカルから terraform plan/apply を実行できる状態になっている Terraform のための CI/CD パイプラインが存在し、利用できる 手順1: サンドボックス環境上で手作業でリソースを組み上げる おいおい、手作業で構築なんかしちゃって大丈夫なのかい、と思う方もいるかもしれません。
+<p class=text-right><a href=https://blog.yuyat.jp/post/my-approach-to-using-terraform/>Continue Reading &rarr;</a></p>
+</div>
 <div class=post-header-home>
 <h1 class=post-title-home>
 <a href=https://blog.yuyat.jp/post/>Posts</a>
@@ -171,21 +185,9 @@
 <p>基本的には Twitter に既に書いた内容のまとめです。</p>
 <p class=text-right><a href=https://blog.yuyat.jp/post/no-more-broken-windows-theory/>Continue Reading &rarr;</a></p>
 </div>
-<div class=post-header-home>
-<h1 class=post-title-home>
-<a href=https://blog.yuyat.jp/post/learn-kubernetes-in-english/>AirPods Pro を使って英会話の訓練をしながら Kubernetes をはじめとするあらゆるテクノロジーについて学べるすごい学習法</a>
-</h1>
-<p class=text-muted>Dec 2, 2019</p>
-</div>
-<div class=post-excerpt-home>
-<p>約 1 年ぶりにブログを書くにあたって、めちゃくちゃ釣りっぽいタイトルにしてみました。 (昨日すでに<a href=/post/becoming-an-engineering-manager/>別の記事</a>が出ていますが、書き始めたのはこちらが先でした)</p>
-<p>この記事は <a href=https://amzn.to/33xf90B>AirPods Pro</a> のアフィリエイトによる小銭稼ぎ (まぁ今現在 Amazon では売り切れてるけど) と、僕のあらゆる物事に対する学習・訓練に対する考え方をまとめて、識者からフィードバックを得ることを目的にしています。</p>
-<p>で、その両方を達成する上で都合がいいので、AirPods Pro を使ったシャドーイングを題材に書いてみようと思います。学習に関する考え方についてはいかにもわかってる風に書きますが、素人が適当なことを言っているだけなので、暇つぶし程度にご笑覧いただければ幸いです。</p>
-<p class=text-right><a href=https://blog.yuyat.jp/post/learn-kubernetes-in-english/>Continue Reading &rarr;</a></p>
-</div>
 <hr>
 <div class=home-read-more>
-<a href=https://blog.yuyat.jp/post/ class="btn btn-primary btn-block btn-lg">View All 39 Articles →</a>
+<a href=https://blog.yuyat.jp/post/ class="btn btn-primary btn-block btn-lg">View All 40 Articles →</a>
 </div>
 </div>
 <div class=col-sm-4>

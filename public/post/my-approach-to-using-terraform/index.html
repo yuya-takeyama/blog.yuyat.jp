@@ -1,0 +1,204 @@
+<!doctype html><html lang=ja-jp>
+<head>
+<script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-3233912168536735",enable_page_level_ads:!0})</script>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet href=https://blog.yuyat.jp/stylesheets/shiori.css>
+<link href="//fonts.googleapis.com/css?family=Montserrat:700,400" rel=stylesheet type=text/css>
+<link href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic" rel=stylesheet type=text/css>
+<link href=//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css rel=stylesheet>
+<link rel="shortcut icon" href=https://blog.yuyat.jp/favicon.ico>
+<link rel=canonical href=https://blog.yuyat.jp/post/my-approach-to-using-terraform/>
+<title>初めてのサービスでリソースを Terraform 化するときの私のアプローチ | Born Too Late</title>
+<meta property="fb:admins" content="100000987494966">
+<meta property="fb:app_id" content="285547814816502">
+<meta property="og:title" content="初めてのサービスでリソースを Terraform 化するときの私のアプローチ">
+<meta property="og:description" content="この記事は terraform Advent Calendar 2024 の 3 日目です。
+ 前日: raki さんによるTerraform のバージョン制約  tl; dr  安全に試行錯誤できるサンドボックス環境を用意し、まずは手作業でリソースを組み上げる 概ねでき上がったら import ブロックを活用しながらローカル環境で terraform plan/apply を行う 最終的な tf ファイルの Pull Request を出す  問題意識 AWS 等におけるクラウドリソースをいきなり Terraform で記述することは簡単ではないことも多いです。
+特に、そのサービスを触るのが初めての時などは、どのリソースを使用するべきかというところからして自明でないことも多いでしょう。
+また、Terraform のような IaC ツールは、チームや企業で使ってこそ本来の威力を発揮するものだと思います。ですが、通常利用者の間には Terraform や対象のクラウドサービスについての習熟度にばらつきがあるものです。より広く Terraform を活用してもらうためには、なるべく難しくないやり方を提供する必要があるでしょう。
+想定読者  企業で Terraform の CI/CD パイプラインといったプラットフォームの構築に関わる方  「どのように使ってもらうのか」を考えて明確にする助けになればと思います   業務の中で Terraform を利用する必要があるが、苦手意識がある方  「こんなふうにやればいいのか」と感じていただければ幸いです ただし、この記事の内容を実践するには前提としてのプラットフォームも必要です。それらを構築する役割の人々が別にいるなら、その人々とよく話しながら具体化すると良いでしょう    この記事における前提  そのクラウドサービスを利用する上での安全なサンドボックス環境がある サンボックス環境に対して、ローカルから terraform plan/apply を実行できる状態になっている Terraform のための CI/CD パイプラインが存在し、利用できる  手順1: サンドボックス環境上で手作業でリソースを組み上げる おいおい、手作業で構築なんかしちゃって大丈夫なのかい、と思う方もいるかもしれません。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://blog.yuyat.jp/post/my-approach-to-using-terraform/">
+<meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg">
+<meta property="og:updated_time" content="2024-05-26T22:10:30+09:00">
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content="@yuya_takeyama">
+<meta name=twitter:creator content="@yuya_takeyama">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-static-top">
+<div class=container>
+<div class=navbar-header>
+<div class="navbar-toggle-wrapper visible-xs">
+<button type=button class=navbar-toggle data-toggle=collapse data-target=.js-navbar-collapse>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+</button>
+</div>
+<a href=https://blog.yuyat.jp class=navbar-brand>Born Too Late</a>
+</div>
+<div class="collapse navbar-collapse js-navbar-collapse">
+<ul class="navbar-nav nav">
+<li><a href=https://blog.yuyat.jp/post/>Archive</a></li>
+</ul>
+<ul class="navbar-nav nav navbar-right">
+</ul>
+</div>
+</div>
+</div>
+<div class=container>
+<div class=row>
+<div class=col-sm-8>
+<div class=post-header>
+<h1 class=post-title-main>初めてのサービスでリソースを Terraform 化するときの私のアプローチ</h1>
+<p class=text-muted>May 26, 2024</p>
+<div>
+<a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fmy-approach-to-using-terraform%2f&text=%e5%88%9d%e3%82%81%e3%81%a6%e3%81%ae%e3%82%b5%e3%83%bc%e3%83%93%e3%82%b9%e3%81%a7%e3%83%aa%e3%82%bd%e3%83%bc%e3%82%b9%e3%82%92%20Terraform%20%e5%8c%96%e3%81%99%e3%82%8b%e3%81%a8%e3%81%8d%e3%81%ae%e7%a7%81%e3%81%ae%e3%82%a2%e3%83%97%e3%83%ad%e3%83%bc%e3%83%81&via=yuya_takeyama" rel=nofollow><img src=/images/social/twitter.png width=30 height=30 class=social-button></a>
+<a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2fmy-approach-to-using-terraform%2f" rel=nofollow><img src=/images/social/hatena.svg width=30 height=30 class=social-button></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2fmy-approach-to-using-terraform%2f" rel=nofollow><img src=/images/social/facebook.png width=30 height=30 class=social-button></a>
+</div>
+</div>
+<div class=post-content>
+<p>この記事は <a href=https://qiita.com/advent-calendar/2024/terraform>terraform Advent Calendar 2024</a> の 3 日目です。</p>
+<ul>
+<li>前日: <a href=https://zenn.dev/raki>raki さん</a>による<a href=https://zenn.dev/terraform_jp/articles/2024-12-02_terraform_version_constraints>Terraform のバージョン制約</a></li>
+</ul>
+<h2 id=tl-dr>tl; dr</h2>
+<ol>
+<li>安全に試行錯誤できるサンドボックス環境を用意し、まずは手作業でリソースを組み上げる</li>
+<li>概ねでき上がったら <code>import</code> ブロックを活用しながらローカル環境で <code>terraform plan</code>/<code>apply</code> を行う</li>
+<li>最終的な tf ファイルの Pull Request を出す</li>
+</ol>
+<h2 id=問題意識>問題意識</h2>
+<p>AWS 等におけるクラウドリソースをいきなり Terraform で記述することは簡単ではないことも多いです。</p>
+<p>特に、そのサービスを触るのが初めての時などは、どのリソースを使用するべきかというところからして自明でないことも多いでしょう。</p>
+<p>また、Terraform のような IaC ツールは、チームや企業で使ってこそ本来の威力を発揮するものだと思います。ですが、通常利用者の間には Terraform や対象のクラウドサービスについての習熟度にばらつきがあるものです。より広く Terraform を活用してもらうためには、なるべく難しくないやり方を提供する必要があるでしょう。</p>
+<h2 id=想定読者>想定読者</h2>
+<ul>
+<li>企業で Terraform の CI/CD パイプラインといったプラットフォームの構築に関わる方
+<ul>
+<li>「どのように使ってもらうのか」を考えて明確にする助けになればと思います</li>
+</ul>
+</li>
+<li>業務の中で Terraform を利用する必要があるが、苦手意識がある方
+<ul>
+<li>「こんなふうにやればいいのか」と感じていただければ幸いです</li>
+<li>ただし、この記事の内容を実践するには前提としてのプラットフォームも必要です。それらを構築する役割の人々が別にいるなら、その人々とよく話しながら具体化すると良いでしょう</li>
+</ul>
+</li>
+</ul>
+<h2 id=この記事における前提>この記事における前提</h2>
+<ul>
+<li>そのクラウドサービスを利用する上での安全なサンドボックス環境がある</li>
+<li>サンボックス環境に対して、ローカルから <code>terraform plan</code>/<code>apply</code> を実行できる状態になっている</li>
+<li>Terraform のための CI/CD パイプラインが存在し、利用できる</li>
+</ul>
+<h2 id=手順1-サンドボックス環境上で手作業でリソースを組み上げる>手順1: サンドボックス環境上で手作業でリソースを組み上げる</h2>
+<p>おいおい、手作業で構築なんかしちゃって大丈夫なのかい、と思う方もいるかもしれません。</p>
+<p>ですが、ここで重要なのは、「手作業でも問題のない環境を用意」して、「手作業で問題のないことだけをやる」です。</p>
+<p>「手作業でも問題のない環境」というのは以下のようなものを指します:</p>
+<ul>
+<li>本番環境等の問題が起きたら困る環境とは完全に切り離されている</li>
+<li>ログインには SSO のような安全のような方法を利用する
+<ul>
+<li>AWS であれば、IAM User のような秘密鍵が漏れると危ない方法は利用しない</li>
+</ul>
+</li>
+<li>危ない設定をしてしまっても、自動的・継続的に検知されるような状態になっている
+<ul>
+<li>AWS であれば Seucurity Hub や GuardDuty などが利用できます</li>
+<li>どの程度の設定ができている必要があるか、は企業の規模や起こり得るリスクなどによっても変わるでしょう</li>
+</ul>
+</li>
+<li>コストが高すぎたり急激な変化があった時には気づける状態になっている
+<ul>
+<li>AWS であれば Cost Anomaly Detection 等が利用できます</li>
+<li>攻撃によりビットコイン等のマイニングが行われるような場合だけでなく、検証が終わってるのに放置されているリソースでの無駄遣いにも気づけると良いでしょう</li>
+</ul>
+</li>
+</ul>
+<p>また、「手作業で問題のないこと」というのは以下を指します:</p>
+<ul>
+<li>あくまでも検証・学習のための試行錯誤として作るものであり、最悪壊れても構わないものとして構築する</li>
+<li>(問題のない環境で満たされるが) 間違っても本番環境等の設定を変更するようなことはしない
+<ul>
+<li>間違った環境での作業を避けるため、本番環境ではそのための権限をそもそも割り当てなかったり、割り当てるとしても <a href=https://tech.layerx.co.jp/entry/2024/05/01/111747>PIM</a> のような仕組みを使うのが良いでしょう</li>
+</ul>
+</li>
+</ul>
+<p>そしてここでの重要なポイントは、「以下に小さなサイクルで高速に試行錯誤を繰り返すか」です。</p>
+<p>初めてのサービスにおいては、そもそもどのようなリソースにどのようなパラメータを渡す必要があるのか、どのようなリソースを組み合わせる必要があるのか、ビジネス上の要件を満たすにはどのような設定にする必要があるのか、ということを検証して行く必要があります。</p>
+<p>そのためには、GitHub に Terraform のコードを push して、CI/CD パイプラインの完了を待って、問題があったらまた修正して push して&mldr; というサイクルでは時間がかかり過ぎます。</p>
+<p>試行錯誤を高速に回すことの重要性は以前にも書いています:</p>
+<ul>
+<li><a href=https://blog.yuyat.jp/post/how-i-learn-about-cloud-services/>クラウドサービスについての知識をいかに身につけるか</a></li>
+</ul>
+<h2 id=手順2-import-ブロックを活用しながらローカル環境で-terraform-planapply-を行う>手順2: <code>import</code> ブロックを活用しながらローカル環境で <code>terraform plan</code>/<code>apply</code> を行う</h2>
+<p>手作業での構築が完了し、どういったリソースが必要なのかの全体像が見えたら、そこで初めて Terraform のコードに落とし込みます。</p>
+<p>この作業については、2023 年に <a href=https://github.com/hashicorp/terraform/releases/tag/v1.5.0>Terraform v1.5.0</a> で登場した <code>import</code> ブロックにより圧倒的にやりやすくなりました。 (それまでは <a href=https://developer.hashicorp.com/terraform/cli/import><code>terraform import</code></a> コマンドを使ってひとつひとつインポートするような作業が必要でとても面倒でした)</p>
+<p>インポート対象のリソースは Provider のドキュメントから探し、インポートに必要な ID を特定します。基本的にドキュメントの最下部に書いてあります:</p>
+<ul>
+<li><a href=https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_service#import>aws_ecs_service の例</a></li>
+</ul>
+<p>ドキュメントを見ながらわかる範囲でパラメータを指定し、<code>terraform plan</code> を実行してエラーが出たら修正し、plan に差分があるようなら必要な範囲でパラメータを追加して差分を無くして行くことで基本的な流れです。</p>
+<p>もちろん、作業の過程でより正しい設定値に気づくこともあるので、その差分が意図に合致するものであればそのまま <code>terraform apply</code> してしまっても良いでしょう。</p>
+<p>手順1でやるべきことは「リソースを正しい状態で組み上げること」で、そのための試行錯誤をできるだけ高速に繰り返すということでした。</p>
+<p>そこから「そのリソースを Terraform で表現するコードに落とし込む」ための試行錯誤をできるだけ高速に繰り返すのがこの手順2です。</p>
+<h2 id=手順3-最終的な-tf-ファイルの-pull-request-を出す>手順3: 最終的な tf ファイルの Pull Request を出す</h2>
+<p>手順1, 2 はサンドボックス環境での作業でした。</p>
+<p>これを本番環境なり、その手前の環境に持って行くのがこの手順 3 です。</p>
+<p>基本的には手順 2 で作ったコードをコピペする感じですが、その環境に依存する値がある場合は修正が必要になります。AWS であれば AWS アカウント ID を含む ARN 等がこれにあたります。</p>
+<p>この辺はうまく変数化して抽象化することで、変数だけ書き換えれば良い状態の tf ファイルにすることもできますが、この辺はまぁやりながら慣れていくしかないですかね&mldr;</p>
+<h2 id=その他のアプローチ>その他のアプローチ</h2>
+<h3 id=terraformer-を使う>terraformer を使う</h3>
+<p><a href=https://github.com/GoogleCloudPlatform/terraformer>terraformer</a> は既存のクラウドリソースをもとに tf ファイルを生成するものです。</p>
+<p>もし対象リソースがものすごく多いような場合は、手順 2 のステップをこれを使ってやることも考えられますが、対象のリソースを指定するには正しくタグを指定しておく必要があるなど、そんなに簡単ではない印象です。</p>
+<p>手順 2 で手作業で tf ファイルを書いて行くのは面倒でもありますが、対象のリソースに対する学習も必要なのだとすると、差分となるパラメータを調べながらやって行くことも無駄ではないとは思います。</p>
+<h2 id=終わりに>終わりに</h2>
+<p>私が初めて触るサービスのリソースを Terraform 化するときの手順を紹介しました。</p>
+<p>私自身、常にこの手順を厳密に守ってやっているわけではなく、対象リソースの多さや複雑さなどによってもグラデーションがあります。</p>
+<p>ここで大事なのは常にこの手順を遵守することではなく、「今の自分の問題を解決するために、どうやったら試行錯誤をできるだけ速く繰り返せるか」を意識することだと思います。</p>
+<p>Terraform を利用する上で工夫しているやり方などあれば、是非はてなブックマークや X で <a href=https://x.com/yuya_takeyama>@yuya_takeyama</a> までコメントいただければ幸いです。</p>
+</div>
+<div class=post-footer>
+<a href=https://blog.yuyat.jp/post/ class="btn btn-primary btn-block btn-lg">View All 40 Articles →</a>
+</div>
+</div>
+<div class=col-sm-4>
+<h3>
+Author
+</h3>
+<p>
+<div class=media>
+<img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class=pull-left>
+<div class=media-body>
+<h4 class=media-heading><a href=https://yuyat.jp>Yuya Takeyama</a></h4>
+</div>
+</div>
+</p>
+<p><a href=https://twitter.com/yuya_takeyama class=twitter-follow-button data-show-screen-name=false data-show-count=true data-dnt=true data-size=large>Follow @yuya_takeyama</a></p>
+<script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<ins class=adsbygoogle style=display:block data-ad-client=ca-pub-3233912168536735 data-ad-slot=3268217607 data-ad-format=auto></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
+</div>
+</div>
+<div class="row footer">
+<div class="col-sm-12 text-center">
+<footer>
+&copy; 2015.
+Built with <a href=http://gohugo.io/>Hugo</a> (0.90.1) and
+<a href=https://github.com/chibicode/hugo-theme-shiori>Shiori Theme</a>.
+</footer>
+</div>
+</div>
+</div>
+<script src=https://blog.yuyat.jp/javascripts/shiori.js></script>
+<script>!function(a,c,d){var b,e=a.getElementsByTagName(c)[0],f=/^http:/.test(a.location)?'http':'https';a.getElementById(d)||(b=a.createElement(c),b.id=d,b.src=f+'://platform.twitter.com/widgets.js',e.parentNode.insertBefore(b,e))}(document,'script','twitter-wjs')</script>
+<script>hljs.initHighlightingOnLoad()</script>
+<script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-12392004-1','auto'),ga('send','pageview')</script>
+</body>
+</html>
