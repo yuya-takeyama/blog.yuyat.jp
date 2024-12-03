@@ -57,11 +57,16 @@
 <p class=text-muted>Dec 3, 2024</p>
 </div>
 <div class=post-excerpt-home>
-この記事は terraform Advent Calendar 2024 の 3 日目です。
-前日: raki さんによるTerraform のバージョン制約 tl; dr 安全に試行錯誤できるサンドボックス環境を用意し、まずは手作業でリソースを組み上げる 概ねでき上がったら import ブロックを活用しながらローカル環境で terraform plan/apply を行う 最終的な tf ファイルの Pull Request を出す 問題意識 AWS 等におけるクラウドリソースをいきなり Terraform で記述することは簡単ではないことも多いです。
-特に、そのサービスを触るのが初めての時などは、どのリソースを使用するべきかというところからして自明でないことも多いでしょう。
-また、Terraform のような IaC ツールは、チームや企業で使ってこそ本来の威力を発揮するものだと思います。ですが、通常利用者の間には Terraform や対象のクラウドサービスについての習熟度にばらつきがあるものです。より広く Terraform を活用してもらうためには、なるべく難しくないやり方を提供する必要があるでしょう。
-想定読者 企業で Terraform の CI/CD パイプラインといったプラットフォームの構築に関わる方 「どのように使ってもらうのか」を考えて明確にする助けになればと思います 業務の中で Terraform を利用する必要があるが、苦手意識がある方 「こんなふうにやればいいのか」と感じていただければ幸いです ただし、この記事の内容を実践するには前提としてのプラットフォームも必要です。それらを構築する役割の人々が別にいるなら、その人々とよく話しながら具体化すると良いでしょう この記事における前提 そのクラウドサービスを利用する上での安全なサンドボックス環境がある サンボックス環境に対して、ローカルから terraform plan/apply を実行できる状態になっている Terraform のための CI/CD パイプラインが存在し、利用できる 手順1: サンドボックス環境上で手作業でリソースを組み上げる おいおい、手作業で構築なんかしちゃって大丈夫なのかい、と思う方もいるかもしれません。
+<p>この記事は <a href=https://qiita.com/advent-calendar/2024/terraform>terraform Advent Calendar 2024</a> の 3 日目です。</p>
+<ul>
+<li>前日: <a href=https://zenn.dev/raki>raki さん</a>による<a href=https://zenn.dev/terraform_jp/articles/2024-12-02_terraform_version_constraints>Terraform のバージョン制約</a></li>
+</ul>
+<h2 id=tl-dr>tl; dr</h2>
+<ol>
+<li>安全に試行錯誤できるサンドボックス環境を用意し、まずは手作業でリソースを組み上げる</li>
+<li>概ねでき上がったら <code>import</code> ブロックを活用しながらローカル環境で <code>terraform plan</code>/<code>apply</code> を行う</li>
+<li>最終的な tf ファイルの Pull Request を出す</li>
+</ol>
 <p class=text-right><a href=https://blog.yuyat.jp/post/my-approach-to-using-terraform/>Continue Reading &rarr;</a></p>
 </div>
 <div class=post-header-home>
