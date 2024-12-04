@@ -6,7 +6,8 @@ title = "初めてのサービスでリソースを Terraform 化するときの
 
 この記事は [terraform Advent Calendar 2024](https://qiita.com/advent-calendar/2024/terraform) の 3 日目です。
 
-- 前日: [raki さん](https://zenn.dev/raki)による[Terraform のバージョン制約](https://zenn.dev/terraform_jp/articles/2024-12-02_terraform_version_constraints)
+- 前日: [raki さん](https://x.com/raki)による [Terraform のバージョン制約](https://zenn.dev/terraform_jp/articles/2024-12-02_terraform_version_constraints)
+- 翌日 [bgpat さん](https://x.com/bgpat_)による[Terraform の Provider-defined Function はどうやって実装されているのか](https://qiita.com/bgpat/items/fd5a109888f8b25854f8)
 
 ## tl; dr
 
