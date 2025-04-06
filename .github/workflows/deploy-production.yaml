@@ -19,7 +19,7 @@ jobs:
         with:
           submodules: true  # Fetch Hugo themes (true OR recursive)
           fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
-      - uses: aquaproj/aqua-installer@v3.1.0
+      - uses: aquaproj/aqua-installer@v3.1.2
         with:
           aqua_version: v1.5.1
       - id: generate_token
