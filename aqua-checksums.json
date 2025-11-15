@@ -1,0 +1,64 @@
+{
+  "checksums": [
+    {
+      "id": "github_release/github.com/int128/ghcp/v1.13.1/ghcp_darwin_amd64.zip",
+      "checksum": "89B32D527229BE8D341EE7AEBC3107A7D12736FDA1769C18CB4D5E21B36C1854",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/int128/ghcp/v1.13.1/ghcp_darwin_arm64.zip",
+      "checksum": "E17D6098072D6C546CD9E4F206932B005A9B991E616F929DFBEC0F9F8AE43A03",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/int128/ghcp/v1.13.1/ghcp_linux_amd64.zip",
+      "checksum": "B4B70C5F7EC86D26066E4CF5AF5B0B81D7BB163AD8D8A717838BDA5DB297E890",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/int128/ghcp/v1.13.1/ghcp_linux_arm64.zip",
+      "checksum": "85DD8555D4BF5604C13B99E220069FB124F05071837D10153664157177EEE53C",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/int128/ghcp/v1.13.1/ghcp_windows_amd64.zip",
+      "checksum": "4F1115287D3CBAF513D726CF553FBB0FFB3DDBF60C26734655ABEBCB9BC7BB81",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/suzuki-shunsuke/pinact/v3.4.3/pinact_darwin_amd64.tar.gz",
+      "checksum": "505965C3E18D862F35985082283502B597EFBB654C280D4A496B00C13AE564F0",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/suzuki-shunsuke/pinact/v3.4.3/pinact_darwin_arm64.tar.gz",
+      "checksum": "30E289D6A5EEE87C1178A3FFF4A17528AED8460607544C0B4F4AD6C3BF65055D",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/suzuki-shunsuke/pinact/v3.4.3/pinact_linux_amd64.tar.gz",
+      "checksum": "0F4ED8164659A554C5B06ED01158C9B29DA32DCB8A9AD22AE71B15419B946398",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/suzuki-shunsuke/pinact/v3.4.3/pinact_linux_arm64.tar.gz",
+      "checksum": "398CAB2EA8A74D5F7099E4680DBE320866C6CFC74DB1EFA0704122E38700907C",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/suzuki-shunsuke/pinact/v3.4.3/pinact_windows_amd64.zip",
+      "checksum": "21ACF44EC679ECB46015E6618837A11770FF6A0F0480BB4AD4819F4F5815AA6A",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/suzuki-shunsuke/pinact/v3.4.3/pinact_windows_arm64.zip",
+      "checksum": "F88449D9F319F9D0DD5B2A6A9C2E33047F15F80C74858FA0C4FC2F4FA332286A",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.435.0/registry.yaml",
+      "checksum": "A933288EE36456016440AB7B1258DB1FD1FE06EB52CC26FF4985B886D2729F91E318D9743A67B1A09A2FFE6CCD4F30B6CEEEBF6FB39DF6DC67CCEC7B37DE8D34",
+      "algorithm": "sha512"
+    }
+  ]
+}
