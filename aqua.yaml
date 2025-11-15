@@ -1,6 +1,11 @@
+checksum:
+  enabled: true
+  require_checksum: true
+
 registries:
   - type: standard
-    ref: v2.5.0 # renovate: depName=aquaproj/aqua-registry
+    ref: v4.435.0 # renovate: depName=aquaproj/aqua-registry
 
 packages:
   - name: int128/ghcp@v1.13.1
+  - name: suzuki-shunsuke/pinact@v3.4.3
