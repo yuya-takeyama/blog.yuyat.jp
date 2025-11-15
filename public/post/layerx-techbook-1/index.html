@@ -1,0 +1,126 @@
+<!doctype html><html lang=ja-jp>
+<head>
+<script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({google_ad_client:"ca-pub-3233912168536735",enable_page_level_ads:!0})</script>
+<meta charset=utf-8>
+<meta http-equiv=x-ua-compatible content="IE=edge">
+<meta name=viewport content="width=device-width,initial-scale=1">
+<link rel=stylesheet href=https://blog.yuyat.jp/stylesheets/shiori.css>
+<link href="//fonts.googleapis.com/css?family=Montserrat:700,400" rel=stylesheet type=text/css>
+<link href="//fonts.googleapis.com/css?family=Merriweather:400,400italic,700,700italic" rel=stylesheet type=text/css>
+<link href=//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css rel=stylesheet>
+<link rel="shortcut icon" href=https://blog.yuyat.jp/favicon.ico>
+<link rel=canonical href=https://blog.yuyat.jp/post/layerx-techbook-1/>
+<title>LayerX TechBook 1 に "人と SaaS と AI エージェントが協業する権限管理" というタイトルで寄稿しました & 中身をチラ見せ | Born Too Late</title>
+<meta property="fb:admins" content="100000987494966">
+<meta property="fb:app_id" content="285547814816502">
+<meta property="og:title" content="LayerX TechBook 1 に &#34;人と SaaS と AI エージェントが協業する権限管理&#34; というタイトルで寄稿しました & 中身をチラ見せ">
+<meta property="og:description" content="技術書典 19 において、所属している LayerX で LayerX Techbook 1 という書籍を有志で執筆し、その中で「人と SaaS と AI エージェントが協業する権限管理」というタイトルで寄稿しました。コーポレートエンジニアとして AI エージェントを活用してくためにどのようなことを考えて実践しているかについて書いています。
+すでに技術書展のオンラインマーケットで購入可能なのと、明日 2025 年 11 月 16 日 (日) には物理本を売るのと僕も売り子として立ちます！来てくれ！！
+この記事では僕が書いた章の中身を少しだけチラ見せします。コーポレートエンジニアリングと言いつつ Terraform、Kubernetes、React.js などの話をしています。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://blog.yuyat.jp/post/layerx-techbook-1/">
+<meta property="og:image" content="https://blog.yuyat.jp/images/avatar.jpg">
+<meta property="og:updated_time" content="2025-11-15T14:00:00+09:00">
+<meta name=twitter:card content="summary">
+<meta name=twitter:site content="@yuya_takeyama">
+<meta name=twitter:creator content="@yuya_takeyama">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-static-top">
+<div class=container>
+<div class=navbar-header>
+<div class="navbar-toggle-wrapper visible-xs">
+<button type=button class=navbar-toggle data-toggle=collapse data-target=.js-navbar-collapse>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+</button>
+</div>
+<a href=https://blog.yuyat.jp class=navbar-brand>Born Too Late</a>
+</div>
+<div class="collapse navbar-collapse js-navbar-collapse">
+<ul class="navbar-nav nav">
+<li><a href=https://blog.yuyat.jp/post/>Archive</a></li>
+</ul>
+<ul class="navbar-nav nav navbar-right">
+</ul>
+</div>
+</div>
+</div>
+<div class=container>
+<div class=row>
+<div class=col-sm-8>
+<div class=post-header>
+<h1 class=post-title-main>LayerX TechBook 1 に "人と SaaS と AI エージェントが協業する権限管理" というタイトルで寄稿しました & 中身をチラ見せ</h1>
+<p class=text-muted>Nov 15, 2025</p>
+<div>
+<a href="https://twitter.com/intent/tweet?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2flayerx-techbook-1%2f&text=LayerX%20TechBook%201%20%e3%81%ab%20%22%e4%ba%ba%e3%81%a8%20SaaS%20%e3%81%a8%20AI%20%e3%82%a8%e3%83%bc%e3%82%b8%e3%82%a7%e3%83%b3%e3%83%88%e3%81%8c%e5%8d%94%e6%a5%ad%e3%81%99%e3%82%8b%e6%a8%a9%e9%99%90%e7%ae%a1%e7%90%86%22%20%e3%81%a8%e3%81%84%e3%81%86%e3%82%bf%e3%82%a4%e3%83%88%e3%83%ab%e3%81%a7%e5%af%84%e7%a8%bf%e3%81%97%e3%81%be%e3%81%97%e3%81%9f%20%26%20%e4%b8%ad%e8%ba%ab%e3%82%92%e3%83%81%e3%83%a9%e8%a6%8b%e3%81%9b&via=yuya_takeyama" rel=nofollow><img src=/images/social/twitter.png width=30 height=30 class=social-button></a>
+<a href="http://b.hatena.ne.jp/add?url=https%3a%2f%2fblog.yuyat.jp%2fpost%2flayerx-techbook-1%2f" rel=nofollow><img src=/images/social/hatena.svg width=30 height=30 class=social-button></a>
+<a href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fblog.yuyat.jp%2fpost%2flayerx-techbook-1%2f" rel=nofollow><img src=/images/social/facebook.png width=30 height=30 class=social-button></a>
+</div>
+</div>
+<div class=post-content>
+<p>技術書典 19 において、所属している LayerX で LayerX Techbook 1 という書籍を有志で執筆し、その中で「人と SaaS と AI エージェントが協業する権限管理」というタイトルで寄稿しました。コーポレートエンジニアとして AI エージェントを活用してくためにどのようなことを考えて実践しているかについて書いています。</p>
+<p>すでに<a href=https://techbookfest.org/product/5zbWgnL90mCvjt7MmnwxW2>技術書展のオンラインマーケットで購入可能</a>なのと、明日 2025 年 11 月 16 日 (日) には物理本を売るのと僕も売り子として立ちます！来てくれ！！</p>
+<p>この記事では僕が書いた章の中身を少しだけチラ見せします。コーポレートエンジニアリングと言いつつ Terraform、Kubernetes、React.js などの話をしています。</p>
+<p>記事はこのような記事で構成されています:</p>
+<ul>
+<li>AI エージェントと協働する未来</li>
+<li>決定的なシステムと非決定的なシステム、構造化データと非構造化データ</li>
+<li>Infrastructure as Code による人とソフトウェアと AI エージェントの協業</li>
+<li>AI エージェントのための安定的な基盤</li>
+<li>LayerX における ID 基盤と人事基盤</li>
+<li>ID 基盤と人事基盤を内製ソフトウェアで繋ぐ</li>
+<li>安定的な基盤の上で AI エージェントと協業する</li>
+<li>Claude Agent SDK による AI エージェントの実装</li>
+<li>今後の展望とまとめ</li>
+</ul>
+<p>以下は記事の中の「Infrastructure as Code による人とソフトウェアと AI エージェントの協業」という章をそのまま転載したものです。自分の Infrastructure as Code に関する考え方をまとめています。これが AI エージェントとどう繋がってくるのかはぜひ購入して読んでみてください！</p>
+<h2 id=infrastructure-as-code-による人とソフトウェアと-ai-エージェントの協業>Infrastructure as Code による人とソフトウェアと AI エージェントの協業</h2>
+<p>ところで、私は前職では SRE/Platform Engineer として働いていました。その時の経験も AI エージェントとの協業において重要な示唆を与えてくれています。</p>
+<p>LayerX は複数の事業を展開していることもあり、AWS のようなクラウドサービスにおいては、個別の AWS アカウントは個別の事業部に管理を委譲しつつ、それを束ねる AWS Organizations はコーポレートエンジニアリング室で管理をしています。セキュリティ的なガードレールもそうですし、全社横断のドメインにおける DNS レコードの管理についてなどもコーポレートエンジニアリング室の管理の範疇です。これらの変更を行う際も、Claude Code のようなコーディングエージェントが活躍できる時代になってきました。例えば、AWS CLI がインストールされ、SSO で適切な権限を付与した状態であれば、Claude Code に指示を与えるだけでも AWS CLI を駆使して DNS レコードの変更ぐらいはできるでしょう。</p>
+<p>ですが、Claude Code にインフラの、それも DNS のような重要なリソースを直接変更させることには大きなリスクが伴います。カレンダーへの個人的なランニングの予定の登録が 19:00 になるか 20:00 になるかは大した問題にならないと思いますが、間違ったレコードを更新したり、レコードに対して間違った値を登録してしまうことは、システムへの重大な障害を引き起こすことにもつながりかねません。このようなやり方は、例えモデルが進化したとしても適切とは言えないでしょう。</p>
+<p>LayerX においては、クラウドリソースの管理には複数の事業部・部署で Terraform が利用されており、コーポレートエンジニアリング室でもそのための CI/CD 基盤を構築・運用し、全社に向けて提供しています。 (さらに、各事業部固有のアプリケーション等は各事業部で持つ別の CI/CD 基盤上で管理されています) これらの CI/CD 基盤では、Pull Request を作成すると <code>terraform plan</code> によるインフラへの変更内容がコメントとして投稿され、レビュアーの承認後にマージすることで <code>terraform apply</code> コマンドによって実際に変更が適用されます。また、CI/CD パイプラインには Trivy<a href=https://trivy.dev>https://trivy.dev</a> というセキュリティスキャンを行うソフトウェアも組み込まれているため、問題を検知したらそれも Pull Request 内で通知され、問題を解消するまではマージすることができないようになっています。</p>
+<p>また、Terraform が持つ大きな特徴として、 <strong>「宣言的なリソース管理」</strong> というものが挙げられます。例えば EC2 にインスタンスを作る場合、シェルスクリプトによる自動化であれば <code>aws ec2 run-instances</code> というコマンドに適切なパラメータを与えることで実現できます。これは「命令的」と呼ばれる自動化の手法です。これはこれで素朴でわかりやすくて良いのですが、そのスクリプトを複数回実行すると不要なインスタンスが増えていくかもしれません。Terraform であれば「このインスタンスはこのように作るべき」というあるべき状態を記述して実行すると、その状態に収束するような変更が行われます。インスタンスが起動していなければ新たに起動しますが、すでに適切な状態で起動済みであれば何もしません。これは「宣言的」と呼ばれる自動化の手法です。</p>
+<p>少し飛躍しているように感じる方もおられるかもしれませんが、これはここ 10 年におけるソフトウェアの大きな潮流だと考えています。それまでの命令的なやり方を宣言的なやり方に変えたソフトウェアとして、インフラの領域においては Terraform と Kubernetes がそうでしたが、フロントエンド開発の領域においても React.js は宣言的な DOM 管理を採用しています。いずれも今から 10 年ほど前の 2014 年前後に登場しているという点も興味深いです。これらはリソースを <strong>「あるべき状態」</strong> と <strong>「実際の状態」</strong> を比較した上で <strong>「あるべき状態に収束させる」</strong> ことをベースとしたアーキテクチャとなっており、安定的なソフトウェアを構築する上で避けることのできない考え方だと考えます。</p>
+<p>このように、Terraform によってインフラをコード化することは、人間がコードレビューという形で介入する余地を与えるだけでなく、ここでも Trivy のような決定的なソフトウェアによって支援を受けることができますし、宣言的なリソース管理によって安定して運用することが可能になります。これら自体は以前から良いとされていたプラクティスでしたが、人間やソフトウェアがガードレールとして機能している中でコーディングエージェントと協業することにより、これまで以上の効率で構成変更を行うことができるようになりました。</p>
+</div>
+<div class=post-footer>
+<a href=https://blog.yuyat.jp/post/ class="btn btn-primary btn-block btn-lg">View All 41 Articles →</a>
+</div>
+</div>
+<div class=col-sm-4>
+<h3>
+Author
+</h3>
+<p>
+<div class=media>
+<img src="//www.gravatar.com/avatar/33685a20ded68e6861bec3c1bd7f0870?s=100" alt="Yuya Takeyama" class=pull-left>
+<div class=media-body>
+<h4 class=media-heading><a href=https://yuyat.jp>Yuya Takeyama</a></h4>
+</div>
+</div>
+</p>
+<p><a href=https://twitter.com/yuya_takeyama class=twitter-follow-button data-show-screen-name=false data-show-count=true data-dnt=true data-size=large>Follow @yuya_takeyama</a></p>
+<script async src=//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<ins class=adsbygoogle style=display:block data-ad-client=ca-pub-3233912168536735 data-ad-slot=3268217607 data-ad-format=auto></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script>
+</div>
+</div>
+<div class="row footer">
+<div class="col-sm-12 text-center">
+<footer>
+&copy; 2015.
+Built with <a href=http://gohugo.io/>Hugo</a> (0.90.1) and
+<a href=https://github.com/chibicode/hugo-theme-shiori>Shiori Theme</a>.
+</footer>
+</div>
+</div>
+</div>
+<script src=https://blog.yuyat.jp/javascripts/shiori.js></script>
+<script>!function(a,c,d){var b,e=a.getElementsByTagName(c)[0],f=/^http:/.test(a.location)?'http':'https';a.getElementById(d)||(b=a.createElement(c),b.id=d,b.src=f+'://platform.twitter.com/widgets.js',e.parentNode.insertBefore(b,e))}(document,'script','twitter-wjs')</script>
+<script>hljs.initHighlightingOnLoad()</script>
+<script>(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)})(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-12392004-1','auto'),ga('send','pageview')</script>
+</body>
+</html>
